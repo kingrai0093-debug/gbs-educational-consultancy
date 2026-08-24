@@ -20,6 +20,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [isUrlMode, setIsUrlMode] = useState(false);
   const [fileName, setFileName] = useState<string>("");
+  const [isCompressing, setIsCompressing] = useState(false);
 
   const processFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -27,11 +28,61 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
       return;
     }
     setFileName(file.name);
+    setIsCompressing(true);
+
     const reader = new FileReader();
     reader.onload = (e) => {
-      if (e.target?.result) {
-        onChange(e.target.result as string);
+      if (!e.target?.result) {
+        setIsCompressing(false);
+        return;
       }
+      const rawDataUrl = e.target.result as string;
+
+      // For small images / SVGs, return directly
+      if (file.size < 80000 || file.type.includes("svg")) {
+        onChange(rawDataUrl);
+        setIsCompressing(false);
+        return;
+      }
+
+      // Fast HTML5 Canvas Image Resizer & HD Compressor
+      const img = new Image();
+      img.onload = () => {
+        const MAX_WIDTH = 1280;
+        const MAX_HEIGHT = 1280;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round((height * MAX_WIDTH) / width);
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round((width * MAX_HEIGHT) / height);
+            height = MAX_HEIGHT;
+          }
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+          onChange(compressedDataUrl);
+        } else {
+          onChange(rawDataUrl);
+        }
+        setIsCompressing(false);
+      };
+      img.onerror = () => {
+        onChange(rawDataUrl);
+        setIsCompressing(false);
+      };
+      img.src = rawDataUrl;
     };
     reader.readAsDataURL(file);
   };

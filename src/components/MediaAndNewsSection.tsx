@@ -436,9 +436,14 @@ export const MediaAndNewsSection: React.FC<MediaAndNewsSectionProps> = ({ onOpen
                   className="relative h-48 w-full bg-gray-900 overflow-hidden cursor-pointer flex items-center justify-center group"
                 >
                   <img
-                    src={`https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80`}
+                    src={vid.youtubeId ? `https://img.youtube.com/vi/${vid.youtubeId}/hqdefault.jpg` : `https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80`}
                     alt={vid.title}
-                    className="w-full h-full object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      // Fallback to high quality stock if YouTube thumb blocked
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80";
+                    }}
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
                   {/* Play Button Overlay */}
                   <div className="absolute w-14 h-14 rounded-full bg-[#ED2D2A] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">

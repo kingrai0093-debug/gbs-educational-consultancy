@@ -281,6 +281,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     featured: false,
   });
 
+  const [editingVideoId, setEditingVideoId] = useState<string | null>(null);
   const [videoForm, setVideoForm] = useState({
     title: "",
     youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -289,6 +290,18 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     duration: "5:00",
     description: "",
   });
+
+  const handleEditVideo = (v: VideoItem) => {
+    setEditingVideoId(v.id);
+    setVideoForm({
+      title: v.title,
+      youtubeUrl: v.youtubeUrl || `https://www.youtube.com/watch?v=${v.youtubeId}`,
+      youtubeId: v.youtubeId,
+      category: v.category,
+      duration: v.duration || "5:00",
+      description: v.description || "",
+    });
+  };
 
   const [editingGalleryId, setEditingGalleryId] = useState<string | null>(null);
   const [galleryForm, setGalleryForm] = useState({
@@ -473,28 +486,47 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     });
   };
 
-  // Video Submit
+  // Video Submit (Add or Edit)
   const handleVideoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!videoForm.title.trim()) return;
 
-    // Extract YouTube ID if full URL given
+    // Extract YouTube ID from all formats: watch?v=, youtu.be/, /shorts/, /embed/, or raw ID
     let ytId = videoForm.youtubeId;
-    if (videoForm.youtubeUrl.includes("v=")) {
-      ytId = videoForm.youtubeUrl.split("v=")[1].split("&")[0];
-    } else if (videoForm.youtubeUrl.includes("youtu.be/")) {
-      ytId = videoForm.youtubeUrl.split("youtu.be/")[1].split("?")[0];
+    const cleanUrl = (videoForm.youtubeUrl || "").trim();
+    if (cleanUrl.includes("v=")) {
+      ytId = cleanUrl.split("v=")[1].split("&")[0].split("?")[0];
+    } else if (cleanUrl.includes("youtu.be/")) {
+      ytId = cleanUrl.split("youtu.be/")[1].split("?")[0].split("&")[0];
+    } else if (cleanUrl.includes("/shorts/")) {
+      ytId = cleanUrl.split("/shorts/")[1].split("?")[0].split("&")[0];
+    } else if (cleanUrl.includes("/embed/")) {
+      ytId = cleanUrl.split("/embed/")[1].split("?")[0].split("&")[0];
+    } else if (/^[a-zA-Z0-9_-]{11}$/.test(cleanUrl)) {
+      ytId = cleanUrl;
     }
 
-    addVideo({
-      title: videoForm.title,
-      youtubeUrl: videoForm.youtubeUrl,
-      youtubeId: ytId || "vBf4u5U4u18",
-      category: videoForm.category,
-      duration: videoForm.duration || "5:00",
-      description: videoForm.description,
-      date: "Aug 2026",
-    });
+    if (editingVideoId) {
+      updateVideo(editingVideoId, {
+        title: videoForm.title,
+        youtubeUrl: videoForm.youtubeUrl,
+        youtubeId: ytId || "vBf4u5U4u18",
+        category: videoForm.category,
+        duration: videoForm.duration || "5:00",
+        description: videoForm.description,
+      });
+      setEditingVideoId(null);
+    } else {
+      addVideo({
+        title: videoForm.title,
+        youtubeUrl: videoForm.youtubeUrl,
+        youtubeId: ytId || "vBf4u5U4u18",
+        category: videoForm.category,
+        duration: videoForm.duration || "5:00",
+        description: videoForm.description,
+        date: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+      });
+    }
 
     setVideoForm({
       title: "",
@@ -1501,7 +1533,31 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                   </div>
 
                   <form onSubmit={handleVideoSubmit} className="bg-stone-950 p-5 rounded-2xl border border-stone-800 space-y-4">
-                    <span className="text-xs font-bold text-amber-300 block">➕ Add New Video Guide</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-amber-300 block">
+                        {editingVideoId ? "✏️ Edit Video Guide" : "➕ Add New Video Guide"}
+                      </span>
+                      {editingVideoId && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingVideoId(null);
+                            setVideoForm({
+                              title: "",
+                              youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                              youtubeId: "vBf4u5U4u18",
+                              category: "Student Testimonials",
+                              duration: "5:00",
+                              description: "",
+                            });
+                          }}
+                          className="text-[11px] text-stone-400 hover:text-white"
+                        >
+                          Cancel Edit
+                        </button>
+                      )}
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div className="sm:col-span-2">
                         <label className="block text-stone-300 font-semibold mb-1">Video Title *</label>
@@ -1521,7 +1577,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                           type="text"
                           value={videoForm.youtubeUrl}
                           onChange={(e) => setVideoForm({ ...videoForm, youtubeUrl: e.target.value })}
-                          placeholder="https://youtube.com/watch?v=..."
+                          placeholder="https://youtube.com/watch?v=... or https://youtu.be/..."
                           className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                         />
                       </div>
@@ -1556,8 +1612,8 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                       type="submit"
                       className="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add Video to Hub</span>
+                      {editingVideoId ? <Save className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                      <span>{editingVideoId ? "Update Video" : "Add Video to Hub"}</span>
                     </button>
                   </form>
 
@@ -1565,18 +1621,30 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {videos.map((v) => (
                       <div key={v.id} className="p-3.5 bg-stone-950 rounded-2xl border border-stone-800 flex justify-between gap-3 text-xs">
-                        <div>
+                        <div className="flex-1">
                           <span className="text-[10px] text-red-400 font-bold">{v.category}</span>
                           <h4 className="font-bold text-white line-clamp-1">{v.title}</h4>
                           <p className="text-stone-400 text-[11px] line-clamp-2 mt-1">{v.description}</p>
+                          <span className="text-[10px] text-stone-500 font-mono mt-1 block">ID: {v.youtubeId}</span>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => deleteVideo(v.id)}
-                          className="p-2 bg-red-950/80 hover:bg-red-900 text-red-300 rounded-lg self-start transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
+                        <div className="flex items-center gap-1 shrink-0 self-start">
+                          <button
+                            type="button"
+                            onClick={() => handleEditVideo(v)}
+                            className="p-2 bg-stone-900 hover:bg-stone-800 text-blue-400 rounded-lg transition-colors cursor-pointer"
+                            title="Edit Video"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => deleteVideo(v.id)}
+                            className="p-2 bg-red-950/80 hover:bg-red-900 text-red-300 rounded-lg transition-colors cursor-pointer"
+                            title="Delete Video"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
