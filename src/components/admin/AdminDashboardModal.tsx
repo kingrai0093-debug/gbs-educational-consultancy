@@ -69,6 +69,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     updateTickerItem,
     deleteTickerItem,
     toggleTickerItem,
+    switchNewsPortal,
     addPost,
     updatePost,
     deletePost,
@@ -1250,85 +1251,85 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                       <button
                         type="button"
-                        onClick={() => {
-                          updateSettings({
-                            newsSourceUrl: "https://nepallive.com/",
-                            newsSourceName: "NepalLive.com",
-                            newsSourceMode: "nepallive",
-                          });
-                        }}
+                        onClick={() => switchNewsPortal("nepallive")}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                           (settings.newsSourceUrl || "").includes("nepallive")
                             ? "bg-cyan-950/80 border-cyan-500 text-white font-bold ring-2 ring-cyan-500/30"
                             : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
                         }`}
                       >
-                        <span className="block text-[10px] text-cyan-400 font-extrabold uppercase">Outlet #1</span>
-                        <span className="font-bold text-xs block truncate">🇳🇵 NepalLive.com</span>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-cyan-400 font-extrabold uppercase">Outlet #1</span>
+                          {(settings.newsSourceUrl || "").includes("nepallive") && (
+                            <span className="text-[9px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded font-black">ACTIVE</span>
+                          )}
+                        </div>
+                        <span className="font-bold text-xs block truncate mt-1">🇳🇵 NepalLive.com</span>
+                        <span className="text-[10px] text-cyan-300/80 block mt-0.5">Click to load live feed ⚡</span>
                       </button>
 
                       <button
                         type="button"
-                        onClick={() => {
-                          updateSettings({
-                            newsSourceUrl: "https://www.news24nepal.com/",
-                            newsSourceName: "News24 Nepal",
-                            newsSourceMode: "news24",
-                          });
-                        }}
+                        onClick={() => switchNewsPortal("news24")}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                           (settings.newsSourceUrl || "").includes("news24nepal")
                             ? "bg-red-950/80 border-red-500 text-white font-bold ring-2 ring-red-500/30"
                             : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
                         }`}
                       >
-                        <span className="block text-[10px] text-red-400 font-extrabold uppercase">Outlet #2</span>
-                        <span className="font-bold text-xs block truncate">📺 News 24 Nepal</span>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-red-400 font-extrabold uppercase">Outlet #2</span>
+                          {(settings.newsSourceUrl || "").includes("news24nepal") && (
+                            <span className="text-[9px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded font-black">ACTIVE</span>
+                          )}
+                        </div>
+                        <span className="font-bold text-xs block truncate mt-1">📺 News 24 Nepal</span>
+                        <span className="text-[10px] text-red-300/80 block mt-0.5">Click to load live feed ⚡</span>
                       </button>
 
                       <button
                         type="button"
-                        onClick={() => {
-                          updateSettings({
-                            newsSourceUrl: "https://www.onlinekhabar.com/content/education",
-                            newsSourceName: "OnlineKhabar Education",
-                            newsSourceMode: "onlinekhabar",
-                          });
-                        }}
+                        onClick={() => switchNewsPortal("onlinekhabar")}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                           (settings.newsSourceUrl || "").includes("onlinekhabar")
                             ? "bg-blue-950/80 border-blue-500 text-white font-bold ring-2 ring-blue-500/30"
                             : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
                         }`}
                       >
-                        <span className="block text-[10px] text-blue-400 font-extrabold uppercase">Outlet #3</span>
-                        <span className="font-bold text-xs block truncate">📰 OnlineKhabar</span>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-blue-400 font-extrabold uppercase">Outlet #3</span>
+                          {(settings.newsSourceUrl || "").includes("onlinekhabar") && (
+                            <span className="text-[9px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded font-black">ACTIVE</span>
+                          )}
+                        </div>
+                        <span className="font-bold text-xs block truncate mt-1">📰 OnlineKhabar</span>
+                        <span className="text-[10px] text-blue-300/80 block mt-0.5">Click to load live feed ⚡</span>
                       </button>
 
                       <button
                         type="button"
-                        onClick={() => {
-                          updateSettings({
-                            newsSourceUrl: "https://ekantipur.com/",
-                            newsSourceName: "Kantipur (eKantipur)",
-                            newsSourceMode: "kantipur",
-                          });
-                        }}
+                        onClick={() => switchNewsPortal("kantipur")}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                           (settings.newsSourceUrl || "").includes("ekantipur")
                             ? "bg-purple-950/80 border-purple-500 text-white font-bold ring-2 ring-purple-500/30"
                             : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
                         }`}
                       >
-                        <span className="block text-[10px] text-purple-400 font-extrabold uppercase">Outlet #4</span>
-                        <span className="font-bold text-xs block truncate">🗞️ eKantipur</span>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] text-purple-400 font-extrabold uppercase">Outlet #4</span>
+                          {(settings.newsSourceUrl || "").includes("ekantipur") && (
+                            <span className="text-[9px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded font-black">ACTIVE</span>
+                          )}
+                        </div>
+                        <span className="font-bold text-xs block truncate mt-1">🗞️ eKantipur</span>
+                        <span className="text-[10px] text-purple-300/80 block mt-0.5">Click to load live feed ⚡</span>
                       </button>
                     </div>
 
                     {/* Custom Source Inputs */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2 border-t border-slate-900">
-                      <div>
-                        <label className="block text-stone-300 font-semibold mb-1">Active Portal URL</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs pt-2 border-t border-slate-900 items-end">
+                      <div className="sm:col-span-5">
+                        <label className="block text-stone-300 font-semibold mb-1">Custom Portal URL</label>
                         <input
                           type="text"
                           value={settings.newsSourceUrl || "https://nepallive.com/"}
@@ -1338,7 +1339,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                         />
                       </div>
 
-                      <div>
+                      <div className="sm:col-span-4">
                         <label className="block text-stone-300 font-semibold mb-1">Display Source Name</label>
                         <input
                           type="text"
@@ -1347,6 +1348,18 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                           placeholder="NepalLive.com / News 24 Nepal"
                           className="w-full px-3.5 py-2 bg-stone-900 border border-stone-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
                         />
+                      </div>
+
+                      <div className="sm:col-span-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            switchNewsPortal("custom", settings.newsSourceUrl, settings.newsSourceName);
+                          }}
+                          className="w-full py-2 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-black rounded-xl text-xs flex items-center justify-center gap-1 cursor-pointer transition-all shadow-sm"
+                        >
+                          <span>Save Custom Portal</span>
+                        </button>
                       </div>
                     </div>
                   </div>

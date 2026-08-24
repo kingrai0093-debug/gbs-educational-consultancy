@@ -20,6 +20,7 @@ import {
   DEFAULT_TEAM_MEMBERS,
 } from "../data/adminDefaults";
 import { KOREA_UNIVERSITIES } from "../data/koreaUniversities";
+import { PORTAL_NEWS_PRESETS } from "../data/portalNewsFeeds";
 import {
   fetchGlobalCmsData,
   pushGlobalCmsDataToGitHub,
@@ -95,6 +96,11 @@ interface AdminDataContextType {
   updateTickerItem: (id: string, item: Partial<NewsTickerItem>) => void;
   deleteTickerItem: (id: string) => void;
   toggleTickerItem: (id: string) => void;
+  switchNewsPortal: (
+    mode: "nepallive" | "news24" | "onlinekhabar" | "kantipur" | "custom",
+    customUrl?: string,
+    customName?: string
+  ) => void;
 
   // Post operations
   addPost: (post: Omit<PostItem, "id">) => void;
@@ -510,6 +516,40 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setTickerItems((prev) => prev.map((t) => (t.id === id ? { ...t, isActive: !t.isActive } : t)));
   };
 
+  const switchNewsPortal = (
+    mode: "nepallive" | "news24" | "onlinekhabar" | "kantipur" | "custom",
+    customUrl?: string,
+    customName?: string
+  ) => {
+    recordLocalModification();
+    if (mode === "custom") {
+      setSettings((prev) => ({
+        ...prev,
+        newsSourceMode: "custom",
+        newsSourceUrl: customUrl || prev.newsSourceUrl || "https://nepallive.com/",
+        newsSourceName: customName || prev.newsSourceName || "Custom Portal Feed",
+      }));
+      return;
+    }
+
+    const preset = PORTAL_NEWS_PRESETS[mode];
+    if (preset) {
+      setSettings((prev) => ({
+        ...prev,
+        newsSourceMode: mode,
+        newsSourceUrl: preset.url,
+        newsSourceName: preset.name,
+      }));
+
+      // Set ticker queue to verified portal preset headlines
+      const newItems: NewsTickerItem[] = preset.headlines.map((h, idx) => ({
+        ...h,
+        id: `ticker-${mode}-${Date.now()}-${idx}`,
+      }));
+      setTickerItems(newItems);
+    }
+  };
+
   // Post operations
   const addPost = (post: Omit<PostItem, "id">) => {
     recordLocalModification();
@@ -681,6 +721,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         updateTickerItem,
         deleteTickerItem,
         toggleTickerItem,
+        switchNewsPortal,
         addPost,
         updatePost,
         deletePost,
