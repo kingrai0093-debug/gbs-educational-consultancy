@@ -75,35 +75,35 @@ export const EmbassyNoticeBanner: React.FC = () => {
     <>
       {/* TOP EMBASSY NOTICE HEADER BAR */}
       <div className="w-full bg-[#0a1020] text-slate-100 border-b border-blue-900/60 shadow-xl select-none relative z-40">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           
           {/* Left Brand Identity: Official Embassy of the Republic of Korea in Nepal */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             {/* Korea & Nepal Dual Flag Emblem */}
-            <div className="flex items-center -space-x-1.5 p-1 bg-slate-900 rounded-xl border border-slate-700/80 shadow-xs">
-              <span className="text-base" title="Republic of Korea">🇰🇷</span>
-              <span className="text-base" title="Nepal">🇳🇵</span>
+            <div className="flex items-center -space-x-1 p-1.5 bg-slate-900 rounded-xl border border-slate-700/80 shadow-md">
+              <span className="text-xl sm:text-2xl" title="Republic of Korea">🇰🇷</span>
+              <span className="text-xl sm:text-2xl" title="Nepal">🇳🇵</span>
             </div>
 
             <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-[11px] font-black uppercase tracking-wider text-blue-400">
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300">
                   Embassy of the Republic of Korea in Nepal
                 </span>
-                <span className="hidden sm:inline-block px-1.5 py-0.2 text-[9px] font-bold rounded-md bg-blue-950 text-blue-300 border border-blue-800">
+                <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold rounded-md bg-blue-950 text-blue-200 border border-blue-800">
                   주네팔대한민국대사관
                 </span>
               </div>
-              <div className="text-[10px] text-slate-400 flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+              <div className="text-xs text-slate-300 flex items-center gap-1.5 font-medium">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Official Consular & Visa Notice Board</span>
               </div>
             </div>
           </div>
 
-          {/* Center: Live Rotating Embassy Notice with Click-to-Read */}
+          {/* Center: Live Rotating Embassy Notice (Big & Clear) */}
           <div
-            className="flex-1 min-w-0 bg-slate-900/90 hover:bg-slate-800/90 transition-colors border border-blue-900/40 rounded-xl px-3 py-1.5 cursor-pointer flex items-center justify-between gap-2"
+            className="flex-1 min-w-0 bg-slate-900/95 hover:bg-slate-800 transition-all border border-blue-800/60 hover:border-amber-400/60 rounded-2xl px-4 py-2 cursor-pointer flex items-center justify-between gap-3 shadow-md"
             onClick={() => {
               setActiveNoticeDetail(activeNotice);
               setIsModalOpen(true);
@@ -112,34 +112,32 @@ export const EmbassyNoticeBanner: React.FC = () => {
             onMouseLeave={() => setIsAutoRotating(true)}
             title="Click to view full Embassy notice details"
           >
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <span className="px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase shrink-0 bg-red-600 text-white shadow-xs animate-pulse">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+              <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 bg-red-600 text-white shadow-md animate-pulse">
                 LATEST NOTICE
               </span>
 
-              <span className="text-xs font-bold text-slate-200 hover:text-amber-300 truncate transition-colors flex items-center gap-1">
-                <span>{activeNotice.title}</span>
+              <span className="text-sm sm:text-base font-black text-white hover:text-amber-300 truncate transition-colors">
+                {activeNotice.title}
               </span>
             </div>
 
-            <div className="flex items-center gap-1 shrink-0 text-slate-400">
-              <span className="text-[10px] text-amber-400 font-semibold hidden lg:inline">
-                Read Notice ↗
-              </span>
-              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <div className="flex items-center gap-1.5 shrink-0 text-amber-300 font-bold text-xs">
+              <span className="hidden lg:inline">Read Full Notice ↗</span>
+              <ChevronRight className="w-4 h-4 text-amber-400" />
             </div>
           </div>
 
           {/* Right Controls: Direct Official Portal Link & View All Notices */}
-          <div className="flex items-center gap-1.5 shrink-0 justify-end">
+          <div className="flex items-center gap-2 shrink-0 justify-end">
             
             {/* View All Notices Archive */}
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="px-3 py-1.5 bg-blue-950/80 hover:bg-blue-900 text-blue-300 hover:text-white rounded-xl text-[11px] font-bold border border-blue-800/70 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="px-3.5 py-2 bg-blue-950 hover:bg-blue-900 text-blue-200 hover:text-white rounded-xl text-xs font-black border border-blue-700/80 transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
-              <FileText className="w-3.5 h-3.5 text-blue-400" />
+              <FileText className="w-4 h-4 text-blue-300" />
               <span>All Notices ({EMBASSY_NOTICES_LIST.length})</span>
             </button>
 
@@ -148,7 +146,7 @@ export const EmbassyNoticeBanner: React.FC = () => {
               href={OFFICIAL_EMBASSY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-1.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-[11px] font-extrabold transition-all shadow-md shadow-red-950/40 flex items-center gap-1.5 cursor-pointer group"
+              className="px-3.5 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-black transition-all shadow-md flex items-center gap-1.5 cursor-pointer group"
               title="Open Embassy of Korea official portal (np.mofa.go.kr)"
             >
               <span>np.mofa.go.kr</span>

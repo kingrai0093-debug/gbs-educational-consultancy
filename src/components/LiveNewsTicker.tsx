@@ -91,146 +91,67 @@ export const LiveNewsTicker: React.FC<LiveNewsTickerProps> = ({ onOpenBooking })
           </div>
         )}
 
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-1.5 flex items-center justify-between gap-2 sm:gap-3">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
           
-          {/* Live Education Notice Badge (No external URLs/sources shown) */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 z-10 bg-[#060a14] py-0.5 pr-2 rounded-r-xl border-r border-indigo-900/40">
+          {/* Big Live Education Notice Badge */}
+          <div className="flex items-center gap-2 shrink-0 z-10 bg-[#060a14] py-1 pr-3 rounded-xl border-r border-indigo-900/50">
             <div
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-600 to-rose-700 border border-red-500/40 text-white font-black text-[10px] tracking-wider uppercase shadow-sm"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 border border-red-500/40 text-white font-black text-xs sm:text-sm tracking-wider uppercase shadow-md"
             >
-              <span className="w-2 h-2 rounded-full bg-white broadcast-dot-pulse"></span>
-              <GraduationCap className="w-3.5 h-3.5 text-white" />
+              <span className="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+              <GraduationCap className="w-4 h-4 text-white" />
               <span>शिक्षा बुलेटिन</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded bg-red-950/80 text-amber-200 hidden sm:inline font-bold">
-                LATEST
+              <span className="text-[10px] px-2 py-0.5 rounded-md bg-red-950/90 text-amber-300 font-extrabold hidden sm:inline">
+                BREAKING
               </span>
             </div>
           </div>
 
-          {/* CENTER DISPLAY AREA */}
-          <div className="flex-1 overflow-hidden relative min-w-0 h-7 flex items-center">
+          {/* CENTER DISPLAY AREA (Large & Bold) */}
+          <div className="flex-1 overflow-hidden relative min-w-0 h-8 sm:h-9 flex items-center">
             
-            {/* MODE 1: CONTINUOUS GENTLE SLOW MARQUEE */}
-            {tickerMode === "marquee" && (
-              <div
-                className={`flex items-center gap-10 ${
-                  speed === "slow" ? "animate-marquee-smooth" : "animate-marquee-fast"
-                } ${!isPlaying ? "pause-animation" : ""}`}
-              >
-                {marqueeItems.map((item, idx) => (
-                  <button
-                    key={`${item.id}-${idx}`}
-                    onClick={() => setSelectedNews(item)}
-                    type="button"
-                    className="flex items-center gap-2.5 hover:text-amber-300 transition-colors whitespace-nowrap group shrink-0 cursor-pointer text-left"
-                  >
-                    <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-indigo-950 text-indigo-200 border border-indigo-800/60">
-                      {item.timeAgo}
-                    </span>
-
-                    <span className="font-bold text-slate-100 group-hover:text-amber-300 transition-colors text-xs font-nepali">
-                      {item.titleNepali}
-                    </span>
-
-                    <span className="text-slate-400 group-hover:text-slate-200 text-[11px] font-medium hidden lg:inline">
-                      • {item.title}
-                    </span>
-
-                    <span className="text-red-500 text-xs font-bold px-1">•</span>
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* MODE 2: SLOW SLIDE / STEPPING DISPLAY */}
-            {tickerMode === "slide" && (
-              <div className="w-full flex items-center justify-between min-w-0 px-1">
+            {/* CONTINUOUS GENTLE SLOW MARQUEE */}
+            <div
+              className={`flex items-center gap-12 animate-marquee-smooth ${
+                !isPlaying ? "pause-animation" : ""
+              }`}
+            >
+              {marqueeItems.map((item, idx) => (
                 <button
+                  key={`${item.id}-${idx}`}
+                  onClick={() => setSelectedNews(item)}
                   type="button"
-                  onClick={() => setSelectedNews(currentItem)}
-                  className="flex items-center gap-2 min-w-0 flex-1 hover:text-amber-300 transition-colors group cursor-pointer text-left"
+                  className="flex items-center gap-3 hover:text-amber-300 transition-colors whitespace-nowrap group shrink-0 cursor-pointer text-left"
                 >
-                  <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase shrink-0 bg-red-600 text-white border border-red-400/30 shadow-xs">
-                    {currentItem.category}
+                  <span className="px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-black uppercase tracking-wider bg-indigo-950 text-indigo-200 border border-indigo-800/80 shadow-xs">
+                    {item.timeAgo}
                   </span>
 
-                  <span className="font-bold text-white group-hover:text-amber-300 truncate text-xs font-nepali">
-                    {currentItem.titleNepali}
+                  <span className="font-black text-white group-hover:text-amber-300 transition-colors text-sm sm:text-base font-nepali">
+                    {item.titleNepali}
                   </span>
 
-                  <span className="text-[11px] text-slate-400 truncate hidden lg:inline font-medium">
-                    ({currentItem.title})
+                  <span className="text-slate-300 group-hover:text-amber-200 text-xs sm:text-sm font-semibold hidden md:inline">
+                    • {item.title}
                   </span>
+
+                  <span className="text-red-500 text-sm font-bold px-1">•</span>
                 </button>
-
-                <div className="text-[10px] text-slate-400 shrink-0 hidden sm:flex items-center gap-1 pl-2">
-                  <Clock className="w-3 h-3 text-slate-500" />
-                  <span>{currentItem.timeAgo}</span>
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
 
           </div>
 
-          {/* RIGHT TICKER CONTROLS */}
-          <div className="flex items-center gap-1.5 shrink-0 z-10 bg-[#060a14] py-0.5 pl-2 rounded-l-xl border-l border-indigo-950">
-            
-            {/* Speed Toggle (Slow / Normal) */}
-            <button
-              type="button"
-              onClick={() => setSpeed(speed === "slow" ? "normal" : "slow")}
-              title={`Toggle Reading Pace (Current: ${speed === "slow" ? "Relaxed / Slow" : "Normal"})`}
-              className="px-2 py-1 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-amber-300 rounded-lg text-[10px] font-bold border border-slate-800 transition-colors cursor-pointer"
-            >
-              <span>{speed === "slow" ? "🐢 Slow" : "⚡ Fast"}</span>
-            </button>
-
-            {/* Toggle Marquee Tape / Slide Mode */}
-            <button
-              type="button"
-              onClick={() => setTickerMode(tickerMode === "marquee" ? "slide" : "marquee")}
-              title={`Switch ticker mode (Current: ${tickerMode === "marquee" ? "Tape Flow" : "Single Slide"})`}
-              className="px-2 py-1 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-amber-300 rounded-lg text-[10px] font-bold border border-slate-800 flex items-center gap-1 transition-colors cursor-pointer"
-            >
-              <SlidersHorizontal className="w-3 h-3 text-amber-400" />
-              <span className="hidden xl:inline">{tickerMode === "marquee" ? "Marquee" : "Step"}</span>
-            </button>
-
-            {/* Play / Pause Toggle */}
+          {/* CLEAN RIGHT CONTROLS (Only Play/Pause) */}
+          <div className="flex items-center gap-2 shrink-0 z-10 bg-[#060a14] py-1 pl-2.5 rounded-xl border-l border-indigo-950">
             <button
               type="button"
               onClick={() => setIsPlaying(!isPlaying)}
-              title={isPlaying ? "Pause Feed" : "Resume Feed"}
-              className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+              title={isPlaying ? "Pause News Ticker" : "Resume News Ticker"}
+              className="p-1.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer border border-slate-800"
             >
-              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 text-emerald-400" />}
+              {isPlaying ? <Pause className="w-4 h-4 text-slate-300" /> : <Play className="w-4 h-4 text-emerald-400" />}
             </button>
-
-            {/* Step Navigation Controls */}
-            <div className="flex items-center gap-0.5 bg-slate-900/90 border border-slate-800 rounded-lg p-0.5 text-slate-400">
-              <button
-                type="button"
-                onClick={handlePrev}
-                title="Previous Bulletin"
-                className="p-1 hover:text-white hover:bg-slate-800 rounded transition-colors cursor-pointer"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-              </button>
-
-              <span className="text-[10px] px-1 font-mono font-bold text-amber-400 min-w-[28px] text-center">
-                {currentIndex + 1}/{NEWS24_LATEST_FEED.length}
-              </span>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                title="Next Bulletin"
-                className="p-1 hover:text-white hover:bg-slate-800 rounded transition-colors cursor-pointer"
-              >
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
           </div>
 
         </div>
