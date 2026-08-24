@@ -160,11 +160,11 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       const saved = localStorage.getItem(`${STORAGE_KEY}_ticker`);
       if (saved) {
         const parsed: NewsTickerItem[] = JSON.parse(saved);
-        const hasAnjana = parsed.some((t) => t.id === "ticker-anjana-visa");
-        if (!hasAnjana && DEFAULT_NEWS_TICKER[0]) {
-          return [DEFAULT_NEWS_TICKER[0], ...parsed];
-        }
-        return parsed;
+        // Clean out student visa grant congratulations from the news ticker so only real educational & portal news is shown
+        const filtered = parsed.filter(
+          (t) => t.id !== "ticker-anjana-visa" && !t.title?.includes("Anjana Tamang") && !t.title?.toLowerCase().includes("visa grant success")
+        );
+        return filtered.length > 0 ? filtered : DEFAULT_NEWS_TICKER;
       }
       return DEFAULT_NEWS_TICKER;
     } catch {

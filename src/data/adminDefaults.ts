@@ -67,18 +67,6 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
 
 export const DEFAULT_NEWS_TICKER: NewsTickerItem[] = [
   {
-    id: "ticker-anjana-visa",
-    title: "🎉 VISA GRANT SUCCESS: Congratulations Anjana Tamang on receiving South Korea D-4-7 Student Visa (September Intake) Without IELTS!",
-    titleNepali: "🎉 भिसा सफलता: अञ्जना तामाङलाई दक्षिण कोरिया D-4-7 विद्यार्थी भिसा प्राप्त भएकोमा हार्दिक बधाई!",
-    badge: "🎉 VISA GRANTED",
-    detail: "Huge congratulations to Anjana Tamang! Successful D-4-7 visa granted without IELTS through GBS International Educational Consultancy.",
-    link: "#announcements",
-    sourcePortalUrl: "https://nepallive.com/",
-    date: "Aug 2026",
-    isActive: true,
-    urgency: "breaking",
-  },
-  {
     id: "ticker-1",
     title: "🇰🇷 STUDY IN SOUTH KOREA – 2026 INTAKE: December D-4 & March D-2 Applications Open Now!",
     titleNepali: "🇰🇷 दक्षिण कोरिया अध्ययन २०२६: डिसेम्बर D-4 तथा मार्च D-2 सत्रका लागि आवेदन खुला!",
