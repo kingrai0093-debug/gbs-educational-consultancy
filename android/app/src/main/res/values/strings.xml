@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GBS Educational Consultancy</string>
+    <string name="web_url">https://kingrai0093-debug.github.io/gbs-educational-consultancy/</string>
+    <string name="no_internet_title">No Internet Connection</string>
+    <string name="no_internet_msg">Please check your network settings and try again.</string>
+    <string name="retry">Retry</string>
+</resources>
