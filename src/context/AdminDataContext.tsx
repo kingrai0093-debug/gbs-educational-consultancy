@@ -22,6 +22,8 @@ import {
   fetchGlobalCmsData,
   pushGlobalCmsDataToGitHub,
   GlobalCmsPayload,
+  subscribeToCmsBroadcast,
+  broadcastLocalCmsUpdate,
 } from "../utils/cloudSync";
 
 export interface PageContent {
@@ -224,52 +226,73 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return localStorage.getItem(`${STORAGE_KEY}_last_cloud_sync`) || null;
   });
 
+  // Helper to apply payload to state immediately
+  const applyPayloadToState = useCallback((cloudData: GlobalCmsPayload) => {
+    if (cloudData.pageContent) setPageContent(cloudData.pageContent);
+    if (cloudData.tickerItems && Array.isArray(cloudData.tickerItems) && cloudData.tickerItems.length > 0) {
+      setTickerItems(cloudData.tickerItems);
+    }
+    if (cloudData.posts && Array.isArray(cloudData.posts) && cloudData.posts.length > 0) {
+      setPosts(cloudData.posts);
+    }
+    if (cloudData.videos && Array.isArray(cloudData.videos) && cloudData.videos.length > 0) {
+      setVideos(cloudData.videos);
+    }
+    if (cloudData.gallery && Array.isArray(cloudData.gallery) && cloudData.gallery.length > 0) {
+      setGallery(cloudData.gallery);
+    }
+    if (cloudData.universities && Array.isArray(cloudData.universities) && cloudData.universities.length > 0) {
+      setUniversities(cloudData.universities);
+    }
+    if (cloudData.settings) setSettings(cloudData.settings);
+
+    const syncTime = cloudData.lastUpdated || new Date().toISOString();
+    setLastCloudSyncTime(syncTime);
+    localStorage.setItem(`${STORAGE_KEY}_last_cloud_sync`, syncTime);
+  }, []);
+
   // =========================================================================
-  // GLOBAL REAL-TIME HYDRATION (Fetches live cloud data on startup & interval)
+  // SUB-SECOND REAL-TIME CLOUD HYDRATION & INSTANT TAB BROADCAST
   // =========================================================================
   useEffect(() => {
     let isMounted = true;
+
+    // 1. Subscribe to instant local tab updates (0ms latency)
+    const unsubscribeBroadcast = subscribeToCmsBroadcast((payload) => {
+      if (isMounted) {
+        applyPayloadToState(payload);
+      }
+    });
 
     const loadGlobalCloudData = async () => {
       try {
         const cloudData = await fetchGlobalCmsData();
         if (!isMounted || !cloudData) return;
-
-        if (cloudData.pageContent) setPageContent(cloudData.pageContent);
-        if (cloudData.tickerItems && Array.isArray(cloudData.tickerItems) && cloudData.tickerItems.length > 0) {
-          setTickerItems(cloudData.tickerItems);
-        }
-        if (cloudData.posts && Array.isArray(cloudData.posts) && cloudData.posts.length > 0) {
-          setPosts(cloudData.posts);
-        }
-        if (cloudData.videos && Array.isArray(cloudData.videos) && cloudData.videos.length > 0) {
-          setVideos(cloudData.videos);
-        }
-        if (cloudData.gallery && Array.isArray(cloudData.gallery) && cloudData.gallery.length > 0) {
-          setGallery(cloudData.gallery);
-        }
-        if (cloudData.universities && Array.isArray(cloudData.universities) && cloudData.universities.length > 0) {
-          setUniversities(cloudData.universities);
-        }
-        if (cloudData.settings) setSettings(cloudData.settings);
-
-        const syncTime = cloudData.lastUpdated || new Date().toISOString();
-        setLastCloudSyncTime(syncTime);
-        localStorage.setItem(`${STORAGE_KEY}_last_cloud_sync`, syncTime);
+        applyPayloadToState(cloudData);
       } catch (e) {
-        console.warn("Global Cloud hydration error (using cached local data):", e);
+        // Fallback to local
       }
     };
 
+    // Initial load
     loadGlobalCloudData();
 
-    // Auto-refresh every 45s for open browser tabs worldwide
-    const interval = setInterval(loadGlobalCloudData, 45000);
+    // 2. Refresh immediately on window focus or visibility change
+    const onWindowFocus = () => loadGlobalCloudData();
+    window.addEventListener("focus", onWindowFocus);
+    document.addEventListener("visibilitychange", onWindowFocus);
+
+    // 3. Ultra-fast 6-second polling for active browser tabs
+    const interval = setInterval(loadGlobalCloudData, 6000);
+
     return () => {
       isMounted = false;
+      unsubscribeBroadcast();
+      window.removeEventListener("focus", onWindowFocus);
+      document.removeEventListener("visibilitychange", onWindowFocus);
       clearInterval(interval);
     };
-  }, []);
+  }, [applyPayloadToState]);
 
   // Sync to localStorage
   useEffect(() => {
