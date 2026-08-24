@@ -115,6 +115,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button onClick={() => scrollToSection("visa-guide")} className="hover:text-[#25479D] transition cursor-pointer">
               Visa Process
             </button>
+            <button onClick={() => scrollToSection("counselors")} className="hover:text-[#25479D] transition cursor-pointer font-bold text-amber-700">
+              Our Counselors 👥
+            </button>
             <button onClick={() => scrollToSection("announcements")} className="hover:text-[#25479D] transition cursor-pointer text-[#ED2D2A] flex items-center gap-1 font-bold">
               <span>Visa Grants 🎓</span>
             </button>
@@ -161,6 +164,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="space-y-1 text-sm font-semibold text-gray-700">
             <button onClick={() => scrollToSection("universities")} className="w-full text-left px-3 py-3 rounded hover:bg-gray-50 border-b border-gray-100 cursor-pointer">
               Universities
+            </button>
+            <button onClick={() => scrollToSection("counselors")} className="w-full text-left px-3 py-3 rounded hover:bg-gray-50 border-b border-gray-100 cursor-pointer font-bold text-amber-700">
+              Meet Our Counselors & Directors 👥
             </button>
             <button onClick={() => scrollToSection("visa-guide")} className="w-full text-left px-3 py-3 rounded hover:bg-gray-50 border-b border-gray-100 cursor-pointer">
               Visa Process

@@ -9,6 +9,7 @@ import { CostScholarshipCalculator } from "./components/CostScholarshipCalculato
 import { AiCounselorWidget } from "./components/AiCounselorWidget";
 import { VisaProcessGuide } from "./components/VisaProcessGuide";
 import { InteractiveVisaChecklist } from "./components/InteractiveVisaChecklist";
+import { CounselorsDirectorySection } from "./components/CounselorsDirectorySection";
 import { TopikQuizSection } from "./components/TopikQuizSection";
 import { MediaAndNewsSection } from "./components/MediaAndNewsSection";
 import { ContactSection } from "./components/ContactSection";
@@ -101,7 +102,12 @@ function MainAppContent() {
         {/* 6. Interactive Embassy Document Checklist */}
         <InteractiveVisaChecklist />
 
-        {/* 7. TOPIK Korean Language Quiz Hub */}
+        {/* 7. Official Counselors & Directors Team Directory */}
+        <CounselorsDirectorySection
+          onOpenBooking={() => handleOpenBooking("")}
+        />
+
+        {/* 8. TOPIK Korean Language & IELTS 1,000 Questions Online Testing Hub */}
         <TopikQuizSection
           onOpenBooking={() => handleOpenBooking("")}
         />
