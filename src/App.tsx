@@ -16,6 +16,7 @@ import { ContactSection } from "./components/ContactSection";
 import { Footer } from "./components/Footer";
 import { BookingModal } from "./components/BookingModal";
 import { AdminDashboardModal } from "./components/admin/AdminDashboardModal";
+import { LiveSupportChatWidget } from "./components/LiveSupportChatWidget";
 import { TabletModeSwitcher } from "./components/TabletModeSwitcher";
 import { useDeviceViewMode } from "./hooks/useDeviceViewMode";
 import { University } from "./types";
@@ -146,6 +147,9 @@ function MainAppContent() {
         isOpen={adminModalOpen}
         onClose={() => setAdminModalOpen(false)}
       />
+
+      {/* Live Support 24/7 Chat Widget */}
+      <LiveSupportChatWidget onOpenBooking={handleOpenBooking} />
 
       {/* Floating Action Button (Sticky Quick Hotline, Tablet Toggle, Admin CMS & WhatsApp Bar) */}
       <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2.5">
