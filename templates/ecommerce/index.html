@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Template</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Header -->
+    <header class="border-b">
+        <div class="bg-black text-white text-xs text-center py-2">
+            Free shipping on all orders over $50!
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="font-bold text-2xl tracking-tight">KICKS<span class="text-indigo-600">.</span></div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="font-medium hover:text-indigo-600">New Arrivals</a>
+                <a href="#" class="font-medium hover:text-indigo-600">Men</a>
+                <a href="#" class="font-medium hover:text-indigo-600">Women</a>
+                <a href="#" class="font-medium hover:text-indigo-600">Sale</a>
+            </nav>
+            <div class="flex space-x-4 text-xl">
+                <a href="#" class="hover:text-indigo-600"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="hover:text-indigo-600"><i class="fa-regular fa-user"></i></a>
+                <a href="#" class="hover:text-indigo-600 relative">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">2</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <div class="bg-gray-100 py-20 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4">STEP INTO <br> THE FUTURE.</h1>
+                <p class="text-gray-600 text-lg mb-8 max-w-md">Discover the latest collection of premium sneakers designed for comfort and street style.</p>
+                <a href="#" class="bg-black text-white px-8 py-4 font-bold uppercase tracking-wide hover:bg-gray-800 transition">Shop Collection</a>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <!-- Placeholder for shoe image -->
+                <div class="w-80 h-80 bg-gray-300 rounded-full shadow-2xl flex items-center justify-center text-gray-500 font-bold rotate-12">
+                    [ Product Image ]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trending -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold mb-8">Trending Now</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Item 1 -->
+            <div class="group cursor-pointer">
+                <div class="bg-gray-100 aspect-square mb-4 overflow-hidden rounded-md relative">
+                    <div class="absolute top-2 right-2 bg-white p-2 rounded-full shadow-sm hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></div>
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 group-hover:scale-110 transition duration-500">Img</div>
+                </div>
+                <h3 class="font-medium text-gray-900">Air Max Runner</h3>
+                <p class="text-gray-500">Men's Shoes</p>
+                <p class="font-bold mt-1">$120.00</p>
+            </div>
+            <!-- Item 2 -->
+            <div class="group cursor-pointer">
+                <div class="bg-gray-100 aspect-square mb-4 overflow-hidden rounded-md relative">
+                    <div class="absolute top-2 right-2 bg-white p-2 rounded-full shadow-sm hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></div>
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 group-hover:scale-110 transition duration-500">Img</div>
+                </div>
+                <h3 class="font-medium text-gray-900">Urban Classic High</h3>
+                <p class="text-gray-500">Unisex</p>
+                <p class="font-bold mt-1">$95.00</p>
+            </div>
+            <!-- Item 3 -->
+            <div class="group cursor-pointer">
+                <div class="bg-gray-100 aspect-square mb-4 overflow-hidden rounded-md relative">
+                    <div class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 uppercase font-bold">New</div>
+                    <div class="absolute top-2 right-2 bg-white p-2 rounded-full shadow-sm hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></div>
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 group-hover:scale-110 transition duration-500">Img</div>
+                </div>
+                <h3 class="font-medium text-gray-900">Velocity Pro</h3>
+                <p class="text-gray-500">Running</p>
+                <p class="font-bold mt-1">$150.00</p>
+            </div>
+            <!-- Item 4 -->
+            <div class="group cursor-pointer">
+                <div class="bg-gray-100 aspect-square mb-4 overflow-hidden rounded-md relative">
+                    <div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 uppercase font-bold">Sale</div>
+                    <div class="absolute top-2 right-2 bg-white p-2 rounded-full shadow-sm hover:text-red-500 transition"><i class="fa-regular fa-heart"></i></div>
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 group-hover:scale-110 transition duration-500">Img</div>
+                </div>
+                <h3 class="font-medium text-gray-900">Street Vibe Low</h3>
+                <p class="text-gray-500">Women's Shoes</p>
+                <div class="flex items-center space-x-2 mt-1">
+                    <p class="font-bold text-red-500">$75.00</p>
+                    <p class="text-gray-400 line-through text-sm">$100.00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

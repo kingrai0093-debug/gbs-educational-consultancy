@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Template</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+        body { font-family: 'Lato', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#faf8f5] text-gray-800">
+    <!-- Navbar -->
+    <nav class="absolute w-full z-10 py-6 px-8 flex justify-between items-center text-white">
+        <div class="text-2xl font-bold uppercase tracking-widest serif">Osteria</div>
+        <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-bold">
+            <a href="#" class="hover:text-amber-400 transition">Menu</a>
+            <a href="#" class="hover:text-amber-400 transition">Our Story</a>
+            <a href="#" class="hover:text-amber-400 transition">Location</a>
+        </div>
+        <a href="#" class="border border-white px-6 py-2 hover:bg-white hover:text-black transition uppercase text-sm tracking-widest font-bold">Book Table</a>
+    </nav>
+
+    <!-- Hero -->
+    <header class="relative h-screen flex items-center justify-center text-center bg-gray-900">
+        <!-- Placeholder for background image -->
+        <div class="absolute inset-0 opacity-40 flex items-center justify-center text-white text-xl">
+            [ High Quality Restaurant Interior Image ]
+        </div>
+        <div class="relative z-10 text-white px-4">
+            <p class="uppercase tracking-[0.3em] text-amber-400 font-bold mb-4">Fine Dining Experience</p>
+            <h1 class="text-6xl md:text-8xl mb-6">Taste the Tradition.</h1>
+            <p class="max-w-xl mx-auto text-lg text-gray-300 mb-8">Authentic Italian cuisine crafted with passion and the finest seasonal ingredients.</p>
+            <a href="#" class="bg-amber-500 text-black px-8 py-4 uppercase tracking-widest font-bold hover:bg-amber-400 transition">View Menu</a>
+        </div>
+    </header>
+
+    <!-- Highlight Menu -->
+    <section class="py-24 px-4 max-w-5xl mx-auto text-center">
+        <p class="uppercase tracking-widest text-amber-600 font-bold mb-2">Our Specialties</p>
+        <h2 class="text-4xl md:text-5xl mb-16">Signature Dishes</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
+            <div class="flex gap-4 border-b border-gray-200 pb-6">
+                <div class="flex-1">
+                    <h3 class="text-2xl mb-2 flex justify-between"><span>Truffle Risotto</span> <span class="text-amber-600">$28</span></h3>
+                    <p class="text-gray-500 text-sm">Arborio rice, wild mushrooms, black truffle shavings, parmesan</p>
+                </div>
+            </div>
+            <div class="flex gap-4 border-b border-gray-200 pb-6">
+                <div class="flex-1">
+                    <h3 class="text-2xl mb-2 flex justify-between"><span>Osso Buco</span> <span class="text-amber-600">$36</span></h3>
+                    <p class="text-gray-500 text-sm">Braised veal shank, saffron risotto, gremolata</p>
+                </div>
+            </div>
+            <div class="flex gap-4 border-b border-gray-200 pb-6">
+                <div class="flex-1">
+                    <h3 class="text-2xl mb-2 flex justify-between"><span>Lobster Linguine</span> <span class="text-amber-600">$32</span></h3>
+                    <p class="text-gray-500 text-sm">Fresh pasta, half lobster, cherry tomatoes, white wine sauce</p>
+                </div>
+            </div>
+            <div class="flex gap-4 border-b border-gray-200 pb-6">
+                <div class="flex-1">
+                    <h3 class="text-2xl mb-2 flex justify-between"><span>Tiramisu Classico</span> <span class="text-amber-600">$12</span></h3>
+                    <p class="text-gray-500 text-sm">Espresso-soaked ladyfingers, mascarpone, cocoa powder</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-12">
+            <a href="#" class="inline-block border-b-2 border-black pb-1 uppercase tracking-widest font-bold hover:text-amber-600 hover:border-amber-600 transition">See Full Menu</a>
+        </div>
+    </section>
+</body>
+</html>

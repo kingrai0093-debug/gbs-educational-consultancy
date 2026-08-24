@@ -1,0 +1,6 @@
+{
+  "name": "GBS Educational Consultancy",
+  "description": "Premier study abroad counseling in Kathmandu, Nepal specializing in South Korea undergraduate & postgraduate admissions, scholarships, visa processing, and TOPIK prep.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

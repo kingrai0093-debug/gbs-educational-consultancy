@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" className="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GBS Educational Consultancy | Study in South Korea 🇰🇷</title>
+    <link rel="icon" type="image/jpeg" href="/web-log0.jpg" />
+    <meta name="description" content="GBS Educational Consultancy (GBS International) in Bagbazar, Kathmandu Nepal. Specializing in South Korea university admissions, scholarships, D-2 / D-4 visas and language classes." />
+    <meta property="og:title" content="GBS Educational Consultancy | Study in South Korea 🇰🇷" />
+    <meta property="og:description" content="Premier Educational Consultancy in Kathmandu Nepal for South Korea Undergraduate & Postgraduate degrees. 30%-100% Scholarships, Embassy documentation and visa guidance." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body className="antialiased text-slate-900 bg-white selection:bg-red-600 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <audio id="startupAudio" src="/voice1.mpeg" autoplay preload="auto"></audio>
+    <script>
+      const bgAudio = document.getElementById('startupAudio');
+      bgAudio.volume = 1.0; // Auto full volume
+
+      const validGestures = ['click', 'mousedown', 'keydown', 'touchstart', 'pointerdown'];
+
+      const forcePlay = () => {
+        const promise = bgAudio.play();
+        if (promise !== undefined) {
+          promise.catch(e => {
+            console.warn("Browser blocked autoplay. Waiting for valid user gesture...");
+            
+            const startOnInteract = () => {
+              const playAttempt = bgAudio.play();
+              if (playAttempt !== undefined) {
+                playAttempt.then(() => {
+                  // Only remove listeners if play actually succeeded
+                  validGestures.forEach(evt => document.removeEventListener(evt, startOnInteract));
+                }).catch(err => {
+                  console.warn("Gesture ignored by browser, trying again on next gesture...");
+                });
+              }
+            };
+            
+            validGestures.forEach(evt => {
+              document.addEventListener(evt, startOnInteract);
+            });
+          });
+        }
+      };
+      
+      window.addEventListener('DOMContentLoaded', forcePlay);
+      forcePlay();
+    </script>
+  </body>
+</html>
+

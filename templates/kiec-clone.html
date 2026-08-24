@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIEC Clone Template</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kiecBlue: '#25479D',
+                        kiecRed: '#ED2D2A',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800">
+
+    <!-- Top Bar -->
+    <div class="bg-kiecBlue text-white text-xs md:text-sm py-2">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-6">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-envelope"></i> info@example.com</span>
+                <span class="hidden md:flex items-center gap-2"><i class="fa-solid fa-phone"></i> +977 1 4222222</span>
+            </div>
+            <div class="flex space-x-4 font-medium">
+                <a href="#" class="hover:text-gray-300">Student Login</a>
+                <span>|</span>
+                <a href="#" class="hover:text-gray-300">Partner Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo Area -->
+            <div class="text-3xl font-extrabold text-kiecBlue tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-kiecRed"></i>
+                EDU<span class="text-kiecRed">CONSULT</span>
+            </div>
+            
+            <!-- Desktop Links -->
+            <div class="hidden lg:flex space-x-8 items-center font-semibold text-gray-700 text-sm">
+                <a href="#" class="text-kiecBlue border-b-2 border-kiecRed pb-1">Home</a>
+                <a href="#" class="hover:text-kiecBlue transition">About Us</a>
+                <a href="#" class="hover:text-kiecBlue transition">Study Abroad <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></a>
+                <a href="#" class="hover:text-kiecBlue transition">Test Prep <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i></a>
+                <a href="#" class="hover:text-kiecBlue transition">Services</a>
+                <a href="#" class="hover:text-kiecBlue transition">Contact</a>
+            </div>
+
+            <!-- CTA -->
+            <div class="hidden lg:block">
+                <a href="#" class="bg-kiecRed hover:bg-red-700 text-white px-6 py-2.5 rounded font-bold shadow-lg shadow-red-500/30 transition-transform hover:-translate-y-0.5 inline-block">Apply Now</a>
+            </div>
+            
+            <!-- Mobile Toggle -->
+            <div class="lg:hidden text-2xl text-kiecBlue cursor-pointer">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center py-12 md:py-20">
+            <div class="md:w-1/2 z-10 space-y-6">
+                <div class="inline-block bg-blue-50 text-kiecBlue font-bold px-3 py-1 rounded border border-blue-100 text-sm mb-2">
+                    Your Gateway to Global Education
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-[1.15]">
+                    Study Abroad With <br> <span class="text-kiecBlue">Confidence.</span>
+                </h1>
+                <p class="text-gray-600 text-lg max-w-lg">
+                    Expert guidance for Australia, USA, UK, Canada and New Zealand. Join thousands of successful students who trusted us with their future.
+                </p>
+                <div class="flex gap-4 pt-2">
+                    <a href="#" class="bg-kiecBlue hover:bg-blue-900 text-white px-8 py-3.5 rounded font-bold transition-all shadow-lg shadow-blue-900/20">Book Counseling</a>
+                    <a href="#" class="bg-white border-2 border-kiecBlue text-kiecBlue hover:bg-blue-50 px-8 py-3.5 rounded font-bold transition-all">Find Courses</a>
+                </div>
+                
+                <div class="flex items-center gap-6 pt-6">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold text-kiecRed">15+</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Years Exp.</span>
+                    </div>
+                    <div class="h-10 w-px bg-gray-200"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold text-kiecRed">50K+</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Success Visas</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:w-1/2 mt-10 md:mt-0 relative">
+                <!-- Decorative background elements -->
+                <div class="absolute top-1/2 right-0 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl -translate-y-1/2 -z-10"></div>
+                <div class="absolute -bottom-10 left-10 w-72 h-72 bg-red-400/20 rounded-full blur-3xl -z-10"></div>
+                
+                <!-- Main Image Placeholder -->
+                <div class="bg-gray-200 w-full aspect-square md:aspect-[4/3] rounded-2xl shadow-2xl border-8 border-white overflow-hidden relative">
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-xl">
+                        [ Happy Student Image ]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Study Destinations Grid -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-kiecBlue mb-4">Top Study Destinations</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Explore top-ranked universities in the world's most popular study destinations.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Country Card 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Australia Image</div>
+                        <div class="absolute inset-0 bg-kiecBlue/20 group-hover:bg-transparent transition"></div>
+                    </div>
+                    <div class="p-6 text-center border-t-4 border-transparent group-hover:border-kiecRed transition-all">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Study in Australia</h3>
+                        <p class="text-sm text-gray-500 mb-4">Post Study Work Visa, PR Pathway</p>
+                        <span class="text-kiecBlue font-semibold text-sm group-hover:text-kiecRed transition">Explore <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></span>
+                    </div>
+                </div>
+                
+                <!-- Country Card 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">USA Image</div>
+                        <div class="absolute inset-0 bg-kiecBlue/20 group-hover:bg-transparent transition"></div>
+                    </div>
+                    <div class="p-6 text-center border-t-4 border-transparent group-hover:border-kiecRed transition-all">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Study in USA</h3>
+                        <p class="text-sm text-gray-500 mb-4">STEM Programs, Scholarships</p>
+                        <span class="text-kiecBlue font-semibold text-sm group-hover:text-kiecRed transition">Explore <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></span>
+                    </div>
+                </div>
+
+                <!-- Country Card 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">UK Image</div>
+                        <div class="absolute inset-0 bg-kiecBlue/20 group-hover:bg-transparent transition"></div>
+                    </div>
+                    <div class="p-6 text-center border-t-4 border-transparent group-hover:border-kiecRed transition-all">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Study in UK</h3>
+                        <p class="text-sm text-gray-500 mb-4">1-Year Masters, 2-Year PSW</p>
+                        <span class="text-kiecBlue font-semibold text-sm group-hover:text-kiecRed transition">Explore <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></span>
+                    </div>
+                </div>
+
+                <!-- Country Card 4 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer border border-gray-100">
+                    <div class="h-48 bg-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Canada Image</div>
+                        <div class="absolute inset-0 bg-kiecBlue/20 group-hover:bg-transparent transition"></div>
+                    </div>
+                    <div class="p-6 text-center border-t-4 border-transparent group-hover:border-kiecRed transition-all">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Study in Canada</h3>
+                        <p class="text-sm text-gray-500 mb-4">Affordable, High Livability</p>
+                        <span class="text-kiecBlue font-semibold text-sm group-hover:text-kiecRed transition">Explore <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Prep Strip -->
+    <section class="py-16 bg-kiecBlue text-white">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="mb-8 md:mb-0 md:w-1/3">
+                <h2 class="text-3xl font-extrabold mb-3">Test Preparation</h2>
+                <p class="text-blue-100">High-scoring prep classes for standardized tests required by foreign universities.</p>
+            </div>
+            <div class="flex gap-4 flex-wrap md:w-2/3 justify-end">
+                <div class="bg-white/10 border border-white/20 rounded-lg px-8 py-6 text-center hover:bg-white hover:text-kiecBlue transition cursor-pointer">
+                    <h3 class="font-bold text-xl">IELTS</h3>
+                </div>
+                <div class="bg-white/10 border border-white/20 rounded-lg px-8 py-6 text-center hover:bg-white hover:text-kiecBlue transition cursor-pointer">
+                    <h3 class="font-bold text-xl">PTE</h3>
+                </div>
+                <div class="bg-white/10 border border-white/20 rounded-lg px-8 py-6 text-center hover:bg-white hover:text-kiecBlue transition cursor-pointer">
+                    <h3 class="font-bold text-xl">TOEFL</h3>
+                </div>
+                <div class="bg-white/10 border border-white/20 rounded-lg px-8 py-6 text-center hover:bg-white hover:text-kiecBlue transition cursor-pointer">
+                    <h3 class="font-bold text-xl">SAT</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12 text-center text-sm">
+        <p>&copy; 2026 EduConsult (KIEC Style Template). All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

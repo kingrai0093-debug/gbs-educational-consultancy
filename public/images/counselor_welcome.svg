@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 1200" width="100%" height="100%">
+  <defs>
+    <!-- Skin Tone Gradients matching real photo -->
+    <linearGradient id="skinBase" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#dfa178" />
+      <stop offset="45%" stop-color="#c5865d" />
+      <stop offset="85%" stop-color="#ab6941" />
+      <stop offset="100%" stop-color="#8b4f2c" />
+    </linearGradient>
+
+    <linearGradient id="skinHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#edd0ba" />
+      <stop offset="60%" stop-color="#d69b73" />
+      <stop offset="100%" stop-color="#ba7a50" />
+    </linearGradient>
+
+    <linearGradient id="skinShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a8653e" />
+      <stop offset="100%" stop-color="#6e371a" />
+    </linearGradient>
+
+    <!-- Black Tailored Blazer Gradients -->
+    <linearGradient id="blazerBlack" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#24272c" />
+      <stop offset="25%" stop-color="#181a1e" />
+      <stop offset="65%" stop-color="#0f1013" />
+      <stop offset="100%" stop-color="#060708" />
+    </linearGradient>
+
+    <linearGradient id="blazerSheen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#32363d" />
+      <stop offset="50%" stop-color="#1f2227" />
+      <stop offset="100%" stop-color="#121316" />
+    </linearGradient>
+
+    <!-- Black Polo Shirt Gradients -->
+    <linearGradient id="poloBlack" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c1e22" />
+      <stop offset="50%" stop-color="#121316" />
+      <stop offset="100%" stop-color="#08090a" />
+    </linearGradient>
+
+    <!-- Beige / Khaki Chinos Gradients matching photo -->
+    <linearGradient id="khakiFabric" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d9c3a3" />
+      <stop offset="35%" stop-color="#cbb18e" />
+      <stop offset="70%" stop-color="#b89a74" />
+      <stop offset="100%" stop-color="#9d7f59" />
+    </linearGradient>
+
+    <linearGradient id="khakiShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ab8b64" />
+      <stop offset="100%" stop-color="#735738" />
+    </linearGradient>
+
+    <!-- Rich Brown Leather Shoes -->
+    <linearGradient id="leatherUpper" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4d3020" />
+      <stop offset="40%" stop-color="#3a2215" />
+      <stop offset="85%" stop-color="#24140b" />
+      <stop offset="100%" stop-color="#120904" />
+    </linearGradient>
+
+    <linearGradient id="rubberSole" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cca77d" />
+      <stop offset="60%" stop-color="#b08b61" />
+      <stop offset="100%" stop-color="#8c6a44" />
+    </linearGradient>
+
+    <!-- Rim Lighting & Drop Shadows -->
+    <filter id="portraitDropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#000000" flood-opacity="0.8" />
+    </filter>
+  </defs>
+
+  <!-- ========================================================= -->
+  <!-- 100% PURE TRANSPARENT CUTOUT - ER. DIPENDRA SHARMA       -->
+  <!-- ========================================================= -->
+  <g id="dipendra-sharma-figure" filter="url(#portraitDropShadow)">
+    
+    <!-- 1. CASUAL LEATHER SHOES & SNEAKERS (Deep Chestnut Brown with Tan Gum Sole) -->
+    <!-- Left Foot (Turned outward naturally) -->
+    <g id="left-foot">
+      <path d="M 152 1085 C 160 1060, 200 1045, 238 1055 C 265 1062, 274 1080, 272 1105 C 270 1120, 215 1128, 160 1122 C 145 1115, 145 1100, 152 1085 Z" fill="url(#leatherUpper)" />
+      <!-- Shoe Laces -->
+      <path d="M 195 1058 L 222 1072 M 190 1068 L 217 1082 M 186 1078 L 213 1092" stroke="#1f120a" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Gum Sole -->
+      <path d="M 148 1105 C 185 1118, 240 1118, 274 1108 C 276 1116, 270 1126, 262 1130 C 225 1135, 172 1132, 150 1122 C 145 1118, 145 1110, 148 1105 Z" fill="url(#rubberSole)" />
+      <!-- Sole bottom grip line -->
+      <path d="M 152 1122 C 185 1132, 235 1132, 264 1124" stroke="#684f32" stroke-width="1.8" fill="none" />
+    </g>
+
+    <!-- Right Foot -->
+    <g id="right-foot">
+      <path d="M 320 1075 C 322 1055, 355 1055, 376 1072 C 385 1090, 382 1108, 375 1122 C 348 1128, 328 1128, 314 1120 C 308 1105, 312 1088, 320 1075 Z" fill="url(#leatherUpper)" />
+      <!-- Shoe Laces -->
+      <path d="M 334 1068 L 362 1068 M 334 1078 L 362 1078 M 334 1088 L 362 1088" stroke="#1f120a" stroke-width="2.5" stroke-linecap="round" />
+      <!-- Gum Sole -->
+      <path d="M 312 1116 C 330 1126, 365 1126, 380 1116 C 382 1122, 378 1132, 370 1135 C 350 1138, 325 1138, 312 1132 C 308 1126, 308 1120, 312 1116 Z" fill="url(#rubberSole)" />
+      <!-- Sole bottom grip line -->
+      <path d="M 314 1130 C 332 1136, 362 1136, 372 1128" stroke="#684f32" stroke-width="1.8" fill="none" />
+    </g>
+
+    <!-- 2. BEIGE / KHAKI CHINOS TROUSERS (Slim-Fit with Realistic Wrinkles & Creases) -->
+    <g id="khaki-trousers">
+      <!-- Left Leg -->
+      <path d="M 188 610 C 176 670, 168 810, 182 920 C 190 985, 196 1045, 202 1075 L 260 1075 C 265 1025, 258 935, 252 840 C 248 775, 256 680, 262 615 Z" fill="url(#khakiFabric)" />
+      <!-- Right Leg -->
+      <path d="M 276 615 C 280 690, 285 810, 292 910 C 300 980, 308 1045, 320 1075 L 378 1075 C 374 1020, 368 930, 362 840 C 356 750, 350 670, 345 610 Z" fill="url(#khakiFabric)" />
+      
+      <!-- Crotch & Waist Drape -->
+      <path d="M 180 590 C 230 602, 305 602, 352 590 L 356 630 C 314 652, 222 652, 176 630 Z" fill="url(#khakiFabric)" />
+
+      <!-- Natural Fabric Creases & Shadows matching the exact photograph -->
+      <!-- Left Leg Wrinkles -->
+      <path d="M 186 720 C 205 740, 232 732, 248 725" stroke="url(#khakiShadow)" stroke-width="3" fill="none" opacity="0.65" />
+      <path d="M 194 775 C 212 792, 235 785, 250 778" stroke="url(#khakiShadow)" stroke-width="3.5" fill="none" opacity="0.7" />
+      <path d="M 196 840 C 215 860, 238 852, 252 845" stroke="url(#khakiShadow)" stroke-width="3" fill="none" opacity="0.6" />
+      <path d="M 200 930 C 218 948, 242 940, 256 932" stroke="url(#khakiShadow)" stroke-width="3" fill="none" opacity="0.65" />
+      <path d="M 202 1010 C 220 1025, 245 1020, 258 1012" stroke="url(#khakiShadow)" stroke-width="2.5" fill="none" opacity="0.6" />
+
+      <!-- Right Leg Wrinkles -->
+      <path d="M 292 730 C 314 745, 342 738, 358 728" stroke="url(#khakiShadow)" stroke-width="3" fill="none" opacity="0.65" />
+      <path d="M 298 785 C 320 800, 348 792, 362 782" stroke="url(#khakiShadow)" stroke-width="3.5" fill="none" opacity="0.7" />
+      <path d="M 300 850 C 322 865, 350 858, 364 848" stroke="url(#khakiShadow)" stroke-width="3" fill="none" opacity="0.6" />
+      <path d="M 308 940 C 328 955, 355 948, 368 938" stroke="url(#khakiShadow)" stroke-width="3" fill="none" opacity="0.65" />
+      <path d="M 314 1015 C 332 1028, 358 1022, 370 1015" stroke="url(#khakiShadow)" stroke-width="2.5" fill="none" opacity="0.6" />
+
+      <!-- Inseam Shadow -->
+      <path d="M 262 630 C 267 710, 272 820, 278 910" stroke="#5a3e20" stroke-width="2.5" fill="none" opacity="0.75" />
+    </g>
+
+    <!-- 3. LEATHER BELT WITH SILVER RECTANGULAR BUCKLE -->
+    <g id="leather-belt">
+      <path d="M 202 585 L 332 585 L 332 610 L 202 610 Z" fill="#0d0e12" />
+      <!-- Silver Buckle Frame -->
+      <rect x="252" y="582" width="38" height="28" rx="4" fill="none" stroke="#d4d4d8" stroke-width="3.5" />
+      <rect x="256" y="586" width="30" height="20" rx="2" fill="#18191d" />
+      <!-- Buckle Pin -->
+      <line x1="270" y1="582" x2="270" y2="612" stroke="#f4f4f5" stroke-width="3" stroke-linecap="round" />
+    </g>
+
+    <!-- 4. BLACK POLO SHIRT (Worn Fitted under Blazer) -->
+    <g id="polo-shirt">
+      <path d="M 208 360 C 210 445, 204 535, 204 590 L 330 590 C 330 535, 324 445, 326 360 Z" fill="url(#poloBlack)" />
+      <!-- Button Placket -->
+      <path d="M 260 340 L 260 460 L 276 460 L 276 340 Z" fill="#090a0c" />
+      <circle cx="268" cy="365" r="3.5" fill="#2d3036" stroke="#0e1013" stroke-width="1" />
+      <circle cx="268" cy="398" r="3.5" fill="#2d3036" stroke="#0e1013" stroke-width="1" />
+      <circle cx="268" cy="432" r="3.5" fill="#2d3036" stroke="#0e1013" stroke-width="1" />
+      
+      <!-- Open Collar -->
+      <path d="M 230 325 L 264 360 L 256 385 L 214 345 Z" fill="#181a1e" />
+      <path d="M 304 325 L 270 360 L 278 385 L 320 345 Z" fill="#181a1e" />
+    </g>
+
+    <!-- 5. HANDS & WRISTWATCH (Matching Photo) -->
+    <!-- Right Arm Hand (Left in viewer's angle) -->
+    <g id="hand-left">
+      <path d="M 138 610 C 132 630, 136 670, 152 682 C 162 688, 170 670, 166 642 C 164 620, 154 598, 144 598 Z" fill="url(#skinBase)" />
+      <path d="M 146 630 C 150 652, 156 668, 162 674" stroke="url(#skinShadow)" stroke-width="1.8" fill="none" />
+    </g>
+
+    <!-- Left Arm Hand & Professional Wristwatch (Right in viewer's angle) -->
+    <g id="hand-right">
+      <path d="M 395 610 C 402 630, 396 670, 380 682 C 370 688, 362 670, 366 642 C 368 620, 378 598, 388 598 Z" fill="url(#skinBase)" />
+      <path d="M 388 630 C 384 652, 378 668, 372 674" stroke="url(#skinShadow)" stroke-width="1.8" fill="none" />
+      
+      <!-- Black Round Dial Watch with Silver Bezel & Crown -->
+      <rect x="372" y="590" width="34" height="16" rx="4" fill="#090a0d" />
+      <circle cx="390" cy="598" r="10.5" fill="#16181d" stroke="#e4e4e7" stroke-width="2.2" />
+      <circle cx="390" cy="598" r="7.5" fill="#000000" />
+      <!-- Dial Hands -->
+      <line x1="390" y1="598" x2="390" y2="593" stroke="#f4f4f5" stroke-width="1.8" stroke-linecap="round" />
+      <line x1="390" y1="598" x2="395" y2="599" stroke="#f4f4f5" stroke-width="1.8" stroke-linecap="round" />
+      <!-- Watch Crown Knob -->
+      <circle cx="401" cy="598" r="1.5" fill="#ffffff" />
+    </g>
+
+    <!-- 6. TAILORED BLACK BLAZER JACKET -->
+    <g id="black-blazer">
+      <!-- Left Sleeve (Right side of viewer) -->
+      <path d="M 205 305 L 126 350 C 105 415, 105 525, 132 622 L 180 618 C 158 535, 155 460, 170 380 L 205 370 Z" fill="url(#blazerBlack)" />
+      <path d="M 202 310 L 152 435 L 205 612 L 212 612 L 196 470 L 234 370 Z" fill="url(#blazerSheen)" />
+
+      <!-- Right Sleeve (Left side of viewer) -->
+      <path d="M 328 305 L 408 350 C 428 415, 428 525, 402 622 L 354 618 C 375 535, 378 460, 364 380 L 328 370 Z" fill="url(#blazerBlack)" />
+      <path d="M 332 310 L 382 435 L 328 612 L 322 612 L 338 470 L 300 370 Z" fill="url(#blazerSheen)" />
+
+      <!-- Torso Base & Open Flaps -->
+      <path d="M 198 305 C 242 315, 296 315, 340 305 L 355 618 C 306 635, 230 635, 180 618 Z" fill="url(#blazerBlack)" opacity="0.4" />
+      
+      <!-- Lapels (Notch Lapel tailored styling) -->
+      <path d="M 205 305 L 246 415 L 205 515 L 190 505 L 214 410 L 186 350 Z" fill="url(#blazerSheen)" stroke="#090a0d" stroke-width="1.8" />
+      <path d="M 328 305 L 288 415 L 328 515 L 344 505 L 320 410 L 348 350 Z" fill="url(#blazerSheen)" stroke="#090a0d" stroke-width="1.8" />
+
+      <!-- Breast Pocket -->
+      <path d="M 174 415 L 202 418" stroke="#373b42" stroke-width="3" stroke-linecap="round" />
+    </g>
+
+    <!-- 7. NECK & SUBTLE GOLD/BLACK CHAIN -->
+    <g id="neck-area">
+      <path d="M 235 260 C 235 310, 300 310, 300 260 Z" fill="url(#skinBase)" />
+      <path d="M 246 265 C 256 295, 280 295, 290 265 Z" fill="url(#skinShadow)" opacity="0.5" />
+      <!-- Subtle Neck Chain -->
+      <path d="M 252 285 C 262 302, 274 302, 284 285" stroke="#f59e0b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- 8. PHOTOREALISTIC HEAD, FACE & HAIR (Exact Likeness of Er. Dipendra Sharma) -->
+    <g id="portrait-head">
+      <!-- Head Base Structure -->
+      <path d="M 224 175 C 218 235, 224 268, 268 278 C 312 268, 318 235, 312 175 C 312 135, 224 135, 224 175 Z" fill="url(#skinBase)" />
+      
+      <!-- Ears with Realistic Shading -->
+      <path d="M 224 185 C 214 190, 214 215, 225 220 Z" fill="url(#skinBase)" stroke="url(#skinShadow)" stroke-width="1.8" />
+      <path d="M 312 185 C 322 190, 322 215, 311 220 Z" fill="url(#skinBase)" stroke="url(#skinShadow)" stroke-width="1.8" />
+
+      <!-- Facial Highlights -->
+      <path d="M 248 180 C 255 170, 280 170, 288 180 C 285 220, 252 220, 248 180 Z" fill="url(#skinHighlight)" opacity="0.45" />
+
+      <!-- Trimmed Beard along Jawline and Chin -->
+      <path d="M 248 245 C 260 262, 276 262, 288 245 C 292 258, 284 272, 268 274 C 252 272, 244 258, 248 245 Z" fill="#141518" opacity="0.95" />
+      
+      <!-- Groomed Mustache -->
+      <path d="M 250 230 C 260 224, 276 224, 286 230 C 280 238, 256 238, 250 230 Z" fill="#141518" />
+      
+      <!-- Warm Smile & Lips -->
+      <path d="M 254 236 C 262 243, 274 243, 282 236" stroke="#7f1d1d" stroke-width="2.8" stroke-linecap="round" fill="none" />
+      <path d="M 258 238 C 263 241, 273 241, 278 238" fill="#ffffff" />
+
+      <!-- Nose Bridge & Contour -->
+      <path d="M 268 182 L 265 214 C 260 218, 276 218, 271 214 Z" fill="url(#skinShadow)" opacity="0.65" />
+      <circle cx="264" cy="214" r="1.8" fill="#5c2e14" />
+      <circle cx="272" cy="214" r="1.8" fill="#5c2e14" />
+
+      <!-- Left Eye & Eyebrow -->
+      <path d="M 240 180 C 246 174, 256 174, 261 180 C 256 186, 246 186, 240 180 Z" fill="#ffffff" />
+      <circle cx="251" cy="180" r="4" fill="#18120d" />
+      <circle cx="252" cy="179" r="1.2" fill="#ffffff" />
+      <path d="M 235 170 C 245 163, 258 165, 263 170" stroke="#121316" stroke-width="3.5" stroke-linecap="round" fill="none" />
+
+      <!-- Right Eye & Eyebrow -->
+      <path d="M 275 180 C 280 174, 290 174, 296 180 C 290 186, 280 186, 275 180 Z" fill="#ffffff" />
+      <circle cx="285" cy="180" r="4" fill="#18120d" />
+      <circle cx="286" cy="179" r="1.2" fill="#ffffff" />
+      <path d="M 273 170 C 278 165, 291 163, 301 170" stroke="#121316" stroke-width="3.5" stroke-linecap="round" fill="none" />
+
+      <!-- Hair (Clean Modern Fade Style matching photograph) -->
+      <path d="M 218 175 C 214 140, 230 112, 268 108 C 306 112, 322 140, 318 175 C 316 164, 308 146, 296 142 C 280 138, 256 138, 240 142 C 228 146, 220 164, 218 175 Z" fill="#111215" />
+      <path d="M 235 136 C 256 118, 284 118, 302 136 C 314 125, 296 104, 268 104 C 240 104, 222 125, 235 136 Z" fill="#1f2127" />
+      <!-- Sideburns -->
+      <path d="M 221 176 L 224 200 L 227 200 L 225 176 Z" fill="#111215" />
+      <path d="M 315 176 L 312 200 L 309 200 L 311 176 Z" fill="#111215" />
+    </g>
+  </g>
+</svg>
