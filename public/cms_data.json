@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-08-24T12:44:28.486Z",
+  "lastUpdated": "2026-08-24T12:48:38.907Z",
   "updatedBy": "GBS Admin Bagbazar",
   "pageContent": {
     "heroTitle": "Study Abroad With Confidence",
@@ -426,8 +426,8 @@
     "counselorWelcomeImage": "/images/counselor_welcome.svg",
     "showNepalMapContour": true,
     "showLive3DFlags": true,
-    "newsSourceUrl": "https://www.news24nepal.com/",
-    "newsSourceName": "News24 Nepal",
-    "newsSourceMode": "news24"
+    "newsSourceUrl": "https://www.onlinekhabar.com/content/education",
+    "newsSourceName": "OnlineKhabar Education",
+    "newsSourceMode": "onlinekhabar"
   }
 }
