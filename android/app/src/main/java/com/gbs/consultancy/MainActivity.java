@@ -11,6 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout offlineLayout;
     private Button btnRetry;
     private TextView errorMsg;
+    private ScaleGestureDetector scaleGestureDetector;
+    private GestureDetector gestureDetector;
+    private float currentScale = 1f;
+    private static final float MIN_SCALE = 1f;
+    private static final float MAX_SCALE = 3f;
 
     private static final String TARGET_URL = "https://kingrai0093-debug.github.io/gbs-educational-consultancy/";
     private static final int PAGE_LOAD_TIMEOUT = 30000;
@@ -58,27 +66,69 @@ public class MainActivity extends AppCompatActivity {
         errorMsg = findViewById(R.id.error_msg);
 
         setupWebView();
+        setupZoom();
 
         btnRetry.setOnClickListener(v -> retryLoad());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (webView.canGoBack()) {
+                if (currentScale > 1f) {
+                    currentScale = 1f;
+                    webView.setInitialScale(100);
+                } else if (webView.canGoBack()) {
                     webView.goBack();
                 } else {
-                    finish();
+                    moveTaskToBack(true);
                 }
             }
         });
 
-        // Direct load - no splash, no delay
         if (isNetworkAvailable()) {
             webView.loadUrl(TARGET_URL);
             startLoadTimeout();
         } else {
             showOfflineView();
         }
+    }
+
+    private void setupZoom() {
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                float scaleFactor = detector.getScaleFactor();
+                currentScale *= scaleFactor;
+                currentScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, currentScale));
+                int scalePercent = (int) (currentScale * 100);
+                webView.setInitialScale(scalePercent);
+                return true;
+            }
+        });
+
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                if (currentScale > 1f) {
+                    currentScale = 1f;
+                    webView.setInitialScale(100);
+                } else {
+                    currentScale = 2f;
+                    webView.setInitialScale(200);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+        });
+
+        webView.setOnTouchListener((v, event) -> {
+            scaleGestureDetector.onTouchEvent(event);
+            gestureDetector.onTouchEvent(event);
+            return false;
+        });
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -92,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        settings.setSupportZoom(false);
+        settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -119,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        webView.setInitialScale(100);
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -145,13 +194,6 @@ public class MainActivity extends AppCompatActivity {
                 isLoading = true;
                 progressBar.setVisibility(View.VISIBLE);
                 if (errorMsg != null) errorMsg.setVisibility(View.GONE);
-
-                view.evaluateJavascript(
-                    "var m=document.querySelector('meta[name=viewport]');if(m)m.setAttribute('content','width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no');" +
-                    "document.addEventListener('gesturestart',function(e){e.preventDefault();});" +
-                    "document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});" +
-                    "document.addEventListener('wheel',function(e){if(e.ctrlKey)e.preventDefault();},{passive:false});"
-                , null);
             }
 
             @Override
@@ -159,14 +201,6 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 isLoading = false;
                 progressBar.setVisibility(View.GONE);
-
-                view.evaluateJavascript(
-                    "var s=document.createElement('style');" +
-                    "s.textContent='html,body{overflow-x:hidden!important;-webkit-text-size-adjust:100%!important;touch-action:pan-y!important;overscroll-behavior:none!important;height:100%!important;margin:0!important;padding:0!important;}*,*::before,*::after{touch-action:pan-y!important;}#root{min-height:100vh!important;min-height:100dvh!important;}';" +
-                    "document.head.appendChild(s);" +
-                    "document.addEventListener('gesturechange',function(e){e.preventDefault();},{passive:false});" +
-                    "document.addEventListener('gestureend',function(e){e.preventDefault();},{passive:false});"
-                , null);
             }
 
             @Override
