@@ -2115,28 +2115,8 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                         />
                       </div>
 
-                      <div>
-                        <label className="block text-slate-300 font-semibold mb-1">Annual Tuition (KRW)</label>
-                        <input
-                          type="number"
-                          value={uniForm.annualTuitionKRW}
-                          onChange={(e) => setUniForm({ ...uniForm, annualTuitionKRW: Number(e.target.value) })}
-                          className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#25479D]"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-slate-300 font-semibold mb-1">Approx. Tuition (NPR)</label>
-                        <input
-                          type="number"
-                          value={uniForm.annualTuitionNPR}
-                          onChange={(e) => setUniForm({ ...uniForm, annualTuitionNPR: Number(e.target.value) })}
-                          className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#25479D]"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-slate-300 font-semibold mb-1">Scholarship Range</label>
+                      <div className="sm:col-span-2">
+                        <label className="block text-slate-300 font-semibold mb-1">Scholarship Range / Benefit</label>
                         <input
                           type="text"
                           value={uniForm.scholarshipRange}
@@ -2221,7 +2201,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
                           <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px]">
                             <span className="text-amber-300 font-bold">💰 {uni.scholarshipRange}</span>
-                            <span className="text-slate-400">KRW {uni.annualTuitionKRW.toLocaleString()}/yr</span>
+                            <span className="text-blue-400 font-semibold">{uni.mediumOfInstruction}</span>
                           </div>
                         </div>
                       </div>

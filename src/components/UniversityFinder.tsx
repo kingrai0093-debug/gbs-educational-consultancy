@@ -217,11 +217,10 @@ export const UniversityFinder: React.FC<UniversityFinderProps> = ({
                   </div>
 
                   <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-500 font-semibold">Annual Tuition:</span>
-                    <div className="text-right">
-                      <span className="font-bold text-gray-900">~NPR {uni.annualTuitionNPR.toLocaleString()}</span>
-                      <span className="text-[10px] text-gray-500 block font-medium">(KRW {(uni.annualTuitionKRW / 10000).toFixed(0)}만)</span>
-                    </div>
+                    <span className="text-gray-500 font-semibold">Scholarship Range:</span>
+                    <span className="font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      {uni.scholarshipRange}
+                    </span>
                   </div>
 
                   <div className="flex items-center justify-between py-2 border-b border-gray-100">
@@ -346,8 +345,8 @@ export const UniversityFinder: React.FC<UniversityFinderProps> = ({
                   </strong>
                 </div>
                 <div>
-                  <span className="text-gray-500 block text-xs font-semibold">Tuition / Year:</span>
-                  <strong className="text-gray-900 font-extrabold">~NPR {activeUniModal.annualTuitionNPR.toLocaleString()}</strong>
+                  <span className="text-gray-500 block text-xs font-semibold">Scholarship Grant:</span>
+                  <strong className="text-amber-600 font-extrabold">{activeUniModal.scholarshipRange}</strong>
                 </div>
                 <div>
                   <span className="text-gray-500 block text-xs font-semibold">Dormitory / Mo:</span>
