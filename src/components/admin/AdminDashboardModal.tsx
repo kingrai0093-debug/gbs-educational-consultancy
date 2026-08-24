@@ -118,21 +118,17 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
   // Forms states
   const [contentForm, setContentForm] = useState({ ...pageContent });
   
-  // Keep contentForm in sync with pageContent
-  useEffect(() => {
-    setContentForm({ ...pageContent });
-  }, [pageContent]);
-
-  // Reset authentication and input ONLY when the modal transitions from closed to open
+  // Sync contentForm only when modal transitions to open so typing is never lost
   const wasOpenRef = React.useRef(isOpen);
   useEffect(() => {
     if (isOpen && !wasOpenRef.current) {
       setIsAuthenticated(false);
       setPinInput("");
       setPinError("");
+      setContentForm({ ...pageContent });
     }
     wasOpenRef.current = isOpen;
-  }, [isOpen]);
+  }, [isOpen, pageContent]);
 
   const handleContentSubmit = (e: React.FormEvent) => {
     e.preventDefault();

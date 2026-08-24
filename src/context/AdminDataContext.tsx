@@ -243,8 +243,22 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return localStorage.getItem(`${STORAGE_KEY}_last_cloud_sync`) || null;
   });
 
-  // Helper to apply payload to state immediately
+  // Track the timestamp of any local modification to prevent stale background polling from reverting edits
+  const lastLocalEditRef = React.useRef<number>(0);
+  const recordLocalModification = useCallback(() => {
+    lastLocalEditRef.current = Date.now();
+  }, []);
+
+  // Helper to apply payload to state safely without reverting recent local edits
   const applyPayloadToState = useCallback((cloudData: GlobalCmsPayload) => {
+    if (!cloudData) return;
+
+    // Check if cloud data is older than recent local edits (protect local changes for at least 10 seconds)
+    const cloudTimestamp = cloudData.lastUpdated ? new Date(cloudData.lastUpdated).getTime() : 0;
+    if (cloudTimestamp > 0 && cloudTimestamp < lastLocalEditRef.current) {
+      return; // Local edits are newer than cloud cache, do not overwrite!
+    }
+
     if (cloudData.pageContent) setPageContent(cloudData.pageContent);
     if (cloudData.tickerItems && Array.isArray(cloudData.tickerItems) && cloudData.tickerItems.length > 0) {
       setTickerItems(cloudData.tickerItems);
@@ -426,11 +440,13 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // Content operations
   const updatePageContent = (newContent: Partial<PageContent>) => {
+    recordLocalModification();
     setPageContent((prev) => ({ ...prev, ...newContent }));
   };
 
   // Team / Counselor Member operations
   const addTeamMember = (member: Omit<TeamMember, "id">) => {
+    recordLocalModification();
     const newMember: TeamMember = {
       ...member,
       id: `member-${Date.now()}`,
@@ -440,15 +456,18 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateTeamMember = (id: string, updated: Partial<TeamMember>) => {
+    recordLocalModification();
     setTeamMembers((prev) => prev.map((m) => (m.id === id ? { ...m, ...updated } : m)));
   };
 
   const deleteTeamMember = (id: string) => {
+    recordLocalModification();
     setTeamMembers((prev) => prev.filter((m) => m.id !== id));
   };
 
   // University operations
   const addUniversity = (uni: Omit<University, "id">) => {
+    recordLocalModification();
     const newUni: University = {
       ...uni,
       id: `uni-${Date.now()}`,
@@ -457,15 +476,18 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateUniversity = (id: string, updated: Partial<University>) => {
+    recordLocalModification();
     setUniversities((prev) => prev.map((u) => (u.id === id ? { ...u, ...updated } : u)));
   };
 
   const deleteUniversity = (id: string) => {
+    recordLocalModification();
     setUniversities((prev) => prev.filter((u) => u.id !== id));
   };
 
   // Ticker operations
   const addTickerItem = (item: Omit<NewsTickerItem, "id">) => {
+    recordLocalModification();
     const newItem: NewsTickerItem = {
       ...item,
       id: `ticker-${Date.now()}`,
@@ -474,19 +496,23 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateTickerItem = (id: string, item: Partial<NewsTickerItem>) => {
+    recordLocalModification();
     setTickerItems((prev) => prev.map((t) => (t.id === id ? { ...t, ...item } : t)));
   };
 
   const deleteTickerItem = (id: string) => {
+    recordLocalModification();
     setTickerItems((prev) => prev.filter((t) => t.id !== id));
   };
 
   const toggleTickerItem = (id: string) => {
+    recordLocalModification();
     setTickerItems((prev) => prev.map((t) => (t.id === id ? { ...t, isActive: !t.isActive } : t)));
   };
 
   // Post operations
   const addPost = (post: Omit<PostItem, "id">) => {
+    recordLocalModification();
     const newPost: PostItem = {
       ...post,
       id: `post-${Date.now()}`,
@@ -496,15 +522,18 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updatePost = (id: string, updated: Partial<PostItem>) => {
+    recordLocalModification();
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, ...updated } : p)));
   };
 
   const deletePost = (id: string) => {
+    recordLocalModification();
     setPosts((prev) => prev.filter((p) => p.id !== id));
   };
 
   // Video operations
   const addVideo = (video: Omit<VideoItem, "id">) => {
+    recordLocalModification();
     const newVideo: VideoItem = {
       ...video,
       id: `vid-${Date.now()}`,
@@ -513,15 +542,18 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateVideo = (id: string, updated: Partial<VideoItem>) => {
+    recordLocalModification();
     setVideos((prev) => prev.map((v) => (v.id === id ? { ...v, ...updated } : v)));
   };
 
   const deleteVideo = (id: string) => {
+    recordLocalModification();
     setVideos((prev) => prev.filter((v) => v.id !== id));
   };
 
   // Gallery operations
   const addGalleryItem = (item: Omit<GalleryItem, "id">) => {
+    recordLocalModification();
     const newItem: GalleryItem = {
       ...item,
       id: `gal-${Date.now()}`,
@@ -530,15 +562,18 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateGalleryItem = (id: string, updated: Partial<GalleryItem>) => {
+    recordLocalModification();
     setGallery((prev) => prev.map((g) => (g.id === id ? { ...g, ...updated } : g)));
   };
 
   const deleteGalleryItem = (id: string) => {
+    recordLocalModification();
     setGallery((prev) => prev.filter((g) => g.id !== id));
   };
 
   // Site settings
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
+    recordLocalModification();
     setSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
