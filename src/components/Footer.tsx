@@ -79,7 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenAiCounselor
               </li>
               <li>
                 <button onClick={() => scrollTo("calculator")} className="hover:text-white transition-colors cursor-pointer">
-                  Cost & Scholarship Calculator
+                  Scholarship & Eligibility Simulator
                 </button>
               </li>
               <li>

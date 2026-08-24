@@ -1,48 +1,105 @@
 import React, { useState } from "react";
-import { Calculator, DollarSign, Award, Briefcase, TrendingUp, Info, HelpCircle, ArrowUpRight } from "lucide-react";
+import { Award, GraduationCap, CheckCircle2, Sparkles, BookOpen, ShieldCheck, Phone, ArrowUpRight, Trophy, Star } from "lucide-react";
 
 export const CostScholarshipCalculator: React.FC = () => {
-  // Calculator state
+  // Assessment state
   const [level, setLevel] = useState<"Undergraduate" | "Postgraduate" | "Language">("Undergraduate");
-  const [region, setRegion] = useState<"Seoul" | "Provincial">("Seoul");
-  const [scholarshipPercent, setScholarshipPercent] = useState<number>(50);
-  const [partTimeHoursPerWeek, setPartTimeHoursPerWeek] = useState<number>(20);
-  const [currency, setCurrency] = useState<"NPR" | "KRW" | "USD">("NPR");
+  const [gpaTier, setGpaTier] = useState<"3.6+" | "3.2-3.59" | "2.8-3.19" | "2.4-2.79">("3.2-3.59");
+  const [languageProficiency, setLanguageProficiency] = useState<"TOPIK 5-6 / IELTS 7.5+" | "TOPIK 3-4 / IELTS 6.0-7.0" | "TOPIK 1-2 / IELTS 5.5" | "Beginner (No IELTS / No TOPIK)">("TOPIK 3-4 / IELTS 6.0-7.0");
+  const [targetRegion, setTargetRegion] = useState<"Seoul Capital Metro" | "National Flagship Hubs (Busan / Daegu / Daejeon)">("Seoul Capital Metro");
 
-  // Approximate FX conversion rates: 1 KRW = ~0.101 NPR, 1 USD = ~133 NPR, 1 USD = ~1320 KRW
-  const KRW_TO_NPR = 0.101;
-  const KRW_TO_USD = 0.00076;
-
-  // Base costs per semester (6 months) in KRW
-  const baseTuitionKRW = level === "Undergraduate" ? 4200000 : level === "Postgraduate" ? 4800000 : 2600000;
-  const tuitionAfterScholarshipKRW = baseTuitionKRW * (1 - scholarshipPercent / 100);
-
-  // Living costs per semester (6 months) in KRW
-  const monthlyLivingKRW = region === "Seoul" ? 650000 : 450000;
-  const monthlyDormKRW = region === "Seoul" ? 350000 : 220000;
-  const semesterLivingTotalKRW = (monthlyLivingKRW + monthlyDormKRW) * 6;
-
-  // Legal part-time earnings per semester (24 weeks) in KRW
-  // Korea minimum legal hourly wage is ~9,860 KRW
-  const hourlyWageKRW = 9860;
-  const semesterPartTimeEarningsKRW = partTimeHoursPerWeek * hourlyWageKRW * 24;
-
-  // Net student investment required for 1 semester
-  const totalSemesterExpensesKRW = tuitionAfterScholarshipKRW + semesterLivingTotalKRW;
-  const netFamilyContributionKRW = Math.max(0, totalSemesterExpensesKRW - semesterPartTimeEarningsKRW);
-
-  // Helper formatting function
-  const formatAmount = (krw: number) => {
-    if (currency === "NPR") {
-      const npr = Math.round(krw * KRW_TO_NPR);
-      return `NPR ${npr.toLocaleString()}`;
-    } else if (currency === "USD") {
-      const usd = Math.round(krw * KRW_TO_USD);
-      return `$${usd.toLocaleString()} USD`;
-    } else {
-      return `₩${Math.round(krw).toLocaleString()} KRW`;
+  // Calculate Eligible Scholarship Tier & Admission Probability
+  const getScholarshipAssessment = () => {
+    if (level === "Language") {
+      return {
+        scholarshipTier: "30% – 50% Pathway Tuition Waiver",
+        coverageBadge: "D-4 Language Pathway",
+        gksEligible: false,
+        admissionChance: "98% (High Visa Success Rate)",
+        scholarshipPercent: "30% - 50%",
+        recommendedTrack: "D-4-1 / D-4-7 Korean Language Pathway (Direct entry to top university degree with GPA 2.4+)",
+        topUniversityMatches: ["Pusan National University (PNU)", "Chungnam National University (CNU)", "Dongguk University", "Kyungpook National University (KNU)"],
+        perks: [
+          "No mandatory IELTS required for admission",
+          "Gap up to 3–5 years accepted",
+          "Fast Track TOPIK Level 3–4 certification in Korea",
+          "Guaranteed University Bachelor's progression pathway"
+        ]
+      };
     }
+
+    if (gpaTier === "3.6+" && (languageProficiency.includes("7.5+") || languageProficiency.includes("5-6"))) {
+      return {
+        scholarshipTier: "100% Full Tuition Waiver + GKS Korean Government Scholarship",
+        coverageBadge: "100% Full Scholarship (Free Study)",
+        gksEligible: true,
+        admissionChance: "99% (Elite Tier)",
+        scholarshipPercent: "100%",
+        recommendedTrack: "GKS (Global Korea Scholarship) & Presidential Merit Scholarship Track",
+        topUniversityMatches: ["Seoul National University (SNU)", "Korea University (KU)", "Yonsei University", "KAIST", "Hanyang University"],
+        perks: [
+          "100% Full Tuition Waiver for entire 4-year degree",
+          "Monthly living stipend provided by Korean Government",
+          "Free round-trip airfare Kathmandu ⇄ Seoul",
+          "Complete National Health Insurance coverage"
+        ]
+      };
+    }
+
+    if (gpaTier === "3.6+" || languageProficiency.includes("3-4") || languageProficiency.includes("6.0-7.0")) {
+      return {
+        scholarshipTier: "70% – 80% High Merit Academic Scholarship",
+        coverageBadge: "70% - 80% Merit Scholarship",
+        gksEligible: true,
+        admissionChance: "95% (Excellent)",
+        scholarshipPercent: "70% - 80%",
+        recommendedTrack: "Direct University International Merit Scholarship Track",
+        topUniversityMatches: ["Sungkyunkwan University (SKKU)", "Chung-Ang University (CAU)", "Pusan National University", "Kyung Hee University"],
+        perks: [
+          "70% to 80% tuition fee reduction from Semester 1",
+          "Scholarship renewable each semester with GPA maintenance",
+          "On-campus dormitory priority allocation",
+          "Free Korean language leveling and cultural workshops"
+        ]
+      };
+    }
+
+    if (gpaTier === "3.2-3.59" || gpaTier === "2.8-3.19") {
+      return {
+        scholarshipTier: "50% Standard International Student Scholarship",
+        coverageBadge: "50% Partner Scholarship",
+        gksEligible: false,
+        admissionChance: "92% (High Confidence)",
+        scholarshipPercent: "50%",
+        recommendedTrack: "GBS Direct Partner University Admission Track",
+        topUniversityMatches: ["Sejong University", "Inha University", "Chonnam National University", "Yeungnam University", "Gachon University"],
+        perks: [
+          "Automatic 50% tuition waiver for international entrants",
+          "English-medium (EMI) or Korean-medium major options",
+          "Part-time campus work authorization after Semester 1",
+          "Dedicated Nepali Student Alumni network in Korea"
+        ]
+      };
+    }
+
+    return {
+      scholarshipTier: "30% – 40% University Entry Scholarship",
+      coverageBadge: "30% - 40% Entry Scholarship",
+      gksEligible: false,
+      admissionChance: "88% (Solid)",
+      scholarshipPercent: "30% - 40%",
+      recommendedTrack: "Regional National & Private University Track",
+      topUniversityMatches: ["Daegu University", "Woosong University (SolBridge)", "Keimyung University", "Dong-A University"],
+      perks: [
+        "30% to 40% initial semester scholarship guarantee",
+        "Higher scholarship eligibility upon achieving TOPIK 3+ in Korea",
+        "Affordable regional living environment",
+        "Personalized visa document processing by GBS counselors"
+      ]
+    };
   };
+
+  const assessment = getScholarshipAssessment();
 
   return (
     <section id="calculator" className="py-16 sm:py-24 bg-white border-b border-gray-200">
@@ -52,37 +109,20 @@ export const CostScholarshipCalculator: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-gray-200 pb-6">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-blue-50 text-[#25479D] text-xs font-bold mb-3 uppercase tracking-wider border border-blue-100">
-              <Calculator className="w-3.5 h-3.5" />
-              <span>Financial Blueprint</span>
+              <Award className="w-3.5 h-3.5 text-[#ED2D2A]" />
+              <span>Scholarship & University Matchmaker</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#25479D] tracking-tight">
-              Cost & Scholarship Simulator
+              Korean University Scholarship & Eligibility Simulator
             </h2>
             <p className="mt-2 text-sm text-gray-600 max-w-2xl font-medium">
-              Calculate realistic semester tuition, dormitory fees, personal living expenses, and legal part-time student earnings in South Korea.
+              Simulate your scholarship tier, university admission chances, and GKS government scholarship eligibility based on your academic profile.
             </p>
           </div>
 
-          {/* Currency Switcher Bento Pill */}
-          <div className="inline-flex p-1 bg-gray-100 rounded-lg border border-gray-200 text-xs font-bold self-start sm:self-auto shadow-inner">
-            <button
-              onClick={() => setCurrency("NPR")}
-              className={`px-3.5 py-1.5 rounded transition-all ${currency === "NPR" ? "bg-white text-[#25479D] shadow-sm border border-gray-200" : "text-gray-600 hover:text-gray-900"}`}
-            >
-              NPR (Rs)
-            </button>
-            <button
-              onClick={() => setCurrency("KRW")}
-              className={`px-3.5 py-1.5 rounded transition-all ${currency === "KRW" ? "bg-white text-[#25479D] shadow-sm border border-gray-200" : "text-gray-600 hover:text-gray-900"}`}
-            >
-              KRW (₩)
-            </button>
-            <button
-              onClick={() => setCurrency("USD")}
-              className={`px-3.5 py-1.5 rounded transition-all ${currency === "USD" ? "bg-white text-[#25479D] shadow-sm border border-gray-200" : "text-gray-600 hover:text-gray-900"}`}
-            >
-              USD ($)
-            </button>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-50 text-emerald-800 rounded-xl border border-emerald-200 text-xs font-bold shadow-xs">
+            <Sparkles className="w-4 h-4 text-emerald-600" />
+            <span>2026 Intake Evaluation Active</span>
           </div>
         </div>
 
@@ -92,13 +132,11 @@ export const CostScholarshipCalculator: React.FC = () => {
           {/* Controls Column (Bento Cards, Col span 7) */}
           <div className="lg:col-span-7 space-y-4">
             
-            {/* Bento Card: Target Program & Campus Region */}
+            {/* Bento Card 1: Target Academic Program */}
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 shadow-sm space-y-5">
-              
-              {/* Level of Study */}
               <div>
                 <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2.5">
-                  1. Target Academic Program
+                  1. Target Academic Degree / Program
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {(["Undergraduate", "Postgraduate", "Language"] as const).map((lvl) => (
@@ -106,121 +144,107 @@ export const CostScholarshipCalculator: React.FC = () => {
                       key={lvl}
                       type="button"
                       onClick={() => setLevel(lvl)}
-                      className={`py-3 px-2 rounded-lg text-xs font-bold border-2 transition-all text-center ${
+                      className={`py-3 px-2 rounded-lg text-xs font-bold border-2 transition-all text-center cursor-pointer ${
                         level === lvl
                           ? "bg-[#25479D] text-white border-[#25479D] shadow-md"
                           : "bg-white text-gray-700 border-gray-200 hover:border-[#25479D]/30 hover:bg-blue-50"
                       }`}
                     >
-                      {lvl === "Undergraduate" ? "Bachelor's (4 Yr)" : lvl === "Postgraduate" ? "Master's / PhD" : "D-4 Language"}
+                      {lvl === "Undergraduate" ? "Bachelor's Degree (4 Yr)" : lvl === "Postgraduate" ? "Master's / PhD (2 Yr)" : "D-4 Korean Language"}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* University Location */}
+              {/* Bento Card 2: Academic GPA Grade */}
               <div>
                 <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2.5">
-                  2. Campus Location & Living Tier
+                  2. Academic GPA (+2 / Bachelor&apos;s Score)
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {(["3.6+", "3.2-3.59", "2.8-3.19", "2.4-2.79"] as const).map((gpa) => (
+                    <button
+                      key={gpa}
+                      type="button"
+                      onClick={() => setGpaTier(gpa)}
+                      className={`py-2.5 px-3 rounded-lg text-xs font-bold border-2 transition-all text-center cursor-pointer ${
+                        gpaTier === gpa
+                          ? "bg-[#ED2D2A] text-white border-[#ED2D2A] shadow-md"
+                          : "bg-white text-gray-700 border-gray-200 hover:border-[#ED2D2A]/30 hover:bg-red-50"
+                      }`}
+                    >
+                      <span>GPA {gpa}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bento Card 3: Language Proficiency */}
+              <div>
+                <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2.5">
+                  3. Language Test Score (TOPIK or IELTS)
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {([
+                    "TOPIK 5-6 / IELTS 7.5+",
+                    "TOPIK 3-4 / IELTS 6.0-7.0",
+                    "TOPIK 1-2 / IELTS 5.5",
+                    "Beginner (No IELTS / No TOPIK)",
+                  ] as const).map((lang) => (
+                    <button
+                      key={lang}
+                      type="button"
+                      onClick={() => setLanguageProficiency(lang)}
+                      className={`py-2.5 px-3 rounded-lg text-xs font-bold border-2 transition-all text-left cursor-pointer ${
+                        languageProficiency === lang
+                          ? "bg-[#25479D] text-white border-[#25479D] shadow-md"
+                          : "bg-white text-gray-700 border-gray-200 hover:border-[#25479D]/30 hover:bg-blue-50"
+                      }`}
+                    >
+                      <span>{lang}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bento Card 4: Target Region Preference */}
+              <div>
+                <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2.5">
+                  4. Preferred University Region
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => setRegion("Seoul")}
-                    className={`py-3 px-4 rounded-lg text-xs font-bold border-2 transition-all flex items-center justify-between text-left ${
-                      region === "Seoul"
+                    onClick={() => setTargetRegion("Seoul Capital Metro")}
+                    className={`py-3 px-4 rounded-lg text-xs font-bold border-2 transition-all flex items-center justify-between text-left cursor-pointer ${
+                      targetRegion === "Seoul Capital Metro"
                         ? "bg-[#25479D] text-white border-[#25479D] shadow-md"
                         : "bg-white text-gray-700 border-gray-200 hover:border-[#25479D]/30 hover:bg-blue-50"
                     }`}
                   >
                     <div>
-                      <div className="font-extrabold">Seoul Metro</div>
-                      <div className="text-[10px] opacity-80 font-medium">Capital area living tier</div>
+                      <div className="font-extrabold">Seoul Capital Metro</div>
+                      <div className="text-[10px] opacity-80 font-medium">Top Global Research Ranking</div>
                     </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded ${region === "Seoul" ? "bg-white/20" : "bg-gray-100 text-gray-600"}`}>Seoul</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-bold">Seoul</span>
                   </button>
+
                   <button
                     type="button"
-                    onClick={() => setRegion("Provincial")}
-                    className={`py-3 px-4 rounded-lg text-xs font-bold border-2 transition-all flex items-center justify-between text-left ${
-                      region === "Provincial"
+                    onClick={() => setTargetRegion("National Flagship Hubs (Busan / Daegu / Daejeon)")}
+                    className={`py-3 px-4 rounded-lg text-xs font-bold border-2 transition-all flex items-center justify-between text-left cursor-pointer ${
+                      targetRegion === "National Flagship Hubs (Busan / Daegu / Daejeon)"
                         ? "bg-[#25479D] text-white border-[#25479D] shadow-md"
                         : "bg-white text-gray-700 border-gray-200 hover:border-[#25479D]/30 hover:bg-blue-50"
                     }`}
                   >
                     <div>
-                      <div className="font-extrabold">Regional Hubs</div>
-                      <div className="text-[10px] opacity-80 font-medium">Busan / Daegu / Daejeon</div>
+                      <div className="font-extrabold">National Flagship Hubs</div>
+                      <div className="text-[10px] opacity-80 font-medium">High Scholarship & Post-Study Work</div>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-green-100 text-green-700 font-bold border border-green-200">~35% Cheaper</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-green-100 text-green-700 font-bold">National</span>
                   </button>
                 </div>
-              </div>
-
-            </div>
-
-            {/* Bento Card: Scholarship & Part-time Sliders */}
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 shadow-sm space-y-6">
-              
-              {/* Scholarship Slider */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <Award className="w-3.5 h-3.5 text-[#ED2D2A]" />
-                    3. Anticipated Scholarship Waiver
-                  </label>
-                  <span className="text-xs font-black text-white bg-[#ED2D2A] px-3 py-1 rounded shadow-sm">
-                    {scholarshipPercent}% Waiver
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="10"
-                  value={scholarshipPercent}
-                  onChange={(e) => setScholarshipPercent(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-[#ED2D2A]"
-                />
-                <div className="flex justify-between text-[10px] text-gray-500 font-semibold mt-2">
-                  <span>0%</span>
-                  <span>30%</span>
-                  <span>50% (Standard)</span>
-                  <span>70%</span>
-                  <span>100% (GKS)</span>
-                </div>
-              </div>
-
-              {/* Part-Time Student Work Hours */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
-                    <Briefcase className="w-3.5 h-3.5 text-[#25479D]" />
-                    4. Part-Time Student Hours (per Week)
-                  </label>
-                  <span className="text-xs font-black text-[#25479D] bg-blue-100 px-3 py-1 rounded border border-blue-200">
-                    {partTimeHoursPerWeek} Hrs / Wk
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="28"
-                  step="2"
-                  value={partTimeHoursPerWeek}
-                  onChange={(e) => setPartTimeHoursPerWeek(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-[#25479D]"
-                />
-                <div className="flex justify-between text-[10px] text-gray-500 font-semibold mt-2">
-                  <span>0 hrs</span>
-                  <span>10 hrs</span>
-                  <span>20 hrs (Legal Limit)</span>
-                  <span>28 hrs (Vacation avg)</span>
-                </div>
-                <p className="text-[11px] text-gray-500 mt-2 font-medium bg-white p-2 rounded border border-gray-200">
-                  <Info className="inline w-3 h-3 mr-1 text-blue-500" />
-                  Korean law permits D-2 students to work 20-25 hrs/week during semesters and full-time during vacations at ₩9,860+ KRW/hr (~NPR 1,000/hr).
-                </p>
               </div>
 
             </div>
@@ -228,77 +252,83 @@ export const CostScholarshipCalculator: React.FC = () => {
           </div>
 
           {/* Results Summary Column (Bento Card, Col span 5) */}
-          <div className="lg:col-span-5 bg-[#25479D] text-white rounded-xl p-6 sm:p-8 shadow-xl border border-blue-900 space-y-6 relative overflow-hidden">
+          <div className="lg:col-span-5 bg-gradient-to-br from-[#1b3472] to-[#25479D] text-white rounded-2xl p-6 sm:p-8 shadow-xl border border-blue-800 space-y-6 relative overflow-hidden">
             
-            {/* Background pattern */}
+            {/* Background Icon */}
             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-               <Calculator className="w-48 h-48" />
+              <Trophy className="w-48 h-48 text-white" />
             </div>
 
-            <div className="relative z-10">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-200 block mb-1">
-                Semester Financial Ledger (6 Months)
+            <div className="relative z-10 space-y-1">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 block">
+                Scholarship Assessment Result
               </span>
-              <h3 className="text-xl font-black text-white">Estimated Cost vs Earning</h3>
+              <h3 className="text-xl sm:text-2xl font-black text-white">
+                {assessment.scholarshipTier}
+              </h3>
             </div>
 
-            {/* Expense Breakdown Bento Rows */}
-            <div className="space-y-3 text-xs relative z-10">
+            {/* Assessment Highlights */}
+            <div className="space-y-3 relative z-10">
               
-              <div className="flex items-center justify-between py-2 border-b border-blue-800 text-blue-100">
-                <span>Base Official Tuition:</span>
-                <span className="line-through">{formatAmount(baseTuitionKRW)}</span>
+              {/* Coverage Badge */}
+              <div className="p-4 rounded-xl bg-white text-[#25479D] shadow-md flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-bold text-gray-500 uppercase block">Eligible Scholarship Level:</span>
+                  <strong className="text-base font-black text-[#ED2D2A]">{assessment.coverageBadge}</strong>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-red-100 text-[#ED2D2A] text-xs font-black">
+                  {assessment.scholarshipPercent}
+                </div>
               </div>
 
-              <div className="flex items-center justify-between p-3 rounded bg-white text-[#25479D] shadow-md">
-                <span className="font-bold flex items-center gap-1.5">
-                  <Award className="w-4 h-4 text-[#ED2D2A]" /> Tuition ({scholarshipPercent}% Waiver):
+              {/* Admission Probability */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-blue-900/80 border border-blue-700/80 text-xs">
+                <span className="text-blue-200 font-medium">Visa & Admission Success Probability:</span>
+                <span className="font-extrabold text-emerald-300 text-sm">{assessment.admissionChance}</span>
+              </div>
+
+              {/* Top University Matches */}
+              <div className="p-4 rounded-xl bg-blue-950/70 border border-blue-800/80 space-y-2 text-xs">
+                <span className="font-black text-amber-300 uppercase tracking-wider text-[10px] block">
+                  Recommended University Matches:
                 </span>
-                <strong className="text-sm font-black">{formatAmount(tuitionAfterScholarshipKRW)}</strong>
+                <ul className="space-y-1 font-semibold text-slate-100">
+                  {assessment.topUniversityMatches.map((uni, idx) => (
+                    <li key={idx} className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>{uni}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <div className="flex items-center justify-between py-2 border-b border-blue-800 text-blue-100">
-                <span>Dormitory & Accomm. (6 Mos):</span>
-                <span className="font-semibold text-white">{formatAmount(monthlyDormKRW * 6)}</span>
-              </div>
-
-              <div className="flex items-center justify-between py-2 border-b border-blue-800 text-blue-100">
-                <span>Food & Personal (6 Mos):</span>
-                <span className="font-semibold text-white">{formatAmount(monthlyLivingKRW * 6)}</span>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded bg-green-500 text-white shadow-md border border-green-400">
-                <span className="font-bold flex items-center gap-1.5">
-                  <TrendingUp className="w-4 h-4" /> Legal Part-Time Earning:
+              {/* Benefits and Key Perks */}
+              <div className="p-4 rounded-xl bg-blue-900/50 border border-blue-800 space-y-2 text-xs">
+                <span className="font-black text-blue-200 uppercase tracking-wider text-[10px] block">
+                  Key Advantages for Your Profile:
                 </span>
-                <strong className="text-sm font-black">+{formatAmount(semesterPartTimeEarningsKRW)}</strong>
+                <ul className="space-y-1.5 text-slate-200 text-[11px]">
+                  {assessment.perks.map((perk, idx) => (
+                    <li key={idx} className="flex items-start gap-1.5">
+                      <Star className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                      <span>{perk}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-            </div>
-
-            {/* Net Balance Highlight Box */}
-            <div className="p-5 rounded bg-blue-900 border border-blue-800 text-center space-y-2 relative z-10 shadow-inner">
-              <span className="text-[11px] font-bold text-blue-200 uppercase tracking-wider block">
-                Estimated Net Student Out-of-Pocket Cost:
-              </span>
-              <div className="text-2xl sm:text-3xl font-black text-[#ED2D2A] bg-white rounded py-2 shadow-sm tracking-tight border-2 border-red-100">
-                {netFamilyContributionKRW === 0 ? "Fully Self-Funded (NPR 0)" : formatAmount(netFamilyContributionKRW)}
-              </div>
-              <p className="text-[11px] text-blue-100 leading-snug pt-1">
-                {netFamilyContributionKRW === 0
-                  ? "🎉 Amazing! With this scholarship and part-time earnings, your living and study costs in South Korea are fully self-funded."
-                  : "Students cover accommodation and food via part-time work, needing minimal initial assistance from Nepal."}
-              </p>
             </div>
 
             {/* Bagbazar Counselor Callout */}
-            <div className="pt-2 text-center text-xs text-blue-200 relative z-10 border-t border-blue-800/50">
-              <span>Need bank solvency guidance for Embassy Tahachal?</span>
+            <div className="pt-2 text-center text-xs text-blue-200 relative z-10 border-t border-blue-800/60">
+              <span className="font-medium">Want GBS Senior Directors to process your scholarship application?</span>
               <a
                 href="tel:9744427779"
-                className="block mt-1.5 font-bold text-white hover:text-red-300 transition-colors bg-blue-800/50 py-1.5 rounded"
+                className="block mt-2 font-bold text-white hover:text-amber-300 transition-colors bg-red-600 hover:bg-red-700 py-2.5 px-4 rounded-xl shadow-md text-xs uppercase tracking-wider"
               >
-                Call GBS Bagbazar Hotline: 9744427779
+                <Phone className="inline w-3.5 h-3.5 mr-1.5" />
+                Speak with Senior Counselor (Bagbazar): 9744427779
               </a>
             </div>
 
@@ -310,4 +340,5 @@ export const CostScholarshipCalculator: React.FC = () => {
     </section>
   );
 };
+
 

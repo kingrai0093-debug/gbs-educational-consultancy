@@ -82,10 +82,12 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     importDataJSON,
   } = useAdminData();
 
-  // Authentication State - Always require password on every access
+  // Authentication State - Protected with SHA-256 Cryptographic Hash & Anti-Brute Force Shield
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState("");
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [lockoutUntil, setLockoutUntil] = useState<number | null>(null);
   const [customSyncToken, setCustomSyncToken] = useState<string>(() => getStoredSyncToken());
   const [tokenSavedToast, setTokenSavedToast] = useState(false);
 
@@ -97,15 +99,21 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
   // Forms states
   const [contentForm, setContentForm] = useState({ ...pageContent });
   
-  // Update contentForm and lock authentication on modal open
+  // Keep contentForm in sync with pageContent
   useEffect(() => {
     setContentForm({ ...pageContent });
-    if (isOpen) {
+  }, [pageContent]);
+
+  // Reset authentication and input ONLY when the modal transitions from closed to open
+  const wasOpenRef = React.useRef(isOpen);
+  useEffect(() => {
+    if (isOpen && !wasOpenRef.current) {
       setIsAuthenticated(false);
       setPinInput("");
       setPinError("");
     }
-  }, [pageContent, isOpen]);
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
 
   const handleContentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -304,18 +312,51 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
   if (!isOpen) return null;
 
-  const ADMIN_MASTER_SECRET = "ANi$h@0093";
+  // Cryptographic SHA-256 Hash of Master Secret (One-way hash: plaintext is completely removed from source)
+  const MASTER_ADMIN_SHA256 = "41460111fad887f5cf0b9dc960835c84e9395b03a05aa98f53fc02df92864ca1";
 
-  // Handle PIN Login
-  const handleLogin = (e: React.FormEvent) => {
+  // SHA-256 Helper using Web Crypto API
+  const computeSha256 = async (message: string): Promise<string> => {
+    try {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+    } catch {
+      return "";
+    }
+  };
+
+  // Handle Cryptographic PIN Login
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput === ADMIN_MASTER_SECRET) {
+
+    // Check brute-force lockout
+    if (lockoutUntil && Date.now() < lockoutUntil) {
+      const remainingSec = Math.ceil((lockoutUntil - Date.now()) / 1000);
+      setPinError(`Security Lockout Active: Too many failed attempts. Try again in ${remainingSec}s.`);
+      return;
+    }
+
+    const inputHash = await computeSha256(pinInput.trim());
+
+    if (inputHash === MASTER_ADMIN_SHA256) {
       setIsAuthenticated(true);
       setPinError("");
       setPinInput("");
+      setFailedAttempts(0);
+      setLockoutUntil(null);
     } else {
-      setPinError("Access Denied: Invalid Administrative Master Password.");
-      setPinInput("");
+      const newAttempts = failedAttempts + 1;
+      setFailedAttempts(newAttempts);
+
+      if (newAttempts >= 5) {
+        const lockoutTime = Date.now() + 30000; // 30 second cooldown
+        setLockoutUntil(lockoutTime);
+        setPinError("🚨 Security Alert: 5 Failed Attempts. System locked for 30 seconds against brute-force intrusion.");
+      } else {
+        setPinError(`Access Denied: Invalid Administrative Master Password (${5 - newAttempts} attempts remaining).`);
+      }
     }
   };
 
