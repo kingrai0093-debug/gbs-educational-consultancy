@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-08-24T12:55:43.637Z",
+  "lastUpdated": "2026-08-24T12:57:20.006Z",
   "updatedBy": "GBS Admin Bagbazar",
   "pageContent": {
     "heroTitle": "Study Abroad With Confidence",
@@ -108,6 +108,74 @@
     }
   ],
   "universities": [
+    {
+      "name": "br",
+      "koreanName": "",
+      "city": "Seoul",
+      "region": "Seoul Capital Area",
+      "ranking": "Top 20 in South Korea",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)"
+      ],
+      "popularMajors": [
+        "Computer Science",
+        "AI",
+        "Business Administration",
+        "Data Science"
+      ],
+      "mediumOfInstruction": "100% English",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 0,
+      "annualTuitionKRW": 6500000,
+      "annualTuitionNPR": 660000,
+      "scholarshipRange": "30% - 100% Tuition Waiver",
+      "dormitoryCostMonthlyKRW": 250000,
+      "dormitoryCostMonthlyNPR": 25500,
+      "acceptanceRate": "High for qualified Nepali applicants",
+      "imageUrl": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Subway direct connection",
+        "Automatic 50% scholarship for IELTS 6.5+",
+        "Global student center"
+      ],
+      "gksEligible": true,
+      "id": "uni-1787576237523"
+    },
+    {
+      "name": "rbc",
+      "koreanName": "",
+      "city": "Seoul",
+      "region": "Seoul Capital Area",
+      "ranking": "Top 20 in South Korea",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)"
+      ],
+      "popularMajors": [
+        "Computer Science",
+        "AI",
+        "Business Administration",
+        "Data Science"
+      ],
+      "mediumOfInstruction": "100% English",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 0,
+      "annualTuitionKRW": 6500000,
+      "annualTuitionNPR": 660000,
+      "scholarshipRange": "30% - 100% Tuition Waiver",
+      "dormitoryCostMonthlyKRW": 250000,
+      "dormitoryCostMonthlyNPR": 25500,
+      "acceptanceRate": "High for qualified Nepali applicants",
+      "imageUrl": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Subway direct connection",
+        "Automatic 50% scholarship for IELTS 6.5+",
+        "Global student center"
+      ],
+      "gksEligible": true,
+      "id": "uni-1787576228878"
+    },
     {
       "id": "inha-univ",
       "name": "Inha University",
