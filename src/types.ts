@@ -68,9 +68,11 @@ export interface LeadFormData {
 export interface NewsTickerItem {
   id: string;
   title: string;
+  titleNepali?: string;
   badge: string; // e.g. "HOT", "BREAKING", "INTAKE 2026", "VISA", "SCHOLARSHIP"
   detail?: string;
   link?: string;
+  sourcePortalUrl?: string; // Direct URL to verified news on NepalLive, News24 Nepal, etc.
   date: string;
   isActive: boolean;
   urgency: "breaking" | "hot" | "notice" | "info";
@@ -176,4 +178,8 @@ export interface SiteSettings {
   counselorWelcomeImage?: string;
   showNepalMapContour?: boolean;
   showLive3DFlags?: boolean;
+  // News Portal Source Configuration
+  newsSourceUrl?: string; // e.g. "https://nepallive.com/" or "https://www.news24nepal.com/"
+  newsSourceName?: string; // e.g. "NepalLive.com" or "News24 Nepal"
+  newsSourceMode?: "nepallive" | "news24" | "onlinekhabar" | "kantipur" | "custom";
 }

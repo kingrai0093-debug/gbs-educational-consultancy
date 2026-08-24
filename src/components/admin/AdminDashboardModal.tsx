@@ -262,12 +262,28 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
   const [editingTickerId, setEditingTickerId] = useState<string | null>(null);
   const [tickerForm, setTickerForm] = useState({
     title: "",
+    titleNepali: "",
     badge: "🔥 INTAKE 2026",
     detail: "",
     link: "#contact",
+    sourcePortalUrl: "https://nepallive.com/",
     urgency: "hot" as NewsTickerItem["urgency"],
     isActive: true,
   });
+
+  const handleEditTicker = (item: NewsTickerItem) => {
+    setEditingTickerId(item.id);
+    setTickerForm({
+      title: item.title,
+      titleNepali: item.titleNepali || "",
+      badge: item.badge,
+      detail: item.detail || "",
+      link: item.link || "#contact",
+      sourcePortalUrl: item.sourcePortalUrl || "https://nepallive.com/",
+      urgency: item.urgency,
+      isActive: item.isActive,
+    });
+  };
 
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [postForm, setPostForm] = useState({
@@ -409,9 +425,11 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     if (editingTickerId) {
       updateTickerItem(editingTickerId, {
         title: tickerForm.title,
+        titleNepali: tickerForm.titleNepali,
         badge: tickerForm.badge,
         detail: tickerForm.detail,
         link: tickerForm.link,
+        sourcePortalUrl: tickerForm.sourcePortalUrl,
         urgency: tickerForm.urgency,
         isActive: tickerForm.isActive,
       });
@@ -419,10 +437,12 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     } else {
       addTickerItem({
         title: tickerForm.title,
+        titleNepali: tickerForm.titleNepali,
         badge: tickerForm.badge,
         detail: tickerForm.detail,
         link: tickerForm.link,
-        date: "Aug 2026",
+        sourcePortalUrl: tickerForm.sourcePortalUrl,
+        date: new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" }),
         isActive: tickerForm.isActive,
         urgency: tickerForm.urgency,
       });
@@ -430,9 +450,11 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
     setTickerForm({
       title: "",
+      titleNepali: "",
       badge: "🔥 INTAKE 2026",
       detail: "",
       link: "#contact",
+      sourcePortalUrl: settings.newsSourceUrl || "https://nepallive.com/",
       urgency: "hot",
       isActive: true,
     });
@@ -1191,24 +1213,149 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                 </div>
               )}
 
-              {/* TAB 1: LIVE NEWS TICKER MANAGER */}
+              {/* TAB 1: LIVE NEWS TICKER & PORTAL MANAGER */}
               {activeTab === "ticker" && (
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-black text-white flex items-center gap-2">
                       <Radio className="w-5 h-5 text-[#ED2D2A]" />
-                      <span>Live Top News Ticker & Notes Manager</span>
+                      <span>Live Top News Ticker & Verified Portal Source Manager</span>
                     </h3>
                     <p className="text-xs text-slate-400">
-                      These notes scroll automatically at the top of the website with animated urgency badges.
+                      Configure your official news feed portal (e.g. NepalLive.com or News24 Nepal) and manage top ticker headlines with Nepali and English advisories.
                     </p>
                   </div>
 
+                  {/* PORTAL SOURCE SWITCHER CARD */}
+                  <div className="bg-slate-950 p-5 rounded-2xl border border-indigo-900/60 space-y-4 shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-cyan-400" />
+                        <span className="text-xs font-black text-white uppercase tracking-wider">
+                          🌐 Live News Portal Feed Source (Official Outlet)
+                        </span>
+                      </div>
+                      <a
+                        href={settings.newsSourceUrl || "https://nepallive.com/"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1 bg-cyan-950/90 hover:bg-cyan-900 text-cyan-300 border border-cyan-800/80 rounded-lg text-[11px] font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>Open Source Portal</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+
+                    {/* Quick Source Selectors */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateSettings({
+                            newsSourceUrl: "https://nepallive.com/",
+                            newsSourceName: "NepalLive.com",
+                            newsSourceMode: "nepallive",
+                          });
+                        }}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          (settings.newsSourceUrl || "").includes("nepallive")
+                            ? "bg-cyan-950/80 border-cyan-500 text-white font-bold ring-2 ring-cyan-500/30"
+                            : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
+                        }`}
+                      >
+                        <span className="block text-[10px] text-cyan-400 font-extrabold uppercase">Outlet #1</span>
+                        <span className="font-bold text-xs block truncate">🇳🇵 NepalLive.com</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateSettings({
+                            newsSourceUrl: "https://www.news24nepal.com/",
+                            newsSourceName: "News24 Nepal",
+                            newsSourceMode: "news24",
+                          });
+                        }}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          (settings.newsSourceUrl || "").includes("news24nepal")
+                            ? "bg-red-950/80 border-red-500 text-white font-bold ring-2 ring-red-500/30"
+                            : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
+                        }`}
+                      >
+                        <span className="block text-[10px] text-red-400 font-extrabold uppercase">Outlet #2</span>
+                        <span className="font-bold text-xs block truncate">📺 News 24 Nepal</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateSettings({
+                            newsSourceUrl: "https://www.onlinekhabar.com/content/education",
+                            newsSourceName: "OnlineKhabar Education",
+                            newsSourceMode: "onlinekhabar",
+                          });
+                        }}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          (settings.newsSourceUrl || "").includes("onlinekhabar")
+                            ? "bg-blue-950/80 border-blue-500 text-white font-bold ring-2 ring-blue-500/30"
+                            : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
+                        }`}
+                      >
+                        <span className="block text-[10px] text-blue-400 font-extrabold uppercase">Outlet #3</span>
+                        <span className="font-bold text-xs block truncate">📰 OnlineKhabar</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateSettings({
+                            newsSourceUrl: "https://ekantipur.com/",
+                            newsSourceName: "Kantipur (eKantipur)",
+                            newsSourceMode: "kantipur",
+                          });
+                        }}
+                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                          (settings.newsSourceUrl || "").includes("ekantipur")
+                            ? "bg-purple-950/80 border-purple-500 text-white font-bold ring-2 ring-purple-500/30"
+                            : "bg-stone-900 border-stone-800 text-stone-300 hover:border-stone-700"
+                        }`}
+                      >
+                        <span className="block text-[10px] text-purple-400 font-extrabold uppercase">Outlet #4</span>
+                        <span className="font-bold text-xs block truncate">🗞️ eKantipur</span>
+                      </button>
+                    </div>
+
+                    {/* Custom Source Inputs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2 border-t border-slate-900">
+                      <div>
+                        <label className="block text-stone-300 font-semibold mb-1">Active Portal URL</label>
+                        <input
+                          type="text"
+                          value={settings.newsSourceUrl || "https://nepallive.com/"}
+                          onChange={(e) => updateSettings({ newsSourceUrl: e.target.value })}
+                          placeholder="https://nepallive.com/ or https://www.news24nepal.com/"
+                          className="w-full px-3.5 py-2 bg-stone-900 border border-stone-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-cyan-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-stone-300 font-semibold mb-1">Display Source Name</label>
+                        <input
+                          type="text"
+                          value={settings.newsSourceName || "NepalLive.com & News24 Nepal"}
+                          onChange={(e) => updateSettings({ newsSourceName: e.target.value })}
+                          placeholder="NepalLive.com / News 24 Nepal"
+                          className="w-full px-3.5 py-2 bg-stone-900 border border-stone-800 rounded-xl text-white text-xs focus:outline-none focus:border-cyan-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Add / Edit Ticker Form */}
-                  <form onSubmit={handleTickerSubmit} className="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-4">
+                  <form onSubmit={handleTickerSubmit} className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-amber-300">
-                        {editingTickerId ? "✏️ Edit Ticker Item" : "➕ Add New Breaking Note"}
+                        {editingTickerId ? "✏️ Edit Ticker Advisory" : "➕ Add New Verified Advisory / Headline"}
                       </span>
                       {editingTickerId && (
                         <button
@@ -1217,9 +1364,11 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                             setEditingTickerId(null);
                             setTickerForm({
                               title: "",
+                              titleNepali: "",
                               badge: "🔥 INTAKE 2026",
                               detail: "",
                               link: "#contact",
+                              sourcePortalUrl: settings.newsSourceUrl || "https://nepallive.com/",
                               urgency: "hot",
                               isActive: true,
                             });
@@ -1233,13 +1382,13 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                       <div className="sm:col-span-2">
-                        <label className="block text-stone-300 font-semibold mb-1">Headline Notice *</label>
+                        <label className="block text-stone-300 font-semibold mb-1">Headline Notice (English) *</label>
                         <input
                           type="text"
                           required
                           value={tickerForm.title}
                           onChange={(e) => setTickerForm({ ...tickerForm, title: e.target.value })}
-                          placeholder="e.g. Spring 2026 Korean Universities Direct Intake Open at Bagbazar!"
+                          placeholder="e.g. Ministry Updates Online NOC Guidelines for Study in South Korea"
                           className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                         />
                       </div>
@@ -1250,19 +1399,19 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                           type="text"
                           value={tickerForm.badge}
                           onChange={(e) => setTickerForm({ ...tickerForm, badge: e.target.value })}
-                          placeholder="e.g. 🔥 INTAKE, 🎓 SCHOLARSHIP"
+                          placeholder="e.g. 🔥 INTAKE, 🎓 SCHOLARSHIP, 🏛️ EMBASSY"
                           className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white focus:outline-none focus:border-red-500"
                         />
                       </div>
 
                       <div className="sm:col-span-2">
-                        <label className="block text-stone-300 font-semibold mb-1">Full Detail (Shown on Click)</label>
+                        <label className="block text-stone-300 font-semibold mb-1">नेपाली मुख्य शीर्षक (Nepali Headline)</label>
                         <input
                           type="text"
-                          value={tickerForm.detail}
-                          onChange={(e) => setTickerForm({ ...tickerForm, detail: e.target.value })}
-                          placeholder="Detailed explanation, eligibility criteria or walk-in timings..."
-                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white focus:outline-none focus:border-red-500"
+                          value={tickerForm.titleNepali}
+                          onChange={(e) => setTickerForm({ ...tickerForm, titleNepali: e.target.value })}
+                          placeholder="उदा: शिक्षा मन्त्रालयद्वारा वैदेशिक अध्ययन अनुमति पत्र (NOC) डिजिटल निर्देशिका जारी"
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white font-nepali focus:outline-none focus:border-red-500"
                         />
                       </div>
 
@@ -1279,13 +1428,35 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                           <option value="info">Info (Emerald)</option>
                         </select>
                       </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-stone-300 font-semibold mb-1">Full Advisory Detail / Summary (Shown on Click)</label>
+                        <input
+                          type="text"
+                          value={tickerForm.detail}
+                          onChange={(e) => setTickerForm({ ...tickerForm, detail: e.target.value })}
+                          placeholder="Detailed explanation, eligibility criteria or verified news summary..."
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white focus:outline-none focus:border-red-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-stone-300 font-semibold mb-1">Source Link (NepalLive / News24)</label>
+                        <input
+                          type="text"
+                          value={tickerForm.sourcePortalUrl}
+                          onChange={(e) => setTickerForm({ ...tickerForm, sourcePortalUrl: e.target.value })}
+                          placeholder="https://nepallive.com/..."
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-800 rounded-xl text-white font-mono text-xs focus:outline-none focus:border-red-500"
+                        />
+                      </div>
                     </div>
 
                     <button
                       type="submit"
                       className="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      {editingTickerId ? <Save className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
                       <span>{editingTickerId ? "Update Live Ticker Note" : "Publish to Top News Bar"}</span>
                     </button>
                   </form>
@@ -1302,11 +1473,16 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                             : "bg-stone-950/40 border-stone-900 text-stone-500 opacity-60"
                         }`}
                       >
-                        <div className="flex items-center gap-2.5 truncate">
+                        <div className="flex items-center gap-2.5 truncate flex-1 min-w-0">
                           <span className="px-2 py-0.5 rounded bg-stone-800 text-[10px] font-mono font-bold text-amber-300 shrink-0">
                             {item.badge}
                           </span>
-                          <span className="font-semibold truncate">{item.title}</span>
+                          <div className="truncate">
+                            <span className="font-semibold text-white block truncate">{item.title}</span>
+                            {item.titleNepali && (
+                              <span className="text-[11px] text-stone-400 font-nepali block truncate">{item.titleNepali}</span>
+                            )}
+                          </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
@@ -1324,18 +1500,9 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
                           <button
                             type="button"
-                            onClick={() => {
-                              setEditingTickerId(item.id);
-                              setTickerForm({
-                                title: item.title,
-                                badge: item.badge,
-                                detail: item.detail || "",
-                                link: item.link || "#contact",
-                                urgency: item.urgency,
-                                isActive: item.isActive,
-                              });
-                            }}
+                            onClick={() => handleEditTicker(item)}
                             className="p-1.5 bg-stone-900 hover:bg-stone-800 text-stone-300 rounded-lg transition-colors cursor-pointer"
+                            title="Edit Headline"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
@@ -1344,6 +1511,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                             type="button"
                             onClick={() => deleteTickerItem(item.id)}
                             className="p-1.5 bg-red-950/80 hover:bg-red-900 text-red-300 rounded-lg transition-colors cursor-pointer"
+                            title="Delete Headline"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
