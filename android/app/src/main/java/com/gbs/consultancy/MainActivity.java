@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
 
-        // Desktop mode User-Agent
-        String desktopUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-        settings.setUserAgentString(desktopUA);
+        // Mobile optimized User-Agent
+        String mobileUA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
+        settings.setUserAgentString(mobileUA);
 
         // Display & Rendering
         settings.setUseWideViewPort(true);
