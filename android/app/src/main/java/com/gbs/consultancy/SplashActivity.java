@@ -23,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }, SPLASH_DURATION);
     }
 
@@ -36,5 +37,13 @@ public class SplashActivity extends AppCompatActivity {
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            enterImmersiveMode();
+        }
     }
 }

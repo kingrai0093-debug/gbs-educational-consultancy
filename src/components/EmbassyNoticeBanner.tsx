@@ -77,7 +77,7 @@ export const EmbassyNoticeBanner: React.FC = () => {
       <div className="w-full bg-[#0a1020] text-slate-100 border-b border-blue-900/60 shadow-xl select-none relative z-40">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           
-          {/* Left Brand Identity: Official Embassy of the Republic of Korea in Nepal */}
+          {/* Left Brand Identity */}
           <div className="flex items-center gap-3 shrink-0">
             {/* Korea & Nepal Dual Flag Emblem */}
             <div className="flex items-center -space-x-1 p-1.5 bg-slate-900 rounded-xl border border-slate-700/80 shadow-md">
@@ -88,15 +88,15 @@ export const EmbassyNoticeBanner: React.FC = () => {
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-300">
-                  Embassy of the Republic of Korea in Nepal
+                  Official Notice Board
                 </span>
                 <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-extrabold rounded-md bg-blue-950 text-blue-200 border border-blue-800">
-                  주네팔대한민국대사관
+                  Verified Feed
                 </span>
               </div>
               <div className="text-xs text-slate-300 flex items-center gap-1.5 font-medium">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Official Consular & Visa Notice Board</span>
+                <span>Official Consular & Visa Updates</span>
               </div>
             </div>
           </div>
@@ -113,10 +113,6 @@ export const EmbassyNoticeBanner: React.FC = () => {
             title="Click to view full Embassy notice details"
           >
             <div className="flex items-center gap-2.5 min-w-0 flex-1">
-              <span className="px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 bg-red-600 text-white shadow-md animate-pulse">
-                LATEST NOTICE
-              </span>
-
               <span className="text-sm sm:text-base font-black text-white hover:text-amber-300 truncate transition-colors">
                 {activeNotice.title}
               </span>
@@ -128,7 +124,7 @@ export const EmbassyNoticeBanner: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Controls: Direct Official Portal Link & View All Notices */}
+          {/* Right Controls */}
           <div className="flex items-center gap-2 shrink-0 justify-end">
             
             {/* View All Notices Archive */}
@@ -140,18 +136,6 @@ export const EmbassyNoticeBanner: React.FC = () => {
               <FileText className="w-4 h-4 text-blue-300" />
               <span>All Notices ({EMBASSY_NOTICES_LIST.length})</span>
             </button>
-
-            {/* Direct Official Link to np.mofa.go.kr */}
-            <a
-              href={OFFICIAL_EMBASSY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3.5 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-black transition-all shadow-md flex items-center gap-1.5 cursor-pointer group"
-              title="Open Embassy of Korea official portal (np.mofa.go.kr)"
-            >
-              <span>np.mofa.go.kr</span>
-              <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </a>
 
           </div>
 
@@ -184,24 +168,15 @@ export const EmbassyNoticeBanner: React.FC = () => {
                       </span>
                     </div>
                     <h3 className="text-xl sm:text-2xl font-black text-white mt-0.5">
-                      Embassy of the Republic of Korea in Nepal
+                      Latest Official Notices
                     </h3>
                     <p className="text-xs text-slate-300 mt-1">
-                      Official notices regarding study visa document verification, consular legalization, online appointments, and GKS scholarship guidelines.
+                      Official notices regarding study visa document verification, consular legalization, online appointments, and scholarship guidelines.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <a
-                    href={OFFICIAL_EMBASSY_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-blue-900/60 hover:bg-blue-800 text-blue-200 text-xs font-bold rounded-xl border border-blue-700/60"
-                  >
-                    <span>Visit np.mofa.go.kr</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
                   <button
                     onClick={() => {
                       setIsModalOpen(false);
@@ -271,18 +246,6 @@ export const EmbassyNoticeBanner: React.FC = () => {
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-800">
                       <div className="text-[11px] text-slate-400">
                         Source: <strong className="text-white">{activeNoticeDetail.sourceLabel}</strong>
-                      </div>
-
-                      <div className="flex items-center gap-2 w-full sm:w-auto">
-                        <a
-                          href={activeNoticeDetail.officialUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-red-950/50 flex items-center justify-center gap-1.5"
-                        >
-                          <span>Open Official Notice on np.mofa.go.kr</span>
-                          <ExternalLink className="w-3.5 h-3.5" />
-                        </a>
                       </div>
                     </div>
                   </div>
@@ -354,7 +317,6 @@ export const EmbassyNoticeBanner: React.FC = () => {
                           </p>
 
                           <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800/80">
-                            <span>Official Source: np.mofa.go.kr</span>
                             <span className="text-blue-400 group-hover:text-blue-300 font-bold flex items-center gap-1">
                               <span>Read Complete Directive</span>
                               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -373,18 +335,8 @@ export const EmbassyNoticeBanner: React.FC = () => {
               <div className="p-4 bg-slate-950 border-t border-blue-900/50 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                 <div className="text-slate-400 text-center sm:text-left flex items-center gap-2">
                   <span className="text-base">🏛️</span>
-                  <span>Embassy of the Republic of Korea in Nepal • Ravi Bhawan, Tahachal, Kathmandu</span>
+                  <span>Official Study Visa & Consular Notice Board</span>
                 </div>
-
-                <a
-                  href={OFFICIAL_EMBASSY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold rounded-xl flex items-center gap-1.5 shadow-md shadow-red-950/40"
-                >
-                  <span>Open Official Embassy Website (np.mofa.go.kr)</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
               </div>
 
             </motion.div>
