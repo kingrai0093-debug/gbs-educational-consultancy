@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-08-24T12:51:03.440Z",
+  "lastUpdated": "2026-08-24T12:54:12.866Z",
   "updatedBy": "GBS Admin Bagbazar",
   "pageContent": {
     "heroTitle": "Study Abroad With Confidence",
@@ -19,52 +19,52 @@
   },
   "tickerItems": [
     {
-      "title": "Ministry of Education Releases Updated Digital NOC Guidelines for Study in South Korea",
-      "titleNepali": "शिक्षा मन्त्रालयद्वारा वैदेशिक अध्ययन अनुमति पत्र (NOC) डिजिटल प्रमाणीकरण निर्देशिका जारी",
-      "badge": "🇳🇵 NEPALLIVE EXCLUSIVE",
-      "detail": "The Ministry of Education, Science and Technology has streamlined digital verification for Nepali students proceeding to South Korea on D-2 and D-4 visas.",
-      "link": "https://nepallive.com/",
-      "sourcePortalUrl": "https://nepallive.com/",
-      "date": "Today",
+      "title": "News24 Special: Transparency and Mandatory Accreditation Enforced for Education Agencies",
+      "titleNepali": "शैक्षिक परामर्श केन्द्रहरूको मापदण्ड अनुगमन: विद्यार्थीको अधिकार र पारदर्शी शुल्क अनिवार्य",
+      "badge": "📺 NEWS24 BREAKING",
+      "detail": "Government inspection task force verifies accredited consultancy centers, protecting students from uncertified documentation and inflated fees.",
+      "link": "https://www.news24nepal.com/",
+      "sourcePortalUrl": "https://www.news24nepal.com/",
+      "date": "Live Broadcast",
       "isActive": true,
       "urgency": "breaking",
-      "id": "ticker-nepallive-1787575861580-0"
+      "id": "ticker-news24-1787576046980-0"
     },
     {
-      "title": "South Korea Increases Minimum Student Hourly Wage to 10,030 KRW (~NPR 1,000/hr)",
-      "titleNepali": "कोरियामा नेपाली विद्यार्थीका लागि न्यूनतम पारिश्रमिक र पार्ट-टाइम काम गर्ने कानुनी समय वृद्धि",
-      "badge": "💼 WORK RIGHTS",
-      "detail": "International students holding valid D-2 visas can legally work 25 to 30 hours per week during term time and unlimited hours in vacations.",
-      "link": "https://nepallive.com/",
-      "sourcePortalUrl": "https://nepallive.com/",
+      "title": "Tribhuvan University & Top Korean Universities Ink Research Exchange & Credit Transfer MoUs",
+      "titleNepali": "त्रिभुवन विश्वविद्यालय र कोरियाली प्रविधि विश्वविद्यालयहरूबीच शैक्षिक आदानप्रदान सम्झौता",
+      "badge": "🏛️ UNI ALLIANCE",
+      "detail": "Engineering and IT students at Nepali universities can now participate in dual-degree programs and sponsored research terms in South Korea.",
+      "link": "https://www.news24nepal.com/",
+      "sourcePortalUrl": "https://www.news24nepal.com/",
       "date": "Today",
       "isActive": true,
       "urgency": "hot",
-      "id": "ticker-nepallive-1787575861580-1"
+      "id": "ticker-news24-1787576046980-1"
     },
     {
-      "title": "TOPIK I & II Exam Registration Timeline and Intake Prep Announced in Kathmandu",
-      "titleNepali": "काठमाडौँमा कोरियन भाषा दक्षता परीक्षा (TOPIK) नयाँ तालिका तथा तयारी कक्षा मापदण्ड सार्वजनिक",
-      "badge": "🇰🇷 TOPIK ADVISORY",
-      "detail": "NIIED and local testing centers announce updated schedule for TOPIK test dates critical for university scholarships and visa eligibility.",
-      "link": "https://nepallive.com/",
-      "sourcePortalUrl": "https://nepallive.com/",
+      "title": "Embassy of the Republic of Korea Issues Streamlined Verification for Academic Credentials",
+      "titleNepali": "कोरियाली राजदूतावासद्वारा विद्यार्थी भिसा कागजात प्रमाणीकरण मापदण्ड सहज",
+      "badge": "📜 EMBASSY BULLETIN",
+      "detail": "Embassy consular department in Kathmandu clarifies online authentication steps for graduation certificates and financial transcripts.",
+      "link": "https://www.news24nepal.com/",
+      "sourcePortalUrl": "https://www.news24nepal.com/",
       "date": "Latest",
       "isActive": true,
       "urgency": "notice",
-      "id": "ticker-nepallive-1787575861580-2"
+      "id": "ticker-news24-1787576046980-2"
     },
     {
-      "title": "GKS Government Scholarship 2026 Quotas for Nepali Students: 100% Tuition + Living Stipend",
-      "titleNepali": "ग्लोबल कोरिया छात्रवृत्ति (GKS २०२६): नेपाली विद्यार्थीहरूका लागि १००% पूर्ण छात्रवृत्ति कोटा खुला",
-      "badge": "🎓 GKS SCHOLARSHIP",
-      "detail": "Applications open for Bachelor's, Master's and PhD programs with full Korean Government sponsorship, airfare, and monthly allowance.",
-      "link": "https://nepallive.com/",
-      "sourcePortalUrl": "https://nepallive.com/",
-      "date": "Active",
+      "title": "Foreign Degree Equivalence System Made 100% Online by TU Curriculum Development Centre",
+      "titleNepali": "विदेशी विश्वविद्यालयको समकक्षता (Equivalence) अब पूर्ण अनलाइन प्रणालीबाट उपलब्ध",
+      "badge": "✨ EQUIVALENCE UPDATE",
+      "detail": "Returning graduates from accredited Korean universities can instantly obtain degree recognition certificates through the digital equivalence portal.",
+      "link": "https://www.news24nepal.com/",
+      "sourcePortalUrl": "https://www.news24nepal.com/",
+      "date": "Today",
       "isActive": true,
-      "urgency": "hot",
-      "id": "ticker-nepallive-1787575861580-3"
+      "urgency": "info",
+      "id": "ticker-news24-1787576046980-3"
     }
   ],
   "posts": [
@@ -454,8 +454,8 @@
     "counselorWelcomeImage": "/images/counselor_welcome.svg",
     "showNepalMapContour": true,
     "showLive3DFlags": true,
-    "newsSourceUrl": "https://nepallive.com/",
-    "newsSourceName": "NepalLive.com",
-    "newsSourceMode": "nepallive"
+    "newsSourceUrl": "https://www.news24nepal.com/",
+    "newsSourceName": "News24 Nepal",
+    "newsSourceMode": "custom"
   }
 }
