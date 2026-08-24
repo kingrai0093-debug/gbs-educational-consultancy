@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#080d1a"
-    android:fitsSystemWindows="true">
+    android:background="#000000"
+    android:fitsSystemWindows="false">
 
     <WebView
         android:id="@+id/web_view"
@@ -11,45 +11,37 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         android:overScrollMode="never"
-        android:fadingEdge="none" />
+        android:fadingEdge="none"
+        android:background="#000000" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:layout_gravity="top"
         android:max="100"
         android:progressTint="#e53935"
-        android:progressBackgroundTint="#080d1a"
+        android:progressBackgroundTint="#00000000"
         android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/offline_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#080d1a"
+        android:background="#000000"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="48dp"
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/app_logo"
             android:scaleType="fitCenter"
             android:layout_marginBottom="32dp"
-            android:alpha="0.8" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GBS Educational Consultancy"
-            android:textColor="#ffffff"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp" />
+            android:alpha="0.6" />
 
         <TextView
             android:id="@+id/error_msg"
@@ -62,22 +54,13 @@
             android:layout_marginBottom="32dp"
             android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please check your network settings and try again."
-            android:textColor="#64748b"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginBottom="32dp" />
-
         <Button
             android:id="@+id/btn_retry"
-            android:layout_width="220dp"
-            android:layout_height="54dp"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
             android:text="RETRY"
             android:textColor="#ffffff"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:backgroundTint="#e53935" />
     </LinearLayout>

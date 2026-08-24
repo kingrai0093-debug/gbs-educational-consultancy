@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Direct load - no splash, no delay
         if (isNetworkAvailable()) {
             webView.loadUrl(TARGET_URL);
             startLoadTimeout();
@@ -84,15 +85,11 @@ public class MainActivity extends AppCompatActivity {
     private void setupWebView() {
         WebSettings settings = webView.getSettings();
 
-        // Core
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
-
-        // Mobile UA
         settings.setUserAgentString("Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
 
-        // Full screen display - no zoom, full cover
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setSupportZoom(false);
@@ -101,22 +98,16 @@ public class MainActivity extends AppCompatActivity {
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setDefaultTextEncodingName("UTF-8");
 
-        // Images & Media
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-
-        // File access
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
-
-        // Performance
         settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         settings.setEnableSmoothTransition(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
 
-        // Cookies
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
 
@@ -125,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             settings.setAllowUniversalAccessFromFileURLs(true);
         }
 
-        // Full screen WebView rendering
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -135,24 +125,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if (url.startsWith("tel:")) {
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(url)));
-                    return true;
-                }
-                if (url.startsWith("mailto:")) {
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
-                    return true;
-                }
+                if (url.startsWith("tel:")) { startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(url))); return true; }
+                if (url.startsWith("mailto:")) { startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url))); return true; }
                 if (url.startsWith("whatsapp:") || url.startsWith("https://api.whatsapp.com") || url.startsWith("https://wa.me")) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); return true; } catch (Exception ignored) {}
                 }
                 if (url.startsWith("geo:") || url.contains("maps.google.com")) {
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); return true; } catch (Exception ignored) {}
                 }
-                if (url.startsWith("sms:")) {
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
-                    return true;
-                }
+                if (url.startsWith("sms:")) { startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url))); return true; }
                 if (url.contains("kingrai0093-debug.github.io")) return false;
                 try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); } catch (Exception ignored) {}
                 return true;
@@ -165,10 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 if (errorMsg != null) errorMsg.setVisibility(View.GONE);
 
-                // Disable zoom via JS
                 view.evaluateJavascript(
-                    "var m=document.querySelector('meta[name=viewport]');" +
-                    "if(m)m.setAttribute('content','width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no');" +
+                    "var m=document.querySelector('meta[name=viewport]');if(m)m.setAttribute('content','width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no');" +
                     "document.addEventListener('gesturestart',function(e){e.preventDefault();});" +
                     "document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});" +
                     "document.addEventListener('wheel',function(e){if(e.ctrlKey)e.preventDefault();},{passive:false});"
@@ -181,13 +160,9 @@ public class MainActivity extends AppCompatActivity {
                 isLoading = false;
                 progressBar.setVisibility(View.GONE);
 
-                // Full cover CSS injection
                 view.evaluateJavascript(
                     "var s=document.createElement('style');" +
-                    "s.textContent='" +
-                    "html,body{overflow-x:hidden!important;-webkit-text-size-adjust:100%!important;touch-action:pan-y!important;overscroll-behavior:none!important;height:100%!important;margin:0!important;padding:0!important;}" +
-                    "*,*::before,*::after{touch-action:pan-y!important;}" +
-                    "#root{min-height:100vh!important;min-height:100dvh!important;}';" +
+                    "s.textContent='html,body{overflow-x:hidden!important;-webkit-text-size-adjust:100%!important;touch-action:pan-y!important;overscroll-behavior:none!important;height:100%!important;margin:0!important;padding:0!important;}*,*::before,*::after{touch-action:pan-y!important;}#root{min-height:100vh!important;min-height:100dvh!important;}';" +
                     "document.head.appendChild(s);" +
                     "document.addEventListener('gesturechange',function(e){e.preventDefault();},{passive:false});" +
                     "document.addEventListener('gestureend',function(e){e.preventDefault();},{passive:false});"
@@ -200,10 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 if (request.isForMainFrame()) {
                     isLoading = false;
                     progressBar.setVisibility(View.GONE);
-                    if (errorMsg != null) {
-                        errorMsg.setText("No internet connection");
-                        errorMsg.setVisibility(View.VISIBLE);
-                    }
+                    if (errorMsg != null) { errorMsg.setText("No internet connection"); errorMsg.setVisibility(View.VISIBLE); }
                 }
             }
         });
@@ -238,11 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startLoadTimeout() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            if (isLoading) {
-                isLoading = false;
-                webView.stopLoading();
-                progressBar.setVisibility(View.GONE);
-            }
+            if (isLoading) { isLoading = false; webView.stopLoading(); progressBar.setVisibility(View.GONE); }
         }, PAGE_LOAD_TIMEOUT);
     }
 
@@ -316,14 +284,11 @@ public class MainActivity extends AppCompatActivity {
             if (fileUploadCallback == null) return;
             Uri[] results = null;
             if (resultCode == RESULT_OK && data != null) {
-                if (data.getDataString() != null) {
-                    results = new Uri[]{Uri.parse(data.getDataString())};
-                } else if (data.getClipData() != null) {
+                if (data.getDataString() != null) results = new Uri[]{Uri.parse(data.getDataString())};
+                else if (data.getClipData() != null) {
                     final int count = data.getClipData().getItemCount();
                     results = new Uri[count];
-                    for (int i = 0; i < count; i++) {
-                        results[i] = data.getClipData().getItemAt(i).getUri();
-                    }
+                    for (int i = 0; i < count; i++) results[i] = data.getClipData().getItemAt(i).getUri();
                 }
             }
             fileUploadCallback.onReceiveValue(results);

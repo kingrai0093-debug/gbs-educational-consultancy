@@ -1,5 +1,5 @@
 <resources>
-    <!-- Fullscreen theme - no action bar, no title, full screen -->
+    <!-- Fullscreen theme - no action bar, no title, no splash, direct web view -->
     <style name="Theme.GBSEducationalConsultancy.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -8,6 +8,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/black</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
@@ -15,7 +16,4 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:fitsSystemWindows">false</item>
     </style>
-
-    <!-- Legacy alias -->
-    <style name="Theme.GBSEducationalConsultancy" parent="Theme.GBSEducationalConsultancy.Fullscreen" />
 </resources>
