@@ -11,9 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,12 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout offlineLayout;
     private Button btnRetry;
     private TextView errorMsg;
-    private ScaleGestureDetector scaleGestureDetector;
-    private GestureDetector gestureDetector;
-    private float currentScale = 1f;
-    private static final float MIN_SCALE = 1f;
-    private static final float MAX_SCALE = 3f;
-
     private static final String TARGET_URL = "https://kingrai0093-debug.github.io/gbs-educational-consultancy/";
     private static final int PAGE_LOAD_TIMEOUT = 30000;
     private ValueCallback<Uri[]> fileUploadCallback;
@@ -73,10 +64,7 @@ public class MainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (currentScale > 1f) {
-                    currentScale = 1f;
-                    webView.setInitialScale(100);
-                } else if (webView.canGoBack()) {
+                if (webView.canGoBack()) {
                     webView.goBack();
                 } else {
                     moveTaskToBack(true);
@@ -93,46 +81,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupZoom() {
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
-            @Override
-            public boolean onScale(ScaleGestureDetector detector) {
-                float scaleFactor = detector.getScaleFactor();
-                currentScale *= scaleFactor;
-                currentScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, currentScale));
-                int scalePercent = (int) (currentScale * 100);
-                webView.setInitialScale(scalePercent);
-                return true;
-            }
-
-            @Override
-            public boolean onScaleBegin(ScaleGestureDetector detector) {
-                return true;
-            }
-        });
-
-        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                if (currentScale > 1f) {
-                    currentScale = 1f;
-                    webView.setInitialScale(100);
-                } else {
-                    currentScale = 2f;
-                    webView.setInitialScale(200);
-                }
-                return true;
-            }
-        });
-
-        webView.setOnTouchListener((v, event) -> {
-            scaleGestureDetector.onTouchEvent(event);
-            gestureDetector.onTouchEvent(event);
-            // Only block touch during active pinch (2 fingers), let scrolling work normally
-            if (scaleGestureDetector.isInProgress()) {
-                return true;
-            }
-            return false;
-        });
+        // Let WebView handle zoom natively - no custom touch override
+        // Just enable built-in zoom support
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -146,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(false);
-        settings.setDisplayZoomControls(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setDefaultTextEncodingName("UTF-8");
 
