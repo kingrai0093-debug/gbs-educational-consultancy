@@ -30,10 +30,12 @@ import {
   Mail,
   Send,
   GraduationCap,
+  Globe,
 } from "lucide-react";
 import { NewsTickerItem, PostItem, VideoItem, GalleryItem, InquiryLead, University } from "../../types";
 import { GBSLogo } from "../GBSLogo";
 import { ImageUploadField } from "./ImageUploadField";
+import { getStoredSyncToken, setStoredSyncToken } from "../../utils/cloudSync";
 
 interface AdminDashboardModalProps {
   isOpen: boolean;
@@ -50,6 +52,10 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     gallery,
     universities,
     leads,
+    isCloudSyncing,
+    cloudSyncMessage,
+    lastCloudSyncTime,
+    syncAllToGlobalCloud,
     updatePageContent,
     addUniversity,
     updateUniversity,
@@ -80,10 +86,12 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState("");
+  const [customSyncToken, setCustomSyncToken] = useState<string>(() => getStoredSyncToken());
+  const [tokenSavedToast, setTokenSavedToast] = useState(false);
 
   // Navigation tabs
   const [activeTab, setActiveTab] = useState<
-    "ticker" | "posts" | "videos" | "gallery" | "universities" | "leads" | "cms" | "settings" | "backup"
+    "ticker" | "posts" | "videos" | "gallery" | "universities" | "leads" | "cms" | "settings" | "cloud" | "backup"
   >("cms");
 
   // Forms states
@@ -590,13 +598,29 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
           <div className="flex items-center gap-2">
             {isAuthenticated && (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="px-3 py-1.5 rounded text-xs font-bold text-slate-300 hover:text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors cursor-pointer"
-              >
-                Lock / Logout
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const res = await syncAllToGlobalCloud(customSyncToken);
+                    alert(res.message);
+                  }}
+                  disabled={isCloudSyncing}
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-black text-white bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50 transition-all active:scale-95"
+                  title="Push and broadcast all changes live to all visitors worldwide"
+                >
+                  <Globe className={`w-3.5 h-3.5 ${isCloudSyncing ? "animate-spin" : "text-emerald-200"}`} />
+                  <span>{isCloudSyncing ? "Publishing Worldwide..." : "Publish Live to World 🚀"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-3 py-1.5 rounded text-xs font-bold text-slate-300 hover:text-white bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors cursor-pointer"
+                >
+                  Lock / Logout
+                </button>
+              </>
             )}
             <button
               onClick={handleClose}
@@ -795,6 +819,24 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                   <span className="flex items-center gap-2.5">
                     <Settings className="w-4 h-4 text-slate-400" />
                     <span>Site Contacts</span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("cloud")}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
+                    activeTab === "cloud"
+                      ? "bg-emerald-700 text-white shadow-sm"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                  }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <Globe className="w-4 h-4 text-emerald-400" />
+                    <span>Global Cloud Sync</span>
+                  </span>
+                  <span className="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-700/60 font-black px-1.5 py-0.5 rounded">
+                    LIVE
                   </span>
                 </button>
 
@@ -2276,6 +2318,116 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                       <span>Save Site Configuration</span>
                     </button>
                   </form>
+                </div>
+              )}
+
+              {/* TAB 8: GLOBAL CLOUD SYNCHRONIZATION */}
+              {activeTab === "cloud" && (
+                <div className="space-y-6 animate-in fade-in duration-200">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs font-bold mb-2 border border-emerald-500/20 uppercase tracking-wider">
+                      <Globe className="w-3.5 h-3.5" />
+                      <span>Real-Time Global Cloud Synchronization Engine</span>
+                    </div>
+                    <h3 className="text-xl font-black text-white">
+                      Publish Changes Live to Visitors Worldwide
+                    </h3>
+                    <p className="text-xs text-slate-400 font-medium max-w-2xl mt-1">
+                      Whenever you add or update breaking notices, visa grant celebrations, and university fees in Bagbazar, click below to push them directly to the global cloud. All students and visitors across Nepal, South Korea, and worldwide will see your live updates in real time!
+                    </p>
+                  </div>
+
+                  {/* Live Status Bento Card */}
+                  <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 rounded-full bg-emerald-500 animate-ping" />
+                        <div>
+                          <h4 className="text-sm font-black text-white">
+                            Global Live Synchronization Status: Active 🌐
+                          </h4>
+                          <p className="text-xs text-slate-400">
+                            Connected to GitHub Cloud (kingrai0093-debug/gbs-educational-consultancy)
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-[11px] text-slate-400 font-medium block">Last Global Sync Time:</span>
+                        <span className="text-xs font-mono font-bold text-emerald-400">
+                          {lastCloudSyncTime ? new Date(lastCloudSyncTime).toLocaleString() : "Never synced yet"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {cloudSyncMessage && (
+                      <div className="p-3 bg-slate-900 rounded-xl border border-slate-700 text-xs text-slate-300 font-medium">
+                        {cloudSyncMessage}
+                      </div>
+                    )}
+
+                    {/* GitHub Sync Token Config */}
+                    <div className="pt-2 border-t border-slate-800 space-y-2">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
+                        Admin GitHub Cloud Sync Token (Personal Access Token)
+                      </label>
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                        <input
+                          type="password"
+                          value={customSyncToken}
+                          onChange={(e) => setCustomSyncToken(e.target.value)}
+                          placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                          className="flex-1 px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:border-emerald-500"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setStoredSyncToken(customSyncToken);
+                            setTokenSavedToast(true);
+                            setTimeout(() => setTokenSavedToast(false), 3000);
+                          }}
+                          className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-600 shrink-0"
+                        >
+                          {tokenSavedToast ? "✅ Token Saved!" : "Save Cloud Token"}
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-slate-500 font-medium">
+                        Token is securely stored in your local admin environment to authorize cloud live commits.
+                      </p>
+                    </div>
+
+                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const res = await syncAllToGlobalCloud(customSyncToken);
+                          alert(res.message);
+                        }}
+                        disabled={isCloudSyncing}
+                        className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg cursor-pointer disabled:opacity-50 transition-all active:scale-98"
+                      >
+                        <Globe className={`w-4 h-4 ${isCloudSyncing ? "animate-spin" : ""}`} />
+                        <span>{isCloudSyncing ? "Publishing Worldwide..." : "Publish All Changes Live to World Now 🚀"}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* How it works info box */}
+                  <div className="p-5 bg-blue-950/40 border border-blue-800/60 rounded-2xl space-y-2 text-xs text-slate-300">
+                    <h5 className="font-bold text-blue-300 flex items-center gap-1.5 text-sm">
+                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      <span>How Worldwide Live Synchronization Works:</span>
+                    </h5>
+                    <p className="leading-relaxed">
+                      1. You edit or publish news, university courses, student visa grants (e.g. Anjana Tamang), or contact details in this Admin Panel.
+                    </p>
+                    <p className="leading-relaxed">
+                      2. Clicking <strong>"Publish Live to World 🚀"</strong> sends your updates directly to the central cloud repository (<code className="text-amber-300">public/cms_data.json</code>).
+                    </p>
+                    <p className="leading-relaxed">
+                      3. All students, parents, and visitors worldwide visiting <a href="https://kingrai0093-debug.github.io/gbs-educational-consultancy/" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline font-bold">https://kingrai0093-debug.github.io/gbs-educational-consultancy/</a> immediately receive your live changes automatically without needing to refresh or clear cache!
+                    </p>
+                  </div>
                 </div>
               )}
 

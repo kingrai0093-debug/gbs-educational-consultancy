@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import {
   NewsTickerItem,
   PostItem,
@@ -18,6 +18,11 @@ import {
   DEFAULT_LEADS,
 } from "../data/adminDefaults";
 import { KOREA_UNIVERSITIES } from "../data/koreaUniversities";
+import {
+  fetchGlobalCmsData,
+  pushGlobalCmsDataToGitHub,
+  GlobalCmsPayload,
+} from "../utils/cloudSync";
 
 export interface PageContent {
   heroTitle: string;
@@ -61,6 +66,12 @@ interface AdminDataContextType {
   universities: University[];
   leads: InquiryLead[];
   
+  // Global Cloud Sync State
+  isCloudSyncing: boolean;
+  cloudSyncMessage: string;
+  lastCloudSyncTime: string | null;
+  syncAllToGlobalCloud: (customToken?: string) => Promise<{ success: boolean; message: string }>;
+
   // Content operations
   updatePageContent: (content: Partial<PageContent>) => void;
 
@@ -206,6 +217,60 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   });
 
+  // Cloud Sync Status State
+  const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
+  const [cloudSyncMessage, setCloudSyncMessage] = useState<string>("");
+  const [lastCloudSyncTime, setLastCloudSyncTime] = useState<string | null>(() => {
+    return localStorage.getItem(`${STORAGE_KEY}_last_cloud_sync`) || null;
+  });
+
+  // =========================================================================
+  // GLOBAL REAL-TIME HYDRATION (Fetches live cloud data on startup & interval)
+  // =========================================================================
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadGlobalCloudData = async () => {
+      try {
+        const cloudData = await fetchGlobalCmsData();
+        if (!isMounted || !cloudData) return;
+
+        if (cloudData.pageContent) setPageContent(cloudData.pageContent);
+        if (cloudData.tickerItems && Array.isArray(cloudData.tickerItems) && cloudData.tickerItems.length > 0) {
+          setTickerItems(cloudData.tickerItems);
+        }
+        if (cloudData.posts && Array.isArray(cloudData.posts) && cloudData.posts.length > 0) {
+          setPosts(cloudData.posts);
+        }
+        if (cloudData.videos && Array.isArray(cloudData.videos) && cloudData.videos.length > 0) {
+          setVideos(cloudData.videos);
+        }
+        if (cloudData.gallery && Array.isArray(cloudData.gallery) && cloudData.gallery.length > 0) {
+          setGallery(cloudData.gallery);
+        }
+        if (cloudData.universities && Array.isArray(cloudData.universities) && cloudData.universities.length > 0) {
+          setUniversities(cloudData.universities);
+        }
+        if (cloudData.settings) setSettings(cloudData.settings);
+
+        const syncTime = cloudData.lastUpdated || new Date().toISOString();
+        setLastCloudSyncTime(syncTime);
+        localStorage.setItem(`${STORAGE_KEY}_last_cloud_sync`, syncTime);
+      } catch (e) {
+        console.warn("Global Cloud hydration error (using cached local data):", e);
+      }
+    };
+
+    loadGlobalCloudData();
+
+    // Auto-refresh every 45s for open browser tabs worldwide
+    const interval = setInterval(loadGlobalCloudData, 45000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
   // Sync to localStorage
   useEffect(() => {
     try {
@@ -271,12 +336,48 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }, [leads]);
 
-  // Content Methods
-  const updatePageContent = (updated: Partial<PageContent>) => {
-    setPageContent((prev) => ({ ...prev, ...updated }));
+  // =========================================================================
+  // GLOBAL CLOUD PUSH ACTION (Broadcasts live changes to all visitors worldwide)
+  // =========================================================================
+  const syncAllToGlobalCloud = useCallback(
+    async (customToken?: string): Promise<{ success: boolean; message: string }> => {
+      setIsCloudSyncing(true);
+      setCloudSyncMessage("Syncing changes to Global Cloud and all visitors worldwide...");
+
+      const payload: GlobalCmsPayload = {
+        version: "1.0",
+        lastUpdated: new Date().toISOString(),
+        updatedBy: "GBS Admin Bagbazar",
+        pageContent,
+        tickerItems,
+        posts,
+        videos,
+        gallery,
+        universities,
+        settings,
+      };
+
+      const result = await pushGlobalCmsDataToGitHub(payload, customToken);
+
+      setIsCloudSyncing(false);
+      setCloudSyncMessage(result.message);
+      if (result.success) {
+        const time = new Date().toISOString();
+        setLastCloudSyncTime(time);
+        localStorage.setItem(`${STORAGE_KEY}_last_cloud_sync`, time);
+      }
+
+      return result;
+    },
+    [pageContent, tickerItems, posts, videos, gallery, universities, settings]
+  );
+
+  // Content operations
+  const updatePageContent = (newContent: Partial<PageContent>) => {
+    setPageContent((prev) => ({ ...prev, ...newContent }));
   };
 
-  // University Methods
+  // University operations
   const addUniversity = (uni: Omit<University, "id">) => {
     const newUni: University = {
       ...uni,
@@ -286,16 +387,14 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateUniversity = (id: string, updated: Partial<University>) => {
-    setUniversities((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, ...updated } : u))
-    );
+    setUniversities((prev) => prev.map((u) => (u.id === id ? { ...u, ...updated } : u)));
   };
 
   const deleteUniversity = (id: string) => {
     setUniversities((prev) => prev.filter((u) => u.id !== id));
   };
 
-  // Ticker Methods
+  // Ticker operations
   const addTickerItem = (item: Omit<NewsTickerItem, "id">) => {
     const newItem: NewsTickerItem = {
       ...item,
@@ -305,9 +404,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateTickerItem = (id: string, item: Partial<NewsTickerItem>) => {
-    setTickerItems((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, ...item } : t))
-    );
+    setTickerItems((prev) => prev.map((t) => (t.id === id ? { ...t, ...item } : t)));
   };
 
   const deleteTickerItem = (id: string) => {
@@ -315,32 +412,28 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const toggleTickerItem = (id: string) => {
-    setTickerItems((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, isActive: !t.isActive } : t))
-    );
+    setTickerItems((prev) => prev.map((t) => (t.id === id ? { ...t, isActive: !t.isActive } : t)));
   };
 
-  // Post Methods
+  // Post operations
   const addPost = (post: Omit<PostItem, "id">) => {
     const newPost: PostItem = {
       ...post,
       id: `post-${Date.now()}`,
-      views: 0,
+      date: post.date || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
     };
     setPosts((prev) => [newPost, ...prev]);
   };
 
   const updatePost = (id: string, updated: Partial<PostItem>) => {
-    setPosts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, ...updated } : p))
-    );
+    setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, ...updated } : p)));
   };
 
   const deletePost = (id: string) => {
     setPosts((prev) => prev.filter((p) => p.id !== id));
   };
 
-  // Video Methods
+  // Video operations
   const addVideo = (video: Omit<VideoItem, "id">) => {
     const newVideo: VideoItem = {
       ...video,
@@ -350,71 +443,59 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const updateVideo = (id: string, updated: Partial<VideoItem>) => {
-    setVideos((prev) =>
-      prev.map((v) => (v.id === id ? { ...v, ...updated } : v))
-    );
+    setVideos((prev) => prev.map((v) => (v.id === id ? { ...v, ...updated } : v)));
   };
 
   const deleteVideo = (id: string) => {
     setVideos((prev) => prev.filter((v) => v.id !== id));
   };
 
-  // Gallery Methods
+  // Gallery operations
   const addGalleryItem = (item: Omit<GalleryItem, "id">) => {
-    const newGal: GalleryItem = {
+    const newItem: GalleryItem = {
       ...item,
       id: `gal-${Date.now()}`,
     };
-    setGallery((prev) => [newGal, ...prev]);
+    setGallery((prev) => [newItem, ...prev]);
   };
 
   const updateGalleryItem = (id: string, updated: Partial<GalleryItem>) => {
-    setGallery((prev) =>
-      prev.map((g) => (g.id === id ? { ...g, ...updated } : g))
-    );
+    setGallery((prev) => prev.map((g) => (g.id === id ? { ...g, ...updated } : g)));
   };
 
   const deleteGalleryItem = (id: string) => {
     setGallery((prev) => prev.filter((g) => g.id !== id));
   };
 
-  // Settings
+  // Site settings
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
     setSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
-  // Leads
+  // Lead operations
   const submitNewLead = (formData: LeadFormData, uniName?: string) => {
     const newLead: InquiryLead = {
       id: `lead-${Date.now()}`,
-      createdAt: new Date().toISOString(),
-      fullName: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
-      educationLevel: formData.educationLevel,
-      intendedMajor: formData.intendedMajor,
-      preferredIntake: formData.preferredIntake,
-      consultationType: formData.consultationType,
-      preferredDate: formData.preferredDate,
-      preferredTime: formData.preferredTime,
-      message: formData.message,
+      createdAt: new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
       status: "New",
-      universityInterest: uniName || "",
-      counselorNotes: "Submitted via website form",
+      ...formData,
+      intendedMajor: uniName ? `${formData.intendedMajor} (${uniName})` : formData.intendedMajor,
     };
     setLeads((prev) => [newLead, ...prev]);
   };
 
   const updateLeadStatus = (id: string, status: InquiryLead["status"]) => {
-    setLeads((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, status } : l))
-    );
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, status } : l)));
   };
 
-  const updateLeadNotes = (id: string, counselorNotes: string) => {
-    setLeads((prev) =>
-      prev.map((l) => (l.id === id ? { ...l, counselorNotes } : l))
-    );
+  const updateLeadNotes = (id: string, notes: string) => {
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, counselorNotes: notes } : l)));
   };
 
   const deleteLead = (id: string) => {
@@ -430,49 +511,37 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setGallery(DEFAULT_GALLERY);
     setUniversities(KOREA_UNIVERSITIES);
     setPageContent(DEFAULT_PAGE_CONTENT);
-    setLeads(DEFAULT_LEADS);
-    localStorage.removeItem(`${STORAGE_KEY}_settings`);
-    localStorage.removeItem(`${STORAGE_KEY}_ticker`);
-    localStorage.removeItem(`${STORAGE_KEY}_posts`);
-    localStorage.removeItem(`${STORAGE_KEY}_videos`);
-    localStorage.removeItem(`${STORAGE_KEY}_gallery`);
-    localStorage.removeItem(`${STORAGE_KEY}_universities`);
-    localStorage.removeItem(`${STORAGE_KEY}_pageContent`);
-    localStorage.removeItem(`${STORAGE_KEY}_leads`);
+    localStorage.clear();
   };
 
-  const exportDataJSON = () => {
-    return JSON.stringify(
-      {
-        settings,
-        pageContent,
-        tickerItems,
-        posts,
-        videos,
-        gallery,
-        universities,
-        leads,
-        exportedAt: new Date().toISOString(),
-      },
-      null,
-      2
-    );
+  const exportDataJSON = (): string => {
+    const fullBackup = {
+      settings,
+      pageContent,
+      tickerItems,
+      posts,
+      videos,
+      gallery,
+      universities,
+      leads,
+      exportedAt: new Date().toISOString(),
+    };
+    return JSON.stringify(fullBackup, null, 2);
   };
 
   const importDataJSON = (jsonStr: string): boolean => {
     try {
-      const parsed = JSON.parse(jsonStr);
-      if (parsed.settings) setSettings(parsed.settings);
-      if (parsed.pageContent) setPageContent(parsed.pageContent);
-      if (parsed.tickerItems) setTickerItems(parsed.tickerItems);
-      if (parsed.posts) setPosts(parsed.posts);
-      if (parsed.videos) setVideos(parsed.videos);
-      if (parsed.gallery) setGallery(parsed.gallery);
-      if (parsed.universities) setUniversities(parsed.universities);
-      if (parsed.leads) setLeads(parsed.leads);
+      const data = JSON.parse(jsonStr);
+      if (data.settings) setSettings(data.settings);
+      if (data.pageContent) setPageContent(data.pageContent);
+      if (data.tickerItems && Array.isArray(data.tickerItems)) setTickerItems(data.tickerItems);
+      if (data.posts && Array.isArray(data.posts)) setPosts(data.posts);
+      if (data.videos && Array.isArray(data.videos)) setVideos(data.videos);
+      if (data.gallery && Array.isArray(data.gallery)) setGallery(data.gallery);
+      if (data.universities && Array.isArray(data.universities)) setUniversities(data.universities);
+      if (data.leads && Array.isArray(data.leads)) setLeads(data.leads);
       return true;
-    } catch (e) {
-      console.error("Failed to import data:", e);
+    } catch {
       return false;
     }
   };
@@ -488,6 +557,10 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         gallery,
         universities,
         leads,
+        isCloudSyncing,
+        cloudSyncMessage,
+        lastCloudSyncTime,
+        syncAllToGlobalCloud,
         updatePageContent,
         addUniversity,
         updateUniversity,

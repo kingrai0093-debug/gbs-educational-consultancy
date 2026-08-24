@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-08-24T09:04:12.152Z",
+  "updatedBy": "GBS Master Admin",
+  "pageContent": {
+    "heroTitle": "Study Abroad With Confidence",
+    "heroSubtitle": "YOUR GATEWAY TO GLOBAL EDUCATION",
+    "heroText": "Expert guidance for South Korea top universities, GKS scholarships, and D-2 / D-4 student visas with high visa success rate.",
+    "heroBannerImage": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80",
+    "aboutText": "With over 15+ years of experience, GBS senior counselors deliver personalized guidance, university admissions, and visa success.",
+    "servicesTitle": "Our Comprehensive Student Services",
+    "directorName": "Er. Dipendra Sharma",
+    "directorRole": "Founder & Senior Korea Education Director",
+    "directorImage": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+    "directorBio": "Welcome to GBS Educational Consultancy. We are committed to empowering Nepali students with transparent guidance, university partnerships, and scholarship processing.",
+    "directorExperience": "15+ Years Korea & Global Visa Expertise",
+    "directorPhone": "9744427779",
+    "directorEmail": "info@gbsnepal.com"
+  },
+  "tickerItems": [
+    {
+      "id": "ticker-anjana-visa",
+      "title": "🎉 VISA GRANT SUCCESS: Congratulations Anjana Tamang on receiving South Korea D-4-7 Student Visa (September Intake) Without IELTS!",
+      "badge": "🎉 VISA GRANTED",
+      "detail": "Huge congratulations to Anjana Tamang! Successful D-4-7 visa granted without IELTS through GBS International Educational Consultancy.",
+      "link": "#announcements",
+      "date": "Aug 2026",
+      "isActive": true,
+      "urgency": "breaking"
+    },
+    {
+      "id": "ticker-1",
+      "title": "🇰🇷 STUDY IN SOUTH KOREA – 2026 INTAKE: December D-4 & March D-2 Applications Open Now!",
+      "badge": "🔥 2026 INTAKE OPEN",
+      "detail": "December Intake (D-4-1 / D-4-7: GPA 2.7+, Gap up to 4 yrs, IELTS/TOPIK Optional) & March Intake (D-2: GPA 3.2+, IELTS 5.5+, Gap up to 3 yrs). Visit Sallyan House, 2nd Floor, Bagbazar!",
+      "link": "#intake-2026",
+      "date": "Aug 2026",
+      "isActive": true,
+      "urgency": "breaking"
+    }
+  ],
+  "posts": [
+    {
+      "id": "post-anjana-tamang-grant",
+      "title": "🎉 Congratulations Anjana Tamang: Successful D-4-7 Korean Visa Grant (September Intake)!",
+      "category": "Visa Guidelines",
+      "summary": "Huge congratulations to Anjana Tamang on securing her South Korean D-4-7 Student Visa without IELTS for September Intake!",
+      "content": "🎉 CONGRATULATIONS, ANJANA TAMANG! 🇰🇷❤️\n\nWe are thrilled to announce the successful D-4-7 Code Visa Grant for Anjana Tamang! 🎓✈️🇰🇷\n\n✅ Visa Granted Without IELTS\n🎓 D-4-7 Program\n📅 September Intake\n\nA new chapter of your Korean dream begins now! 🇰🇷✨\nMay this journey bring you success, growth, happiness, and countless opportunities.\n\n🌸 Congratulations once again, Anjana! 🎉\nGBS International Educational Consultancy",
+      "imageUrl": "./visa_grant.jpg",
+      "date": "Aug 24, 2026",
+      "author": "Er. Dipendra Sharma (Director)",
+      "tags": [
+        "D-4-7",
+        "Visa Granted",
+        "South Korea",
+        "Anjana Tamang"
+      ],
+      "featured": true
+    }
+  ],
+  "videos": [
+    {
+      "id": "vid-1",
+      "title": "South Korea D-2 & D-4 Visa Complete Roadmap from Nepal 2026",
+      "youtubeId": "dQw4w9WgXcQ",
+      "category": "Visa Roadmap",
+      "duration": "14:20",
+      "description": "Step-by-step document preparation, Embassy consular interview, bank balance certificate, and TB medical clearance guide."
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gal-anjana-tamang",
+      "title": "🎉 South Korea D-4-7 Visa Grant - Anjana Tamang",
+      "studentName": "Anjana Tamang",
+      "university": "D-4-7 Korean Language Program",
+      "imageUrl": "./visa_grant.jpg",
+      "category": "Visa Grant",
+      "caption": "🎉 CONGRATULATIONS, ANJANA TAMANG! 🇰🇷❤️\nWe are thrilled to announce the successful D-4-7 Code Visa Grant for Anjana Tamang! 🎓✈️🇰🇷\n✅ Visa Granted Without IELTS\n🎓 D-4-7 Program\n📅 September Intake\nA new chapter of your Korean dream begins now! 🇰🇷✨\nMay this journey bring you success, growth, happiness, and countless opportunities.\n🌸 Congratulations once again, Anjana! 🎉\nGBS International Educational Consultancy"
+    }
+  ],
+  "universities": [],
+  "settings": {
+    "agencyName": "GBS International Educational Consultancy",
+    "slogan": "Study in Korea | Expert Guidance | Visa Processing",
+    "phone": "9744427779",
+    "secondaryPhone": "9851123456",
+    "whatsapp": "9744427779",
+    "email": "info@gbsnepal.com",
+    "adminNotificationEmail": "admin@gbsconsultancy.com",
+    "address": "Sallyan House, 2nd Floor, Bagbazar, Kathmandu, Nepal",
+    "hours": "Sun–Fri: 9:00 AM – 5:30 PM (Sat by appointment)",
+    "nepaliGreeting": "जय श्रीमन्नारायण 🍀❣️",
+    "enableTicker": true,
+    "counselorName": "Er. Dipendra Sharma",
+    "counselorRole": "Founder & Senior Korea Visa Director",
+    "counselorBadge": "Certified Korea Director",
+    "counselorWelcomeImage": "/images/counselor_welcome.svg",
+    "showNepalMapContour": true,
+    "showLive3DFlags": true
+  }
+}
