@@ -84,16 +84,15 @@ public class MainActivity extends AppCompatActivity {
     private void setupWebView() {
         WebSettings settings = webView.getSettings();
 
-        // Core JavaScript & Storage
+        // Core
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
 
-        // Mobile User-Agent
-        String mobileUA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
-        settings.setUserAgentString(mobileUA);
+        // Mobile UA
+        settings.setUserAgentString("Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36");
 
-        // Display - Full screen, no zoom
+        // Full screen display - no zoom, full cover
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setSupportZoom(false);
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
 
-        // File & Access
+        // File access
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
 
@@ -117,65 +116,45 @@ public class MainActivity extends AppCompatActivity {
         settings.setEnableSmoothTransition(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
 
-        // Cache & Cookies
+        // Cookies
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
 
-        // File access
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowFileAccessFromFileURLs(true);
             settings.setAllowUniversalAccessFromFileURLs(true);
         }
 
-        // WebView rendering
+        // Full screen WebView rendering
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        webView.setInitialScale(100);
 
-        // Inject JS to disable zoom and force full view
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-
                 if (url.startsWith("tel:")) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(url));
-                    startActivity(intent);
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(url)));
                     return true;
                 }
                 if (url.startsWith("mailto:")) {
-                    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(url));
-                    startActivity(intent);
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
                     return true;
                 }
                 if (url.startsWith("whatsapp:") || url.startsWith("https://api.whatsapp.com") || url.startsWith("https://wa.me")) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                        return true;
-                    } catch (Exception ignored) {}
+                    try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); return true; } catch (Exception ignored) {}
                 }
                 if (url.startsWith("geo:") || url.contains("maps.google.com")) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                        return true;
-                    } catch (Exception ignored) {}
+                    try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); return true; } catch (Exception ignored) {}
                 }
                 if (url.startsWith("sms:")) {
-                    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(url));
-                    startActivity(intent);
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
                     return true;
                 }
-                // Stay in app for same domain
-                if (url.contains("kingrai0093-debug.github.io")) {
-                    return false;
-                }
-                // External links in browser
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
-                } catch (Exception ignored) {}
+                if (url.contains("kingrai0093-debug.github.io")) return false;
+                try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); } catch (Exception ignored) {}
                 return true;
             }
 
@@ -186,17 +165,13 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 if (errorMsg != null) errorMsg.setVisibility(View.GONE);
 
-                // Inject zoom disable script
+                // Disable zoom via JS
                 view.evaluateJavascript(
-                    "var meta = document.querySelector('meta[name=viewport]'); " +
-                    "if(meta) meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); " +
-                    "document.addEventListener('gesturestart', function(e) { e.preventDefault(); }); " +
-                    "document.addEventListener('touchstart', function(e) { " +
-                    "  if(e.touches.length > 1) e.preventDefault(); " +
-                    "}, {passive: false}); " +
-                    "document.addEventListener('wheel', function(e) { " +
-                    "  if(e.ctrlKey) e.preventDefault(); " +
-                    "}, {passive: false});"
+                    "var m=document.querySelector('meta[name=viewport]');" +
+                    "if(m)m.setAttribute('content','width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no');" +
+                    "document.addEventListener('gesturestart',function(e){e.preventDefault();});" +
+                    "document.addEventListener('touchstart',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});" +
+                    "document.addEventListener('wheel',function(e){if(e.ctrlKey)e.preventDefault();},{passive:false});"
                 , null);
             }
 
@@ -206,21 +181,16 @@ public class MainActivity extends AppCompatActivity {
                 isLoading = false;
                 progressBar.setVisibility(View.GONE);
 
-                // Re-inject zoom disable after page load
+                // Full cover CSS injection
                 view.evaluateJavascript(
-                    "var style = document.createElement('style'); " +
-                    "style.textContent = 'html, body { " +
-                    "  overflow-x: hidden !important; " +
-                    "  -webkit-text-size-adjust: 100% !important; " +
-                    "  touch-action: pan-y !important; " +
-                    "  overscroll-behavior: none !important; " +
-                    "} " +
-                    "*, *::before, *::after { " +
-                    "  touch-action: pan-y !important; " +
-                    "}'; " +
-                    "document.head.appendChild(style); " +
-                    "document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, {passive: false}); " +
-                    "document.addEventListener('gestureend', function(e) { e.preventDefault(); }, {passive: false});"
+                    "var s=document.createElement('style');" +
+                    "s.textContent='" +
+                    "html,body{overflow-x:hidden!important;-webkit-text-size-adjust:100%!important;touch-action:pan-y!important;overscroll-behavior:none!important;height:100%!important;margin:0!important;padding:0!important;}" +
+                    "*,*::before,*::after{touch-action:pan-y!important;}" +
+                    "#root{min-height:100vh!important;min-height:100dvh!important;}';" +
+                    "document.head.appendChild(s);" +
+                    "document.addEventListener('gesturechange',function(e){e.preventDefault();},{passive:false});" +
+                    "document.addEventListener('gestureend',function(e){e.preventDefault();},{passive:false});"
                 , null);
             }
 
@@ -231,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     isLoading = false;
                     progressBar.setVisibility(View.GONE);
                     if (errorMsg != null) {
-                        errorMsg.setText("Page failed to load. Tap retry.");
+                        errorMsg.setText("No internet connection");
                         errorMsg.setVisibility(View.VISIBLE);
                     }
                 }
@@ -242,27 +212,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);
-                if (newProgress >= 100) {
-                    progressBar.setVisibility(View.GONE);
-                } else {
-                    progressBar.setVisibility(View.VISIBLE);
-                }
+                progressBar.setVisibility(newProgress >= 100 ? View.GONE : View.VISIBLE);
             }
 
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                if (fileUploadCallback != null) {
-                    fileUploadCallback.onReceiveValue(null);
-                }
+                if (fileUploadCallback != null) fileUploadCallback.onReceiveValue(null);
                 fileUploadCallback = filePathCallback;
-
                 Intent intent = fileChooserParams.createIntent();
-                try {
-                    startActivityForResult(intent, FILE_CHOOSER_REQUEST_CODE);
-                } catch (Exception e) {
-                    fileUploadCallback = null;
-                    return false;
-                }
+                try { startActivityForResult(intent, FILE_CHOOSER_REQUEST_CODE); }
+                catch (Exception e) { fileUploadCallback = null; return false; }
                 return true;
             }
         });
@@ -313,30 +272,26 @@ public class MainActivity extends AppCompatActivity {
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        window.setStatusBarColor(0x00000000);
+        window.setNavigationBarColor(0x00000000);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            enterImmersiveMode();
-        }
+        if (hasFocus) enterImmersiveMode();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (webView != null) {
-            webView.onResume();
-        }
+        if (webView != null) webView.onResume();
         enterImmersiveMode();
     }
 
     @Override
     protected void onPause() {
-        if (webView != null) {
-            webView.onPause();
-        }
+        if (webView != null) webView.onPause();
         super.onPause();
     }
 
