@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-08-24T12:48:38.907Z",
+  "lastUpdated": "2026-08-24T12:51:03.440Z",
   "updatedBy": "GBS Admin Bagbazar",
   "pageContent": {
     "heroTitle": "Study Abroad With Confidence",
@@ -19,24 +19,52 @@
   },
   "tickerItems": [
     {
-      "id": "ticker-anjana-visa",
-      "title": "🎉 VISA GRANT SUCCESS: Congratulations Anjana Tamang on receiving South Korea D-4-7 Student Visa (September Intake) Without IELTS!",
-      "badge": "🎉 VISA GRANTED",
-      "detail": "Huge congratulations to Anjana Tamang! Successful D-4-7 visa granted without IELTS through GBS International Educational Consultancy.",
-      "link": "#announcements",
-      "date": "Aug 2026",
+      "title": "Ministry of Education Releases Updated Digital NOC Guidelines for Study in South Korea",
+      "titleNepali": "शिक्षा मन्त्रालयद्वारा वैदेशिक अध्ययन अनुमति पत्र (NOC) डिजिटल प्रमाणीकरण निर्देशिका जारी",
+      "badge": "🇳🇵 NEPALLIVE EXCLUSIVE",
+      "detail": "The Ministry of Education, Science and Technology has streamlined digital verification for Nepali students proceeding to South Korea on D-2 and D-4 visas.",
+      "link": "https://nepallive.com/",
+      "sourcePortalUrl": "https://nepallive.com/",
+      "date": "Today",
       "isActive": true,
-      "urgency": "breaking"
+      "urgency": "breaking",
+      "id": "ticker-nepallive-1787575861580-0"
     },
     {
-      "id": "ticker-1",
-      "title": "🇰🇷 STUDY IN SOUTH KOREA – 2026 INTAKE: December D-4 & March D-2 Applications Open Now!",
-      "badge": "🔥 2026 INTAKE OPEN",
-      "detail": "December Intake (D-4-1 / D-4-7: GPA 2.7+, Gap up to 4 yrs, IELTS/TOPIK Optional) & March Intake (D-2: GPA 3.2+, IELTS 5.5+, Gap up to 3 yrs). Visit Sallyan House, 2nd Floor, Bagbazar!",
-      "link": "#intake-2026",
-      "date": "Aug 2026",
+      "title": "South Korea Increases Minimum Student Hourly Wage to 10,030 KRW (~NPR 1,000/hr)",
+      "titleNepali": "कोरियामा नेपाली विद्यार्थीका लागि न्यूनतम पारिश्रमिक र पार्ट-टाइम काम गर्ने कानुनी समय वृद्धि",
+      "badge": "💼 WORK RIGHTS",
+      "detail": "International students holding valid D-2 visas can legally work 25 to 30 hours per week during term time and unlimited hours in vacations.",
+      "link": "https://nepallive.com/",
+      "sourcePortalUrl": "https://nepallive.com/",
+      "date": "Today",
       "isActive": true,
-      "urgency": "breaking"
+      "urgency": "hot",
+      "id": "ticker-nepallive-1787575861580-1"
+    },
+    {
+      "title": "TOPIK I & II Exam Registration Timeline and Intake Prep Announced in Kathmandu",
+      "titleNepali": "काठमाडौँमा कोरियन भाषा दक्षता परीक्षा (TOPIK) नयाँ तालिका तथा तयारी कक्षा मापदण्ड सार्वजनिक",
+      "badge": "🇰🇷 TOPIK ADVISORY",
+      "detail": "NIIED and local testing centers announce updated schedule for TOPIK test dates critical for university scholarships and visa eligibility.",
+      "link": "https://nepallive.com/",
+      "sourcePortalUrl": "https://nepallive.com/",
+      "date": "Latest",
+      "isActive": true,
+      "urgency": "notice",
+      "id": "ticker-nepallive-1787575861580-2"
+    },
+    {
+      "title": "GKS Government Scholarship 2026 Quotas for Nepali Students: 100% Tuition + Living Stipend",
+      "titleNepali": "ग्लोबल कोरिया छात्रवृत्ति (GKS २०२६): नेपाली विद्यार्थीहरूका लागि १००% पूर्ण छात्रवृत्ति कोटा खुला",
+      "badge": "🎓 GKS SCHOLARSHIP",
+      "detail": "Applications open for Bachelor's, Master's and PhD programs with full Korean Government sponsorship, airfare, and monthly allowance.",
+      "link": "https://nepallive.com/",
+      "sourcePortalUrl": "https://nepallive.com/",
+      "date": "Active",
+      "isActive": true,
+      "urgency": "hot",
+      "id": "ticker-nepallive-1787575861580-3"
     }
   ],
   "posts": [
@@ -426,8 +454,8 @@
     "counselorWelcomeImage": "/images/counselor_welcome.svg",
     "showNepalMapContour": true,
     "showLive3DFlags": true,
-    "newsSourceUrl": "https://www.onlinekhabar.com/content/education",
-    "newsSourceName": "OnlineKhabar Education",
-    "newsSourceMode": "onlinekhabar"
+    "newsSourceUrl": "https://nepallive.com/",
+    "newsSourceName": "NepalLive.com",
+    "newsSourceMode": "nepallive"
   }
 }
