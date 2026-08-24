@@ -25,6 +25,7 @@ import { Phone, MessageCircle, Calendar, Sparkles, MapPin, Lock, Tablet } from "
 function MainAppContent() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
+  const [liveChatOpen, setLiveChatOpen] = useState(false);
   const [selectedUniversityName, setSelectedUniversityName] = useState<string>("");
 
   // Android & Device Tablet Mode Auto-Detector Engine
@@ -36,10 +37,7 @@ function MainAppContent() {
   };
 
   const handleOpenAiCounselor = () => {
-    const el = document.getElementById("ai-counselor");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setLiveChatOpen(true);
   };
 
   const handleExploreUniversities = () => {
@@ -64,6 +62,7 @@ function MainAppContent() {
       <Navbar
         onOpenBooking={() => handleOpenBooking("")}
         onOpenAiCounselor={handleOpenAiCounselor}
+        onOpenLiveChat={() => setLiveChatOpen(true)}
         onOpenAdmin={() => setAdminModalOpen(true)}
         viewMode={viewMode}
         isAndroid={isAndroid}
@@ -148,58 +147,31 @@ function MainAppContent() {
         onClose={() => setAdminModalOpen(false)}
       />
 
-      {/* Live Support 24/7 Chat Widget */}
-      <LiveSupportChatWidget onOpenBooking={handleOpenBooking} />
+      {/* 24/7 Live Support Chat Widget */}
+      <LiveSupportChatWidget
+        isOpen={liveChatOpen}
+        onToggleOpen={setLiveChatOpen}
+        onOpenBooking={handleOpenBooking}
+      />
 
-      {/* Floating Action Button (Sticky Quick Hotline, Tablet Toggle, Admin CMS & WhatsApp Bar) */}
-      <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2.5">
-        
-        {/* Floating Quick Controls (Tablet Mode & Admin Portal Trigger) */}
-        <div className="bg-white/95 p-1 rounded-xl border border-gray-200 shadow-xl backdrop-blur-md flex items-center gap-1">
-          <TabletModeSwitcher
-            viewMode={viewMode}
-            isAndroid={isAndroid}
-            isAutoDetected={isAutoDetected}
-            onSetViewMode={setViewMode}
-          />
-          <button
-            type="button"
-            onClick={() => setAdminModalOpen(true)}
-            id="floating-admin-cms-btn"
-            className="p-1.5 rounded text-xs font-bold text-[#25479D] hover:bg-blue-50 transition-all flex items-center gap-1 cursor-pointer"
-            title="Admin & CMS Master Control Portal"
-          >
-            <Lock className="w-3.5 h-3.5" />
-            <span className="text-[10px] hidden sm:inline font-mono">Admin</span>
-          </button>
-        </div>
-
-        {/* WhatsApp Quick Trigger */}
-        <a
-          href="https://wa.me/9779744427779?text=Hello%20GBS,%20I%20am%20interested%20in%20studying%20in%20South%20Korea."
-          target="_blank"
-          rel="noopener noreferrer"
-          id="floating-whatsapp-btn"
-          className="p-3.5 bg-green-600 hover:bg-green-700 text-white rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center group active:scale-95 border border-green-500 cursor-pointer"
-          aria-label="Chat with GBS on WhatsApp"
-        >
-          <MessageCircle className="w-5 h-5" />
-          <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 transition-all duration-300 text-xs font-bold">
-            WhatsApp: 9744427779
-          </span>
-        </a>
-
-        {/* Quick Consultation Pill Trigger */}
+      {/* Floating Bottom-Left Controls (Tablet Switcher & Admin Portal Trigger) */}
+      <div className="fixed bottom-6 left-6 z-40 flex items-center gap-1.5 bg-white/95 p-1 rounded-2xl border border-gray-200 shadow-2xl backdrop-blur-md">
+        <TabletModeSwitcher
+          viewMode={viewMode}
+          isAndroid={isAndroid}
+          isAutoDetected={isAutoDetected}
+          onSetViewMode={setViewMode}
+        />
         <button
-          onClick={() => handleOpenBooking("")}
-          id="floating-book-counseling-btn"
-          className="px-4 py-3 bg-[#ED2D2A] hover:bg-red-700 text-white rounded-xl shadow-xl transition-all duration-300 flex items-center gap-2 text-xs font-bold border border-red-600 active:scale-98 cursor-pointer"
+          type="button"
+          onClick={() => setAdminModalOpen(true)}
+          id="floating-admin-cms-btn"
+          className="p-2 rounded-xl text-xs font-bold text-[#25479D] hover:bg-blue-50 transition-all flex items-center gap-1 cursor-pointer"
+          title="Admin & CMS Master Control Portal"
         >
-          <Calendar className="w-4 h-4" />
-          <span className="hidden sm:inline">Free Counseling (Putalisadak)</span>
-          <span className="sm:hidden">Book Free</span>
+          <Lock className="w-3.5 h-3.5" />
+          <span className="text-[10px] hidden sm:inline font-mono">Admin</span>
         </button>
-
       </div>
 
     </div>

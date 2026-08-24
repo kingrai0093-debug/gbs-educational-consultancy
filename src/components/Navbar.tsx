@@ -25,6 +25,7 @@ import { ViewMode } from "../hooks/useDeviceViewMode";
 interface NavbarProps {
   onOpenBooking: () => void;
   onOpenAiCounselor: () => void;
+  onOpenLiveChat?: () => void;
   onOpenAdmin?: () => void;
   viewMode?: ViewMode;
   isAndroid?: boolean;
@@ -35,6 +36,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenBooking,
   onOpenAiCounselor,
+  onOpenLiveChat,
   onOpenAdmin,
   viewMode = "standard",
   isAndroid = false,
@@ -131,19 +133,41 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Right CTA */}
           <div className="hidden lg:flex items-center gap-3">
+            {onOpenLiveChat && (
+              <button
+                type="button"
+                onClick={onOpenLiveChat}
+                className="px-4 py-2 rounded-xl text-xs font-black bg-blue-50 hover:bg-blue-100 text-[#25479D] border border-blue-200 shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Live Chat 💬</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenBooking}
-              className="px-6 py-2.5 rounded font-bold bg-[#ED2D2A] hover:bg-red-700 text-white shadow-lg shadow-red-500/30 transition-transform hover:-translate-y-0.5 cursor-pointer"
+              className="px-6 py-2.5 rounded-xl font-bold bg-[#ED2D2A] hover:bg-red-700 text-white shadow-lg shadow-red-500/30 transition-transform hover:-translate-y-0.5 cursor-pointer"
             >
               Apply Now
             </button>
           </div>
 
           {/* Mobile Menu Trigger */}
-          <div className="lg:hidden flex items-center gap-3">
+          <div className="lg:hidden flex items-center gap-2">
+            {onOpenLiveChat && (
+              <button
+                type="button"
+                onClick={onOpenLiveChat}
+                className="px-3 py-1.5 rounded-lg text-xs font-black bg-blue-50 text-[#25479D] border border-blue-200 shadow-xs flex items-center gap-1 cursor-pointer"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Chat</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenBooking}
-              className="px-4 py-2 rounded text-xs font-bold bg-[#ED2D2A] text-white shadow-xs cursor-pointer"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-[#ED2D2A] text-white shadow-xs cursor-pointer"
             >
               Apply
             </button>
@@ -162,6 +186,23 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-t px-4 pt-3 pb-6 space-y-2 shadow-xl absolute w-full">
           <div className="space-y-1 text-sm font-semibold text-gray-700">
+            {onOpenLiveChat && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenLiveChat();
+                }}
+                className="w-full text-left px-3 py-3 rounded bg-blue-50 text-[#25479D] font-black border-b border-blue-100 flex items-center justify-between cursor-pointer"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Start Live Counselor Chat 💬</span>
+                </span>
+                <span className="text-[10px] bg-[#25479D] text-white px-2 py-0.5 rounded font-extrabold uppercase">
+                  ONLINE
+                </span>
+              </button>
+            )}
             <button onClick={() => scrollToSection("universities")} className="w-full text-left px-3 py-3 rounded hover:bg-gray-50 border-b border-gray-100 cursor-pointer">
               Universities
             </button>

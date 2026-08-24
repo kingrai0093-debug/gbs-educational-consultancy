@@ -35,6 +35,8 @@ interface ChatMessage {
 
 interface LiveSupportChatWidgetProps {
   onOpenBooking?: (uniName?: string) => void;
+  isOpen?: boolean;
+  onToggleOpen?: (open: boolean) => void;
 }
 
 const QUICK_PROMPTS = [
@@ -45,9 +47,21 @@ const QUICK_PROMPTS = [
   { label: "📍 Office Location & Time", query: "Where is GBS office located and opening time?" },
 ];
 
-export const LiveSupportChatWidget: React.FC<LiveSupportChatWidgetProps> = ({ onOpenBooking }) => {
+export const LiveSupportChatWidget: React.FC<LiveSupportChatWidgetProps> = ({
+  onOpenBooking,
+  isOpen: controlledIsOpen,
+  onToggleOpen,
+}) => {
   const { settings, submitNewLead } = useAdminData();
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+
+  const setIsOpen = (val: boolean) => {
+    if (onToggleOpen) {
+      onToggleOpen(val);
+    }
+    setInternalIsOpen(val);
+  };
   const [activeTab, setActiveTab] = useState<"ai" | "counselor">("ai");
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -236,19 +250,19 @@ export const LiveSupportChatWidget: React.FC<LiveSupportChatWidgetProps> = ({ on
     <>
       {/* 1. FLOATING CHAT LAUNCHER BUTTON */}
       {!isOpen && (
-        <div className="fixed bottom-20 right-5 z-40 flex items-center gap-2">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
           {/* Notification Preview Bubble */}
           <div
             onClick={() => setIsOpen(true)}
-            className="hidden md:flex items-center gap-2.5 bg-slate-900/95 text-white py-2 px-3.5 rounded-2xl shadow-2xl border border-blue-500/30 backdrop-blur-md cursor-pointer hover:border-blue-400 transition-all hover:scale-102 group"
+            className="hidden lg:flex items-center gap-2.5 bg-slate-950/95 text-white py-2.5 px-4 rounded-2xl shadow-2xl border border-blue-500/40 backdrop-blur-md cursor-pointer hover:border-blue-400 transition-all hover:scale-102 group"
           >
             <div className="relative">
               <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping" />
               <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full absolute inset-0" />
             </div>
             <div className="text-left">
-              <span className="block text-[10px] text-amber-300 font-extrabold uppercase tracking-wider">
-                GBS Live Counselor Online
+              <span className="block text-[10px] text-amber-300 font-black uppercase tracking-wider">
+                GBS Counselor Online
               </span>
               <span className="text-xs font-bold text-slate-100 group-hover:text-blue-300 transition-colors">
                 Need Help with Korea Visa? Ask us! 💬
@@ -256,24 +270,33 @@ export const LiveSupportChatWidget: React.FC<LiveSupportChatWidgetProps> = ({ on
             </div>
           </div>
 
-          {/* Main Floating Circle Button */}
+          {/* Main Floating Pill Button */}
           <button
             type="button"
             onClick={() => setIsOpen(true)}
             id="gbs-live-chat-launcher-btn"
-            className="relative p-4 bg-gradient-to-tr from-[#25479D] via-blue-600 to-[#ED2D2A] text-white rounded-2xl shadow-2xl hover:scale-108 active:scale-95 transition-all duration-300 border-2 border-white/30 cursor-pointer group"
+            className="flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-[#25479D] via-blue-700 to-[#ED2D2A] text-white rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-white/50 cursor-pointer group"
             aria-label="Open GBS Live Chat Support"
           >
-            <MessageSquare className="w-6 h-6 group-hover:rotate-6 transition-transform" />
-            
-            {/* Live Green Online Dot */}
-            <span className="absolute -top-1 -right-1 flex h-4 w-4">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white"></span>
-            </span>
+            <div className="relative flex items-center justify-center">
+              <MessageSquare className="w-6 h-6 text-white group-hover:rotate-12 transition-transform" />
+              <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white"></span>
+              </span>
+            </div>
+
+            <div className="text-left leading-tight">
+              <span className="block text-[9px] text-amber-300 font-black uppercase tracking-wider">
+                🟢 Live Support Desk
+              </span>
+              <span className="font-extrabold text-xs sm:text-sm text-white block">
+                Chat with Counselor 💬
+              </span>
+            </div>
 
             {unreadCount > 0 && (
-              <span className="absolute -bottom-1 -left-1 bg-[#ED2D2A] text-white text-[10px] font-black px-1.5 py-0.2 rounded-full border border-white">
+              <span className="bg-[#ED2D2A] text-white text-[10px] font-black px-1.5 py-0.5 rounded-full border border-white">
                 {unreadCount}
               </span>
             )}
