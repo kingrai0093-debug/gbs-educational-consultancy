@@ -13,6 +13,7 @@ export interface GlobalCmsPayload {
   videos: any[];
   gallery: any[];
   universities: any[];
+  teamMembers?: any[];
   settings: any;
 }
 

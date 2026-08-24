@@ -367,6 +367,47 @@
       "gksEligible": true
     }
   ],
+  "teamMembers": [
+    {
+      "id": "member-dipendra-sharma",
+      "name": "Er. Dipendra Sharma",
+      "role": "Founder & Senior Korea Education Director",
+      "photoUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+      "experience": "15+ Years Korea & Global Visa Expertise",
+      "bio": "Guiding Nepali students with transparent admissions, high visa approval rates, and 30%–100% scholarship matching across top South Korean universities.",
+      "phone": "9744427779",
+      "email": "info@gbsnepal.com",
+      "whatsapp": "9744427779",
+      "badge": "Founder & Director",
+      "order": 1
+    },
+    {
+      "id": "member-bishnu-pandey",
+      "name": "Bishnu Hari Pandey",
+      "role": "Managing Director & Senior Consultant",
+      "photoUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+      "experience": "12+ Years Higher Education Counseling",
+      "bio": "Specializing in D-2 Bachelor's & Master's degree university admissions, GKS scholarship filings, and embassy documentation at KVAC.",
+      "phone": "9851123456",
+      "email": "admission@gbsnepal.com",
+      "whatsapp": "9851123456",
+      "badge": "Managing Director",
+      "order": 2
+    },
+    {
+      "id": "member-korean-instructor",
+      "name": "Min-Jun Park (박민준)",
+      "role": "Head TOPIK & Korean Language Instructor",
+      "photoUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "experience": "8+ Years Native Korean Language Training",
+      "bio": "Leading intensive Hangul, TOPIK I & II classes, and embassy visa interview mock preparation sessions at Bagbazar Sallyan House.",
+      "phone": "9744427779",
+      "email": "language@gbsnepal.com",
+      "whatsapp": "9744427779",
+      "badge": "TOPIK Master Instructor",
+      "order": 3
+    }
+  ],
   "settings": {
     "agencyName": "GBS International Educational Consultancy",
     "slogan": "Study in Korea | Expert Guidance | Visa Processing",

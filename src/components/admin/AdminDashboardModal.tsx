@@ -31,8 +31,9 @@ import {
   Send,
   GraduationCap,
   Globe,
+  UserCheck,
 } from "lucide-react";
-import { NewsTickerItem, PostItem, VideoItem, GalleryItem, InquiryLead, University } from "../../types";
+import { NewsTickerItem, PostItem, VideoItem, GalleryItem, InquiryLead, University, TeamMember } from "../../types";
 import { GBSLogo } from "../GBSLogo";
 import { ImageUploadField } from "./ImageUploadField";
 import { getStoredSyncToken, setStoredSyncToken } from "../../utils/cloudSync";
@@ -51,6 +52,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     videos,
     gallery,
     universities,
+    teamMembers,
     leads,
     isCloudSyncing,
     cloudSyncMessage,
@@ -60,6 +62,9 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     addUniversity,
     updateUniversity,
     deleteUniversity,
+    addTeamMember,
+    updateTeamMember,
+    deleteTeamMember,
     addTickerItem,
     updateTickerItem,
     deleteTickerItem,
@@ -93,8 +98,22 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
 
   // Navigation tabs
   const [activeTab, setActiveTab] = useState<
-    "ticker" | "posts" | "videos" | "gallery" | "universities" | "leads" | "cms" | "settings" | "cloud" | "backup"
+    "ticker" | "posts" | "videos" | "gallery" | "universities" | "team" | "leads" | "cms" | "settings" | "cloud" | "backup"
   >("cms");
+
+  // Team Member Form State
+  const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
+  const [memberForm, setMemberForm] = useState({
+    name: "",
+    role: "",
+    photoUrl: "",
+    experience: "",
+    bio: "",
+    phone: "9744427779",
+    email: "info@gbsnepal.com",
+    whatsapp: "9744427779",
+    badge: "Senior Counselor",
+  });
 
   // Forms states
   const [contentForm, setContentForm] = useState({ ...pageContent });
@@ -530,6 +549,66 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
     });
   };
 
+  // Team Member Submit
+  const handleMemberSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!memberForm.name.trim() || !memberForm.role.trim()) return;
+
+    if (editingMemberId) {
+      updateTeamMember(editingMemberId, {
+        name: memberForm.name,
+        role: memberForm.role,
+        photoUrl: memberForm.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+        experience: memberForm.experience || "10+ Years Korea Visa Guidance",
+        bio: memberForm.bio,
+        phone: memberForm.phone,
+        email: memberForm.email,
+        whatsapp: memberForm.whatsapp,
+        badge: memberForm.badge,
+      });
+      setEditingMemberId(null);
+    } else {
+      addTeamMember({
+        name: memberForm.name,
+        role: memberForm.role,
+        photoUrl: memberForm.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+        experience: memberForm.experience || "10+ Years Korea Visa Guidance",
+        bio: memberForm.bio,
+        phone: memberForm.phone,
+        email: memberForm.email,
+        whatsapp: memberForm.whatsapp,
+        badge: memberForm.badge || "Senior Counselor",
+      });
+    }
+
+    setMemberForm({
+      name: "",
+      role: "",
+      photoUrl: "",
+      experience: "",
+      bio: "",
+      phone: "9744427779",
+      email: "info@gbsnepal.com",
+      whatsapp: "9744427779",
+      badge: "Senior Counselor",
+    });
+  };
+
+  const handleEditMember = (member: TeamMember) => {
+    setEditingMemberId(member.id);
+    setMemberForm({
+      name: member.name,
+      role: member.role,
+      photoUrl: member.photoUrl,
+      experience: member.experience,
+      bio: member.bio,
+      phone: member.phone || "9744427779",
+      email: member.email || "info@gbsnepal.com",
+      whatsapp: member.whatsapp || "9744427779",
+      badge: member.badge || "Senior Counselor",
+    });
+  };
+
   // Save Settings
   const handleSettingsSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -827,6 +906,24 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                   </span>
                   <span className="text-[10px] bg-slate-900 px-2 py-0.5 rounded font-mono">
                     {universities.length}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("team")}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
+                    activeTab === "team"
+                      ? "bg-[#25479D] text-white shadow-sm"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                  }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <UserCheck className="w-4 h-4 text-amber-400" />
+                    <span>Counselors & Directors</span>
+                  </span>
+                  <span className="text-[10px] bg-slate-900 px-2 py-0.5 rounded font-mono">
+                    {teamMembers.length}
                   </span>
                 </button>
 
@@ -1893,6 +1990,229 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({ isOpen
                           <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[10px]">
                             <span className="text-amber-300 font-bold">💰 {uni.scholarshipRange}</span>
                             <span className="text-slate-400">KRW {uni.annualTuitionKRW.toLocaleString()}/yr</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB: COUNSELORS & DIRECTORS DIRECTORY */}
+              {activeTab === "team" && (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-black text-white flex items-center gap-2">
+                        <UserCheck className="w-5 h-5 text-amber-400" />
+                        <span>Counselors & Directors Directory ({teamMembers.length})</span>
+                      </h3>
+                      <p className="text-xs text-stone-400">
+                        Manage senior counselors, directors, language instructors, and their official profile photos shown on the website.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Add / Edit Member Form Bento Card */}
+                  <form onSubmit={handleMemberSubmit} className="bg-stone-950 p-6 rounded-2xl border border-stone-800 space-y-4">
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <Plus className="w-4 h-4 text-amber-400" />
+                      <span>{editingMemberId ? "Edit Counselor / Director Profile" : "Add New Counselor or Director Member"}</span>
+                    </h4>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-stone-400 mb-1">
+                          Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={memberForm.name}
+                          onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })}
+                          placeholder="e.g. Er. Dipendra Sharma"
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-stone-400 mb-1">
+                          Official Designation / Role *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={memberForm.role}
+                          onChange={(e) => setMemberForm({ ...memberForm, role: e.target.value })}
+                          placeholder="e.g. Founder & Senior Korea Visa Director"
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-stone-400 mb-1">
+                          Credential Badge Tag
+                        </label>
+                        <input
+                          type="text"
+                          value={memberForm.badge}
+                          onChange={(e) => setMemberForm({ ...memberForm, badge: e.target.value })}
+                          placeholder="e.g. Founder & Director, Senior Counselor"
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-stone-400 mb-1">
+                          Years of Experience
+                        </label>
+                        <input
+                          type="text"
+                          value={memberForm.experience}
+                          onChange={(e) => setMemberForm({ ...memberForm, experience: e.target.value })}
+                          placeholder="e.g. 15+ Years Korea Visa Expertise"
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase text-stone-400 mb-1">
+                          Direct Contact Phone / WhatsApp
+                        </label>
+                        <input
+                          type="text"
+                          value={memberForm.phone}
+                          onChange={(e) => setMemberForm({ ...memberForm, phone: e.target.value, whatsapp: e.target.value })}
+                          placeholder="e.g. 9744427779"
+                          className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Photo Upload Field */}
+                    <div>
+                      <ImageUploadField
+                        label="Counselor Official Photo / Portrait"
+                        value={memberForm.photoUrl}
+                        onChange={(val) => setMemberForm({ ...memberForm, photoUrl: val })}
+                        helperText="Upload transparent PNG portrait or official JPG photo."
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-stone-400 mb-1">
+                        Counselor Bio & Welcome Note
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={memberForm.bio}
+                        onChange={(e) => setMemberForm({ ...memberForm, bio: e.target.value })}
+                        placeholder="Short biography, specializations (e.g. D-2/D-4 visa documentation, GKS scholarships, TOPIK preparation)..."
+                        className="w-full px-3.5 py-2.5 bg-stone-900 border border-stone-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-2">
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>{editingMemberId ? "Update Member Profile" : "Add Counselor Member"}</span>
+                      </button>
+
+                      {editingMemberId && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingMemberId(null);
+                            setMemberForm({
+                              name: "",
+                              role: "",
+                              photoUrl: "",
+                              experience: "",
+                              bio: "",
+                              phone: "9744427779",
+                              email: "info@gbsnepal.com",
+                              whatsapp: "9744427779",
+                              badge: "Senior Counselor",
+                            });
+                          }}
+                          className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                        >
+                          Cancel Edit
+                        </button>
+                      )}
+                    </div>
+                  </form>
+
+                  {/* Active Counselors & Directors Card Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {teamMembers.map((member) => (
+                      <div
+                        key={member.id}
+                        className="bg-stone-950 rounded-2xl border border-stone-800 overflow-hidden shadow-md flex flex-col justify-between"
+                      >
+                        <div className="p-5 space-y-3">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={member.photoUrl || "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"}
+                              alt={member.name}
+                              className="w-14 h-14 rounded-2xl object-cover border border-amber-500/40 shadow-sm shrink-0"
+                              onError={(e) => {
+                                (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80";
+                              }}
+                            />
+                            <div className="min-w-0">
+                              <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                {member.badge || "Counselor"}
+                              </span>
+                              <h4 className="text-sm font-bold text-white truncate mt-1">{member.name}</h4>
+                              <p className="text-[11px] text-stone-400 truncate">{member.role}</p>
+                            </div>
+                          </div>
+
+                          <div className="text-xs text-stone-300 bg-stone-900/60 p-2.5 rounded-xl border border-stone-800/80 space-y-1">
+                            <div className="text-[10px] text-stone-500 font-bold uppercase">Experience</div>
+                            <div className="font-semibold text-white">{member.experience}</div>
+                          </div>
+
+                          {member.bio && (
+                            <p className="text-xs text-stone-400 line-clamp-2 leading-relaxed">
+                              {member.bio}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="p-3 bg-stone-900/80 border-t border-stone-800 flex items-center justify-between gap-2">
+                          <div className="text-[11px] text-stone-400 font-mono">
+                            📞 {member.phone || "9744427779"}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleEditMember(member)}
+                              className="px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border border-stone-700"
+                            >
+                              <Edit2 className="w-3 h-3 text-amber-400" />
+                              <span>Edit</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm(`Are you sure you want to remove ${member.name} from the counselor directory?`)) {
+                                  deleteTeamMember(member.id);
+                                }
+                              }}
+                              className="p-1.5 bg-red-950/60 hover:bg-red-900 text-red-300 rounded-lg transition-colors cursor-pointer border border-red-800/60"
+                              title="Remove Counselor Member"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
                           </div>
                         </div>
                       </div>

@@ -144,6 +144,20 @@ export interface EmailDispatchLog {
   error?: string;
 }
 
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  photoUrl: string;
+  experience: string;
+  bio: string;
+  phone?: string;
+  email?: string;
+  whatsapp?: string;
+  badge?: string;
+  order?: number;
+}
+
 export interface SiteSettings {
   agencyName: string;
   slogan: string;

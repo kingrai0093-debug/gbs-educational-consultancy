@@ -28,15 +28,21 @@ export const CounselorWelcomeHero: React.FC<CounselorWelcomeHeroProps> = ({
   onOpenBooking,
   onOpenAiCounselor,
 }) => {
-  const { settings, pageContent } = useAdminData();
+  const { settings, pageContent, teamMembers } = useAdminData();
+  const [selectedMemberIndex, setSelectedMemberIndex] = useState<number>(0);
 
-  const counselorImageSrc = pageContent?.directorImage || settings.counselorWelcomeImage || "/images/counselor_welcome.svg";
+  const activeMember = (teamMembers && teamMembers.length > 0 && teamMembers[selectedMemberIndex]) ? teamMembers[selectedMemberIndex] : null;
+
+  const counselorImageSrc = activeMember?.photoUrl || pageContent?.directorImage || settings.counselorWelcomeImage || "/images/counselor_welcome.svg";
   const show3DFlags = settings.showLive3DFlags !== false;
   const showNepalMap = settings.showNepalMapContour !== false;
-  const counselorBadgeText = settings.counselorBadge || "Senior Education Director";
-  const counselorName = pageContent?.directorName || settings.counselorName || "Bishnu Hari Pandey";
-  const counselorRole = pageContent?.directorRole || settings.counselorRole || "Managing Director & Senior Consultant";
-  const counselorExp = pageContent?.directorExperience || "15+ Years Korea Visa Expertise";
+  const counselorBadgeText = activeMember?.badge || settings.counselorBadge || "Senior Education Director";
+  const counselorName = activeMember?.name || pageContent?.directorName || settings.counselorName || "Er. Dipendra Sharma";
+  const counselorRole = activeMember?.role || pageContent?.directorRole || settings.counselorRole || "Founder & Senior Korea Education Director";
+  const counselorExp = activeMember?.experience || pageContent?.directorExperience || "15+ Years Korea Visa Expertise";
+  const counselorBio = activeMember?.bio || pageContent?.directorBio || "हाम्रो कार्यालयमा यहाँहरूलाई हार्दिक स्वागत गर्दछौं। दक्षिण कोरियामा उच्च शिक्षा, आकर्षक छात्रवृत्ति (30% to 100% Scholarship), IELTS/TOPIK बिना वा सहितका विश्वविद्यालयहरू, तथा D-2 & D-4 भिसा फाइल प्रमाणीकरणको लागि हामी तपाईंलाई प्रत्यक्ष परामर्श प्रदान गर्दछौं।";
+  const counselorPhone = activeMember?.phone || settings.phone || "9744427779";
+  const counselorWhatsapp = activeMember?.whatsapp || settings.whatsapp || "9744427779";
 
   return (
     <section className="relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10 text-gray-800 mt-8">
@@ -157,24 +163,62 @@ export const CounselorWelcomeHero: React.FC<CounselorWelcomeHeroProps> = ({
             </h2>
           </div>
 
+          {/* Counselor & Director Switcher (If multiple members exist) */}
+          {teamMembers && teamMembers.length > 1 && (
+            <div className="flex flex-wrap items-center gap-2 pt-1 pb-1">
+              <span className="text-xs font-bold text-gray-500 mr-1 flex items-center gap-1">
+                <UserCheck className="w-3.5 h-3.5 text-[#25479D]" />
+                <span>Our Leadership & Experts:</span>
+              </span>
+              {teamMembers.map((member, idx) => (
+                <button
+                  key={member.id}
+                  type="button"
+                  onClick={() => setSelectedMemberIndex(idx)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-sm ${
+                    selectedMemberIndex === idx
+                      ? "bg-[#25479D] text-white ring-2 ring-[#25479D]/30"
+                      : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  <img
+                    src={member.photoUrl}
+                    alt={member.name}
+                    className="w-4 h-4 rounded-full object-cover border border-white"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80";
+                    }}
+                  />
+                  <span>{member.name}</span>
+                  {selectedMemberIndex === idx && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Nepali Greeting & Message Card */}
           <div className="bg-gray-50 rounded-xl p-5 sm:p-6 border border-gray-200 relative shadow-inner">
             <div className="text-[#25479D] font-bold text-sm sm:text-base flex items-center justify-between mb-3 border-b border-gray-200 pb-2">
               <div className="flex items-center gap-2">
                 <span>{settings.nepaliGreeting || "जय श्रीमन्नारायण 🍀❣️"}</span>
                 <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">
-                  Director&apos;s Welcome
+                  {counselorName}&apos;s Welcome
                 </span>
               </div>
+              <span className="text-xs text-gray-500 font-semibold hidden sm:inline">
+                {counselorRole}
+              </span>
             </div>
 
             <p className="text-gray-700 text-xs sm:text-sm leading-relaxed font-medium">
-              {pageContent?.directorBio || "हाम्रो कार्यालयमा यहाँहरूलाई हार्दिक स्वागत गर्दछौं। दक्षिण कोरियामा उच्च शिक्षा, आकर्षक छात्रवृत्ति (30% to 100% Scholarship), IELTS/TOPIK बिना वा सहितका विश्वविद्यालयहरू, तथा D-2 & D-4 भिसा फाइल प्रमाणीकरणको लागि हामी तपाईंलाई प्रत्यक्ष परामर्श प्रदान गर्दछौं।"}
+              {counselorBio}
             </p>
 
             <div className="mt-4 pt-3 border-t border-gray-200 text-[11px] text-gray-500 flex flex-wrap items-center justify-between gap-2">
               <span className="font-semibold text-gray-700 flex items-center gap-1"><MapPin className="w-3 h-3 text-[#ED2D2A]" /> {settings.address}</span>
-              <span className="text-[#ED2D2A] font-bold flex items-center gap-1"><Phone className="w-3 h-3" /> Direct Call: {settings.phone}</span>
+              <span className="text-[#ED2D2A] font-bold flex items-center gap-1"><Phone className="w-3 h-3" /> Direct Call: {counselorPhone}</span>
             </div>
           </div>
 
@@ -213,18 +257,18 @@ export const CounselorWelcomeHero: React.FC<CounselorWelcomeHeroProps> = ({
               className="w-full sm:w-auto px-6 py-3 rounded-lg text-xs sm:text-sm font-bold bg-[#ED2D2A] hover:bg-red-700 text-white shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book Appointment at Bagbazar</span>
+              <span>Book Appointment with {counselorName.split(" ")[0] || "Expert"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <a
-              href={`https://wa.me/977${settings.whatsapp.replace(/[^0-9]/g, "")}?text=Hello%20GBS%20International%20Educational%20Consultancy,%20I%20would%20like%20to%20book%20a%20counseling%20session%20at%20Sallyan%20House,%20Bagbazar.`}
+              href={`https://wa.me/977${counselorWhatsapp.replace(/[^0-9]/g, "")}?text=Hello%20${encodeURIComponent(counselorName)}%20at%20GBS%20International,%20I%20would%20like%20to%20consult%20regarding%20studying%20in%20South%20Korea.`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-5 py-3 rounded-lg text-xs sm:text-sm font-bold bg-white hover:bg-gray-50 text-green-600 border border-green-200 shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>Chat with Director</span>
+              <span>WhatsApp {counselorName.split(" ")[0] || "Counselor"}</span>
             </a>
           </div>
 

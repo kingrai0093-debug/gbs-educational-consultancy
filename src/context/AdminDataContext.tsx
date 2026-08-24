@@ -8,6 +8,7 @@ import {
   InquiryLead,
   LeadFormData,
   University,
+  TeamMember,
 } from "../types";
 import {
   DEFAULT_SITE_SETTINGS,
@@ -16,6 +17,7 @@ import {
   DEFAULT_VIDEOS,
   DEFAULT_GALLERY,
   DEFAULT_LEADS,
+  DEFAULT_TEAM_MEMBERS,
 } from "../data/adminDefaults";
 import { KOREA_UNIVERSITIES } from "../data/koreaUniversities";
 import {
@@ -66,6 +68,7 @@ interface AdminDataContextType {
   videos: VideoItem[];
   gallery: GalleryItem[];
   universities: University[];
+  teamMembers: TeamMember[];
   leads: InquiryLead[];
   
   // Global Cloud Sync State
@@ -81,6 +84,11 @@ interface AdminDataContextType {
   addUniversity: (uni: Omit<University, "id">) => void;
   updateUniversity: (id: string, uni: Partial<University>) => void;
   deleteUniversity: (id: string) => void;
+
+  // Team / Counselor operations
+  addTeamMember: (member: Omit<TeamMember, "id">) => void;
+  updateTeamMember: (id: string, member: Partial<TeamMember>) => void;
+  deleteTeamMember: (id: string) => void;
 
   // Ticker operations
   addTickerItem: (item: Omit<NewsTickerItem, "id">) => void;
@@ -129,6 +137,15 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       return saved ? JSON.parse(saved) : DEFAULT_SITE_SETTINGS;
     } catch {
       return DEFAULT_SITE_SETTINGS;
+    }
+  });
+
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(() => {
+    try {
+      const saved = localStorage.getItem(`${STORAGE_KEY}_teamMembers`);
+      return saved ? JSON.parse(saved) : DEFAULT_TEAM_MEMBERS;
+    } catch {
+      return DEFAULT_TEAM_MEMBERS;
     }
   });
 
@@ -244,6 +261,9 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     if (cloudData.universities && Array.isArray(cloudData.universities) && cloudData.universities.length > 0) {
       setUniversities(cloudData.universities);
     }
+    if (cloudData.teamMembers && Array.isArray(cloudData.teamMembers) && cloudData.teamMembers.length > 0) {
+      setTeamMembers(cloudData.teamMembers);
+    }
     if (cloudData.settings) setSettings(cloudData.settings);
 
     const syncTime = cloudData.lastUpdated || new Date().toISOString();
@@ -353,6 +373,14 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   useEffect(() => {
     try {
+      localStorage.setItem(`${STORAGE_KEY}_teamMembers`, JSON.stringify(teamMembers));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [teamMembers]);
+
+  useEffect(() => {
+    try {
       localStorage.setItem(`${STORAGE_KEY}_leads`, JSON.stringify(leads));
     } catch (e) {
       console.error(e);
@@ -377,6 +405,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         videos,
         gallery,
         universities,
+        teamMembers,
         settings,
       };
 
@@ -392,12 +421,30 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
       return result;
     },
-    [pageContent, tickerItems, posts, videos, gallery, universities, settings]
+    [pageContent, tickerItems, posts, videos, gallery, universities, teamMembers, settings]
   );
 
   // Content operations
   const updatePageContent = (newContent: Partial<PageContent>) => {
     setPageContent((prev) => ({ ...prev, ...newContent }));
+  };
+
+  // Team / Counselor Member operations
+  const addTeamMember = (member: Omit<TeamMember, "id">) => {
+    const newMember: TeamMember = {
+      ...member,
+      id: `member-${Date.now()}`,
+      order: member.order || teamMembers.length + 1,
+    };
+    setTeamMembers((prev) => [...prev, newMember]);
+  };
+
+  const updateTeamMember = (id: string, updated: Partial<TeamMember>) => {
+    setTeamMembers((prev) => prev.map((m) => (m.id === id ? { ...m, ...updated } : m)));
+  };
+
+  const deleteTeamMember = (id: string) => {
+    setTeamMembers((prev) => prev.filter((m) => m.id !== id));
   };
 
   // University operations
@@ -533,6 +580,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setVideos(DEFAULT_VIDEOS);
     setGallery(DEFAULT_GALLERY);
     setUniversities(KOREA_UNIVERSITIES);
+    setTeamMembers(DEFAULT_TEAM_MEMBERS);
     setPageContent(DEFAULT_PAGE_CONTENT);
     localStorage.clear();
   };
@@ -546,6 +594,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       videos,
       gallery,
       universities,
+      teamMembers,
       leads,
       exportedAt: new Date().toISOString(),
     };
@@ -562,6 +611,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (data.videos && Array.isArray(data.videos)) setVideos(data.videos);
       if (data.gallery && Array.isArray(data.gallery)) setGallery(data.gallery);
       if (data.universities && Array.isArray(data.universities)) setUniversities(data.universities);
+      if (data.teamMembers && Array.isArray(data.teamMembers)) setTeamMembers(data.teamMembers);
       if (data.leads && Array.isArray(data.leads)) setLeads(data.leads);
       return true;
     } catch {
@@ -579,6 +629,7 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         videos,
         gallery,
         universities,
+        teamMembers,
         leads,
         isCloudSyncing,
         cloudSyncMessage,
@@ -588,6 +639,9 @@ export const AdminDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         addUniversity,
         updateUniversity,
         deleteUniversity,
+        addTeamMember,
+        updateTeamMember,
+        deleteTeamMember,
         addTickerItem,
         updateTickerItem,
         deleteTickerItem,
