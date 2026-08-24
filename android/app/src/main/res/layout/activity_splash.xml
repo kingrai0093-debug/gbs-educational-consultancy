@@ -13,9 +13,9 @@
 
         <ImageView
             android:id="@+id/splash_logo"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/app_logo"
             android:contentDescription="@string/app_name" />
 
         <TextView
