@@ -103,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
                 webView.setInitialScale(scalePercent);
                 return true;
             }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return true;
+            }
         });
 
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
@@ -117,16 +122,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                return false;
-            }
         });
 
         webView.setOnTouchListener((v, event) -> {
             scaleGestureDetector.onTouchEvent(event);
             gestureDetector.onTouchEvent(event);
+            // Only block touch during active pinch (2 fingers), let scrolling work normally
+            if (scaleGestureDetector.isInProgress()) {
+                return true;
+            }
             return false;
         });
     }
