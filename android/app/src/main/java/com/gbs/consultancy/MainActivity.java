@@ -29,13 +29,11 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
     private ProgressBar progressBar;
-    private SwipeRefreshLayout swipeRefresh;
     private LinearLayout offlineLayout;
     private Button btnRetry;
     private TextView errorMsg;
@@ -55,13 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.web_view);
         progressBar = findViewById(R.id.progress_bar);
-        swipeRefresh = findViewById(R.id.swipe_refresh);
         offlineLayout = findViewById(R.id.offline_layout);
         btnRetry = findViewById(R.id.btn_retry);
         errorMsg = findViewById(R.id.error_msg);
 
         setupWebView();
-        setupSwipeRefresh();
 
         btnRetry.setOnClickListener(v -> retryLoad());
 
@@ -88,16 +84,16 @@ public class MainActivity extends AppCompatActivity {
     private void setupWebView() {
         WebSettings settings = webView.getSettings();
 
-        // Core
+        // Core JavaScript & Storage
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
 
-        // Mobile optimized User-Agent
+        // Mobile User-Agent
         String mobileUA = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
         settings.setUserAgentString(mobileUA);
 
-        // Display & Rendering
+        // Display - Full screen, no zoom
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
         settings.setSupportZoom(false);
@@ -116,27 +112,27 @@ public class MainActivity extends AppCompatActivity {
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
 
-        // Hardware acceleration for smooth rendering
+        // Performance
         settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         settings.setEnableSmoothTransition(true);
-
-        // Layout algorithm
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
 
-        // Cookie support
+        // Cache & Cookies
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
 
-        // Enable WebGL for rich content
+        // File access
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             settings.setAllowFileAccessFromFileURLs(true);
             settings.setAllowUniversalAccessFromFileURLs(true);
         }
 
+        // WebView rendering
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
+        // Inject JS to disable zoom and force full view
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -189,6 +185,19 @@ public class MainActivity extends AppCompatActivity {
                 isLoading = true;
                 progressBar.setVisibility(View.VISIBLE);
                 if (errorMsg != null) errorMsg.setVisibility(View.GONE);
+
+                // Inject zoom disable script
+                view.evaluateJavascript(
+                    "var meta = document.querySelector('meta[name=viewport]'); " +
+                    "if(meta) meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'); " +
+                    "document.addEventListener('gesturestart', function(e) { e.preventDefault(); }); " +
+                    "document.addEventListener('touchstart', function(e) { " +
+                    "  if(e.touches.length > 1) e.preventDefault(); " +
+                    "}, {passive: false}); " +
+                    "document.addEventListener('wheel', function(e) { " +
+                    "  if(e.ctrlKey) e.preventDefault(); " +
+                    "}, {passive: false});"
+                , null);
             }
 
             @Override
@@ -196,7 +205,23 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 isLoading = false;
                 progressBar.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
+
+                // Re-inject zoom disable after page load
+                view.evaluateJavascript(
+                    "var style = document.createElement('style'); " +
+                    "style.textContent = 'html, body { " +
+                    "  overflow-x: hidden !important; " +
+                    "  -webkit-text-size-adjust: 100% !important; " +
+                    "  touch-action: pan-y !important; " +
+                    "  overscroll-behavior: none !important; " +
+                    "} " +
+                    "*, *::before, *::after { " +
+                    "  touch-action: pan-y !important; " +
+                    "}'; " +
+                    "document.head.appendChild(style); " +
+                    "document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, {passive: false}); " +
+                    "document.addEventListener('gestureend', function(e) { e.preventDefault(); }, {passive: false});"
+                , null);
             }
 
             @Override
@@ -204,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
                 super.onReceivedError(view, request, error);
                 if (request.isForMainFrame()) {
                     isLoading = false;
-                    swipeRefresh.setRefreshing(false);
                     progressBar.setVisibility(View.GONE);
                     if (errorMsg != null) {
                         errorMsg.setText("Page failed to load. Tap retry.");
@@ -244,21 +268,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setupSwipeRefresh() {
-        swipeRefresh.setColorSchemeResources(R.color.primary, R.color.accent);
-        swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.bg_dark);
-        swipeRefresh.setOnRefreshListener(() -> {
-            if (isNetworkAvailable()) {
-                offlineLayout.setVisibility(View.GONE);
-                webView.setVisibility(View.VISIBLE);
-                webView.reload();
-            } else {
-                swipeRefresh.setRefreshing(false);
-                showOfflineView();
-            }
-        });
-    }
-
     private void retryLoad() {
         if (isNetworkAvailable()) {
             offlineLayout.setVisibility(View.GONE);
@@ -274,7 +283,6 @@ public class MainActivity extends AppCompatActivity {
                 isLoading = false;
                 webView.stopLoading();
                 progressBar.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
             }
         }, PAGE_LOAD_TIMEOUT);
     }
@@ -292,7 +300,6 @@ public class MainActivity extends AppCompatActivity {
         webView.setVisibility(View.GONE);
         offlineLayout.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        swipeRefresh.setRefreshing(false);
         if (errorMsg != null) errorMsg.setVisibility(View.GONE);
     }
 
