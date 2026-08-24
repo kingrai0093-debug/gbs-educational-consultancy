@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-08-24T09:04:12.152Z",
-  "updatedBy": "GBS Master Admin",
+  "lastUpdated": "2026-08-24T09:14:48.878Z",
+  "updatedBy": "GBS Admin Bagbazar",
   "pageContent": {
     "heroTitle": "Study Abroad With Confidence",
     "heroSubtitle": "YOUR GATEWAY TO GLOBAL EDUCATION",
@@ -79,7 +79,294 @@
       "caption": "🎉 CONGRATULATIONS, ANJANA TAMANG! 🇰🇷❤️\nWe are thrilled to announce the successful D-4-7 Code Visa Grant for Anjana Tamang! 🎓✈️🇰🇷\n✅ Visa Granted Without IELTS\n🎓 D-4-7 Program\n📅 September Intake\nA new chapter of your Korean dream begins now! 🇰🇷✨\nMay this journey bring you success, growth, happiness, and countless opportunities.\n🌸 Congratulations once again, Anjana! 🎉\nGBS International Educational Consultancy"
     }
   ],
-  "universities": [],
+  "universities": [
+    {
+      "id": "inha-univ",
+      "name": "Inha University",
+      "koreanName": "인하대학교",
+      "city": "Incheon",
+      "region": "Incheon & Gyeonggi",
+      "ranking": "#13 in South Korea, Top 300 QS World",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)",
+        "Language Training (D-4)"
+      ],
+      "popularMajors": [
+        "Computer Science",
+        "Artificial Intelligence",
+        "Mechanical Engineering",
+        "Global Business & Logistics",
+        "Data Science"
+      ],
+      "mediumOfInstruction": "100% English",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 3,
+      "annualTuitionKRW": 7800000,
+      "annualTuitionNPR": 790000,
+      "scholarshipRange": "50% - 100% Tuition Waiver",
+      "dormitoryCostMonthlyKRW": 240000,
+      "dormitoryCostMonthlyNPR": 24500,
+      "acceptanceRate": "High for qualified Nepali STEM & Business applicants",
+      "imageUrl": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Subway line direct connection to central Seoul (40 mins)",
+        "Dedicated Global Center with Nepali student community",
+        "Automatic 50% entrance scholarship for IELTS 6.5+ or TOPIK 4",
+        "High placement in Samsung, LG, Hyundai tech ecosystems"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "solbridge-woosong",
+      "name": "SolBridge International School of Business (Woosong Univ)",
+      "koreanName": "우송대학교 솔브릿지",
+      "city": "Daejeon",
+      "region": "Daejeon & Central",
+      "ranking": "AACSB Accredited (Top 5% Business Schools globally)",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)"
+      ],
+      "popularMajors": [
+        "BBA (International Business)",
+        "MBA & MS in Data Analytics",
+        "Finance & Fintech",
+        "Digital Marketing & AI Management"
+      ],
+      "mediumOfInstruction": "100% English",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 0,
+      "annualTuitionKRW": 11000000,
+      "annualTuitionNPR": 1120000,
+      "scholarshipRange": "30% - 70% Merit Tuition Scholarship",
+      "dormitoryCostMonthlyKRW": 280000,
+      "dormitoryCostMonthlyNPR": 28500,
+      "acceptanceRate": "Very high for motivated English speakers",
+      "imageUrl": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "100% English curriculum with American-style professors",
+        "Dual degree exchange opportunities in USA, Europe & Australia",
+        "Generous scholarship renewal each semester with GPA 3.0+",
+        "Located in Daejeon (Korea's Silicon Valley)"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "sejong-univ",
+      "name": "Sejong University",
+      "koreanName": "세종대학교",
+      "city": "Seoul (Gwangjin-gu)",
+      "region": "Seoul Capital Area",
+      "ranking": "Top 10 in Korea, #1 in Hospitality & Tourism",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)",
+        "Language Training (D-4)"
+      ],
+      "popularMajors": [
+        "Hospitality & Tourism Management",
+        "Computer Engineering",
+        "Animation & Webtoon",
+        "Business Administration"
+      ],
+      "mediumOfInstruction": "Bilingual (English & Korean)",
+      "minIeltsScore": 6,
+      "minTopikLevel": 3,
+      "annualTuitionKRW": 8400000,
+      "annualTuitionNPR": 855000,
+      "scholarshipRange": "30% - 80% Tuition Waiver",
+      "dormitoryCostMonthlyKRW": 360000,
+      "dormitoryCostMonthlyNPR": 36500,
+      "acceptanceRate": "Competitive with strong visa track record",
+      "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Prime central Seoul campus right next to Children's Grand Park subway",
+        "Renowned hospitality program with paid 5-star hotel internships",
+        "High visa approval rate for GBS applicants",
+        "Active international student exchange clubs"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "chung-ang-univ",
+      "name": "Chung-Ang University (CAU)",
+      "koreanName": "중앙대학교",
+      "city": "Seoul (Dongjak-gu)",
+      "region": "Seoul Capital Area",
+      "ranking": "#7 in Korea, Top 400 Global",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)",
+        "Language Training (D-4)"
+      ],
+      "popularMajors": [
+        "Business Administration",
+        "Media & Communications",
+        "Computer Science",
+        "Pharmacy & Biomedical"
+      ],
+      "mediumOfInstruction": "Bilingual (English & Korean)",
+      "minIeltsScore": 6,
+      "minTopikLevel": 3,
+      "annualTuitionKRW": 8900000,
+      "annualTuitionNPR": 905000,
+      "scholarshipRange": "50% - 100% Merit Waiver",
+      "dormitoryCostMonthlyKRW": 390000,
+      "dormitoryCostMonthlyNPR": 39500,
+      "acceptanceRate": "High reputation, fast admission process",
+      "imageUrl": "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Scenic campus overlooking the Han River in Seoul",
+        "Special first-semester 50% tuition reduction for admitted international students",
+        "Robust career counseling & Korean employment sponsorship (E-7 visa conversion)",
+        "Top-tier research facilities"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "kyungpook-national",
+      "name": "Kyungpook National University (KNU)",
+      "koreanName": "경북대학교",
+      "city": "Daegu",
+      "region": "Daegu & Others",
+      "ranking": "Top Flagship National University in South Korea",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)",
+        "Language Training (D-4)"
+      ],
+      "popularMajors": [
+        "Electronics & Semiconductor",
+        "Computer Science & IT",
+        "Agriculture & Life Sciences",
+        "Economics"
+      ],
+      "mediumOfInstruction": "Bilingual (English & Korean)",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 3,
+      "annualTuitionKRW": 4600000,
+      "annualTuitionNPR": 468000,
+      "scholarshipRange": "40% - 100% (Very low base tuition)",
+      "dormitoryCostMonthlyKRW": 190000,
+      "dormitoryCostMonthlyNPR": 19300,
+      "acceptanceRate": "Excellent value for budget-conscious students",
+      "imageUrl": "https://images.unsplash.com/photo-1525921429624-479b6a26d84d?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Government National University — 50% lower base tuition than private colleges",
+        "Very low cost of living in Daegu (~50% cheaper than Seoul)",
+        "Abundant part-time work in Daegu industrial & commercial zones",
+        "Full GKS Korean Government Scholarship host institution"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "pusan-national",
+      "name": "Pusan National University (PNU)",
+      "koreanName": "부산대학교",
+      "city": "Busan",
+      "region": "Busan & South",
+      "ranking": "#2 National University in South Korea",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)",
+        "Language Training (D-4)"
+      ],
+      "popularMajors": [
+        "Mechanical & Maritime Engineering",
+        "International Trade",
+        "Nanotechnology",
+        "Computer Science"
+      ],
+      "mediumOfInstruction": "Bilingual (English & Korean)",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 3,
+      "annualTuitionKRW": 4800000,
+      "annualTuitionNPR": 488000,
+      "scholarshipRange": "50% - 100% Premier National Scholarship",
+      "dormitoryCostMonthlyKRW": 210000,
+      "dormitoryCostMonthlyNPR": 21400,
+      "acceptanceRate": "High prestige with great employment outcome in Busan port & tech hub",
+      "imageUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Located in South Korea's vibrant coastal metropolis Busan",
+        "Massive on-campus modern dormitories and sports complexes",
+        "High part-time job opportunities in tourism, logistics, and tech",
+        "Strong research grants for Master's/PhD candidates"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "hanyang-univ",
+      "name": "Hanyang University (ERICA & Seoul)",
+      "koreanName": "한양대학교",
+      "city": "Seoul / Ansan",
+      "region": "Seoul Capital Area",
+      "ranking": "Top 3 Engineering powerhouse in Korea, QS #157",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)"
+      ],
+      "popularMajors": [
+        "Software Engineering",
+        "Mechanical & Automotive",
+        "Business School",
+        "Biotechnology"
+      ],
+      "mediumOfInstruction": "100% English",
+      "minIeltsScore": 6,
+      "minTopikLevel": 4,
+      "annualTuitionKRW": 9200000,
+      "annualTuitionNPR": 935000,
+      "scholarshipRange": "50% - 100% Hanyang International Scholarship (HISP)",
+      "dormitoryCostMonthlyKRW": 320000,
+      "dormitoryCostMonthlyNPR": 32500,
+      "acceptanceRate": "Competitive, strong profile required",
+      "imageUrl": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Direct campus subway station inside the university",
+        "Industry-integrated campus (ERICA cluster with research giants)",
+        "High salary graduate outcomes in Korean conglomerates",
+        "Generous HISP scholarship for high IELTS/SAT/GPA scorers"
+      ],
+      "gksEligible": true
+    },
+    {
+      "id": "keimyung-univ",
+      "name": "Keimyung University (KMU)",
+      "koreanName": "계명대학교",
+      "city": "Daegu",
+      "region": "Daegu & Others",
+      "ranking": "Famous Beautiful Campus & Top Medical/Arts/Business",
+      "levels": [
+        "Undergraduate",
+        "Postgraduate (Master's/PhD)",
+        "Language Training (D-4)"
+      ],
+      "popularMajors": [
+        "Keimyung Adams College (100% English Business & International Studies)",
+        "Computer Engineering",
+        "Game Development & Nursing"
+      ],
+      "mediumOfInstruction": "100% English",
+      "minIeltsScore": 5.5,
+      "minTopikLevel": 0,
+      "annualTuitionKRW": 6900000,
+      "annualTuitionNPR": 700000,
+      "scholarshipRange": "50% - 100% Automatic First Semester Waiver",
+      "dormitoryCostMonthlyKRW": 220000,
+      "dormitoryCostMonthlyNPR": 22400,
+      "acceptanceRate": "Very student-friendly for Nepali applicants",
+      "imageUrl": "https://images.unsplash.com/photo-1576495199011-eb94736d05d6?auto=format&fit=crop&w=1200&q=80",
+      "features": [
+        "Keimyung Adams College offers 100% English degrees with no Korean required",
+        "Affordable dormitory accommodation with meal plans included",
+        "Direct GBS institutional support & fast Certificate of Admission (CoA)",
+        "Filming location of famous K-dramas (Boys Over Flowers, Extra-ordinary You)"
+      ],
+      "gksEligible": true
+    }
+  ],
   "settings": {
     "agencyName": "GBS International Educational Consultancy",
     "slogan": "Study in Korea | Expert Guidance | Visa Processing",
