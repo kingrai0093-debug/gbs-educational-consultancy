@@ -122,7 +122,7 @@ export async function fetchGlobalCmsData(): Promise<GlobalCmsPayload | null> {
 }
 
 /**
- * Ultra-fast direct commit to GitHub API with auto SHA retry & zero-latency local broadcasting
+ * Ultra-fast direct commit to GitHub API with multi-tier SHA resolution & zero-latency local broadcasting
  */
 export async function pushGlobalCmsDataToGitHub(
   payload: GlobalCmsPayload,
@@ -137,45 +137,71 @@ export async function pushGlobalCmsDataToGitHub(
       };
     }
 
-    const authHeader = rawToken.startsWith("ghp_") || rawToken.startsWith("github_pat_")
-      ? `Bearer ${rawToken}`
-      : `token ${rawToken}`;
+    const authHeader = `token ${rawToken}`;
 
     // Instant local broadcast to all open tabs and windows (0ms latency)
     broadcastLocalCmsUpdate(payload);
 
     const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${GITHUB_FILE_PATH}`;
 
-    // Helper to fetch the absolute freshest SHA directly from GitHub main branch
-    const fetchFreshestSha = async (): Promise<string | undefined> => {
+    // Robust multi-tier SHA retrieval:
+    const resolveLatestSha = async (): Promise<string | undefined> => {
+      // Method 1: Direct Contents endpoint with clean ref parameter
       try {
-        const getRes = await fetch(`${apiUrl}?ref=main&_t=${Date.now()}&_r=${Math.random().toString(36).substring(2, 7)}`, {
-          cache: "no-store",
+        const res = await fetch(`${apiUrl}?ref=main`, {
           headers: {
             Authorization: authHeader,
             Accept: "application/vnd.github.v3+json",
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            Pragma: "no-cache",
           },
         });
-        if (getRes.ok) {
-          const fileInfo = await getRes.json();
-          return fileInfo.sha;
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.sha) return json.sha;
         }
       } catch (e) {
-        console.warn("Could not retrieve existing SHA from GitHub:", e);
+        console.warn("Contents SHA retrieval failed:", e);
       }
+
+      // Method 2: Git Tree lookup fallback
+      try {
+        const treeUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/git/trees/main?recursive=1`;
+        const res = await fetch(treeUrl, {
+          headers: {
+            Authorization: authHeader,
+            Accept: "application/vnd.github.v3+json",
+          },
+        });
+        if (res.ok) {
+          const treeData = await res.json();
+          const targetFile = treeData.tree?.find((item: any) => item.path === GITHUB_FILE_PATH);
+          if (targetFile && targetFile.sha) {
+            return targetFile.sha;
+          }
+        }
+      } catch (e) {
+        console.warn("Tree SHA retrieval failed:", e);
+      }
+
+      // Method 3: Unauthenticated raw repo commit blob fallback
+      try {
+        const unauthRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${GITHUB_FILE_PATH}`);
+        if (unauthRes.ok) {
+          const json = await unauthRes.json();
+          if (json && json.sha) return json.sha;
+        }
+      } catch {}
+
       return undefined;
     };
 
-    // 1. Get current file SHA (bypass cache)
-    let existingSha = await fetchFreshestSha();
+    // 1. Get current file SHA
+    let existingSha = await resolveLatestSha();
 
     // 2. Encode payload in UTF-8 base64 safely
     const jsonString = JSON.stringify(payload, null, 2);
     const base64Content = toBase64Utf8(jsonString);
 
-    // 3. Attempt commit
+    // 3. Attempt commit helper
     const attemptCommit = async (shaToUse?: string) => {
       const commitBody: Record<string, any> = {
         message: `admin(cms): global live update at ${new Date().toISOString()}`,
@@ -193,7 +219,6 @@ export async function pushGlobalCmsDataToGitHub(
           Authorization: authHeader,
           Accept: "application/vnd.github.v3+json",
           "Content-Type": "application/json",
-          "Cache-Control": "no-cache",
         },
         body: JSON.stringify(commitBody),
       });
@@ -201,11 +226,13 @@ export async function pushGlobalCmsDataToGitHub(
 
     let putRes = await attemptCommit(existingSha);
 
-    // If 409 Conflict (SHA was modified / mismatched), retry once with freshest SHA
-    if (putRes.status === 409) {
-      console.warn("GitHub SHA mismatch (409 Conflict). Fetching freshest SHA and retrying...");
-      existingSha = await fetchFreshestSha();
-      putRes = await attemptCommit(existingSha);
+    // If 409 Conflict or 422 (SHA was missing or changed), re-resolve SHA and retry immediately
+    if (putRes.status === 409 || putRes.status === 422) {
+      console.warn(`GitHub API ${putRes.status}. Re-resolving latest commit SHA and retrying commit...`);
+      existingSha = await resolveLatestSha();
+      if (existingSha) {
+        putRes = await attemptCommit(existingSha);
+      }
     }
 
     if (putRes.ok) {
@@ -219,7 +246,7 @@ export async function pushGlobalCmsDataToGitHub(
       const errJson = await putRes.json().catch(() => ({}));
       return {
         success: false,
-        message: `GitHub API error (${putRes.status}): ${errJson.message || "Failed to commit changes to cloud. Check SHA or permissions."}`,
+        message: `GitHub API error (${putRes.status}): ${errJson.message || "Failed to commit changes to cloud."}`,
       };
     }
   } catch (err: any) {
